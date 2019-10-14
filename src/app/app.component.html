@@ -1,0 +1,54 @@
+<style>
+  .content {
+    display: flex;
+    margin: 32px auto;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .visible {
+    display: flex !important;
+  }
+
+</style>
+<!-- Navbar -->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark special-color-dark">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand><a class="navbar-brand" href="#">Adminio UI</a></mdb-navbar-brand>
+
+    <!-- Collapsible content -->
+    <links>
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a [routerLink]="['/']" class="nav-link waves-light" mdbWavesEffect>Buckets</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a [routerLink]="['/users']" class="nav-link waves-light"  mdbWavesEffect>Users</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a [routerLink]="['/policies']" class="nav-link waves-light"  mdbWavesEffect>Policies</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a [routerLink]="['/server']" class="nav-link waves-light"  mdbWavesEffect>Server</a>
+            </li>
+        </ul>
+        <!-- Links -->
+    </links>
+    <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+<app-loading></app-loading>
+<!-- <div class="content hidden" role="main" [routerLink]="['/']" routerLinkActive="visible" [routerLinkActiveOptions]="{exact: true}">
+</div> -->
+
+<router-outlet></router-outlet>

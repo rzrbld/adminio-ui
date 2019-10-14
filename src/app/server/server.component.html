@@ -1,0 +1,59 @@
+<div class="container" style="padding-top: 30px;" *ngFor="let server of servers">
+	<h1>Server statistics {{server.addr}} </h1>
+	<div class="mb-4">
+		<strong>minio version:</strong> {{server.data.server.version}} <br/>
+		<strong>uptime:</strong> {{server.data.server.uptime}} 
+	</div>
+	
+	<h3>HTTP operation </h3>
+	<table mdbTable bordered="true" small="true">
+	  <thead>
+	    <tr>
+	      <th>Operation</th>
+	      <th>Count</th>
+	      <th>Avg. Duration</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr mdbTableCol *ngFor="let op of objectKeys(server.data.http)">
+	      <th scope="row">{{op}}</th>
+	      <td>{{server.data.http[op].count}}</td>
+	      <td>{{server.data.http[op].avgDuration}}</td>
+	    </tr>
+	  </tbody>
+	</table>
+
+	<h3>Network</h3>
+	<table mdbTable bordered="true" small="true">
+	  <thead>
+	    <tr>
+	      <th>received</th>
+	      <th>transferred</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr mdbTableCol>
+	      <td>{{server.data.network.received}}</td>
+	      <td>{{server.data.network.transferred}}</td>
+	    </tr>
+	  </tbody>
+	</table>
+	
+	<h3>Storage</h3>
+	<table mdbTable bordered="true" small="true">
+	  <thead>
+	    <tr>
+	      <th>Total</th>
+	      <th>Used</th>
+	      <th>Available</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr mdbTableCol>
+	      <td>{{server.data.storage.Total}}</td>
+	      <td>{{server.data.storage.Used}}</td>
+	      <td>{{server.data.storage.Available}}</td>
+	    </tr>
+	  </tbody>
+	</table>
+</div>

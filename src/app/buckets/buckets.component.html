@@ -1,0 +1,70 @@
+<div class="container" style="padding-top: 30px;">
+	<h1>Buckets</h1>
+	<table mdbTable calss="table">
+	  <thead class="thead-light">
+	    <tr>
+	      <th>Name</th>
+	      <th>Creation Date</th>
+	      <th>Options</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets)">
+	      <td>{{buckets[b].name}}</td>
+	      <td>{{buckets[b].creationDate}}</td>
+	  	  <td>
+	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+	  	  </td>
+	    </tr>
+	  </tbody>
+	</table>
+	<button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addBucket" mdbWavesEffect (click)="resetForm();addBucketModal.show()">Add bucket</button>
+</div>
+
+<!-- delete approve modal -->
+
+<div mdbModal #deleteApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="deleteApproveModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Remove Bucket</h4>
+            </div>
+            <div class="modal-body">
+                Are you shure? <br/> After you click on <strong>"Delete"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="deleteBucket(); deleteApproveModal.hide()">Delete</button>
+            </div>
+        </div>
+    </div >
+</div >
+
+
+<!-- create modal -->
+
+<div mdbModal #addBucketModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="addBucketModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Create Bucket</h4>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-around p-2 mb-3 text-center">
+					<input type="text" class="form-control" placeholder="Bucket Name" [(ngModel)]="newBucketName" name="newBucketName"  aria-label="bucketName" aria-describedby="basic-addon1" autofocus>
+				</div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="default" class="relative waves-light" mdbWavesEffect (click)="createBucket(); addBucketModal.hide()">Create</button>
+            </div>
+        </div>
+    </div >
+</div >

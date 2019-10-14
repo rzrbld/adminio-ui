@@ -1,0 +1,178 @@
+<div class="container" style="padding-top: 30px;">
+	<h1>Policies</h1>
+	<table mdbTable calss="table">
+	  <thead class="thead-light">
+	    <tr>
+	      <th>Name</th>
+	      <th>Action</th>
+	      <th>Effect</th>
+	      <th>Resource</th>
+	      <th>Options</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr mdbTableCol *ngFor="let pol of objectKeys(policies)">
+	      <td>{{pol}}</td>
+	      <td>
+	      	<ul class="type-none" >
+	      		<li class="type-none" *ngFor="let st of b64unpack(policies[pol]).Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
+	      	</ul>
+	  	  </td>
+	  	  <td>
+	      	<ul class="type-none" >
+	      		<li class="type-none" *ngFor="let st of b64unpack(policies[pol]).Statement">{{st.Effect}}</li>
+	      	</ul>
+	  	  </td>
+	  	  <td>
+	      	<ul class="type-none" >
+	      		<li class="type-none" *ngFor="let st of b64unpack(policies[pol]).Statement">{{st.Resource}}</li>
+	      	</ul>
+	  	  </td>
+	  	  <td>
+	  	  	<a title="View Raw JSON" (click)="rawPrepare(b64unpack(policies[pol])); rawViewModal.show()"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a>
+	  	  	<a title="Remove Policy" (click)="deletePolicyPrepare(pol); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+	  	  </td>
+	    </tr>
+	  </tbody>
+	</table>
+	<button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy"
+  (click)="resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect>Add policy</button>
+</div>
+
+<!-- delete approve modal -->
+
+<div mdbModal #deleteApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="deleteApproveModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Remove Policy</h4>
+            </div>
+            <div class="modal-body">
+                Are you shure? <br/> After you click on <strong>"Delete"</strong> button policy <strong>{{policyToDelete}}</strong> will be removed.
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="deletePolicy(); deleteApproveModal.hide()">Delete</button>
+            </div>
+        </div>
+    </div >
+</div >
+
+<!-- Raw view Modal -->
+
+<div mdbModal #rawViewModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="rawViewModalLabel"
+   aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="rawViewModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Raw Policy</h4>
+            </div>
+            <div class="modal-body">
+            	<ngx-json-viewer [json]="rawView"></ngx-json-viewer>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="rawViewModal.hide()" mdbWavesEffect>Close</button>
+            </div>
+        </div>
+    </div >
+</div >
+
+<!-- Policy build up Modal-->
+
+<div mdbModal #addPolicyModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="addPolicyModalLabel"
+   aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="addPolicyModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Build up new policy</h4>
+            </div>
+            <div class="modal-body">
+            	<!-- <form class="text-center" name="newPolicy"  > -->
+            		<div class="row">
+					    <div class="col-md-2 ml-auto">&nbsp;</div>
+					    <div class="col-md-8 ml-auto">
+
+					    	<div class="d-flex justify-content-around p-2 mb-3 text-center">
+								<input type="text" class="form-control" placeholder="Policy Name" [(ngModel)]="newPolicy.name" name="newPolicyName"  aria-label="policyName" aria-describedby="basic-addon1">
+							</div>
+
+							<div class="d-flex justify-content-around p-2 text-center">
+								<div>
+									<!-- Allow -->
+									<div class="custom-control custom-radio custom-control-inline">
+									  <input type="radio" checked class="custom-control-input" id="statementAllow"  value="Allow" [(ngModel)]="newPolicy.effect"  name="policyStatementEffect" mdbInput>
+									  <label class="custom-control-label" for="statementAllow">Allow</label>
+									</div>
+								</div>
+								<div>
+										<!-- Deny -->
+									<div class="custom-control custom-radio custom-control-inline">
+									  <input type="radio" class="custom-control-input" id="statementDeny" value="Deny" [(ngModel)]="newPolicy.effect" name="policyStatementEffect"  mdbInput>
+									  <label class="custom-control-label" for="statementDeny">Deny</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="d-flex justify-content-around p-2 mb-3 text-center">
+								<angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" 
+							    [settings]="dropdownSettings" 
+							    (onSelect)="onItemSelect($event)" 
+							    (onDeSelect)="OnItemDeSelect($event)"
+							    (onSelectAll)="onSelectAll($event)"
+							    (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+							</div>
+							<div class="d-flex justify-content-around p-2 mb-3 text-center">
+								<div class="input-group mb-3">
+								  <div class="input-group-prepend">
+								    <span class="input-group-text" id="basic-addon1">arn:aws:s3:::</span>
+								  </div>
+								  <input type="text" class="form-control" placeholder="<bucket_name>/<key_name>" [(ngModel)]="newPolicy.bucket" name="newBucketName" aria-label="bucketName" aria-describedby="basic-addon1">
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-2 ml-auto">&nbsp;</div>
+					</div>
+            		
+					
+					<div class="d-flex justify-content-around p-2 mb-3 text-center">
+						<button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="addStatement()">Add statement</button>
+					</div>
+					<div id="statements">
+						<hr/>
+						<table class="table"  small="true">
+							<thead class="thead-light">
+								<th>Effect</th>
+								<th>Action</th>
+								<th>Resource</th>
+								<th>Options</th>
+							</thead>
+							<tbody>
+								<tr *ngFor="let st of newPolicyRaw.Statement; let i = index" [attr.data-index]="i">
+									<td>{{st.Effect}}</td>
+									<td><div class="overflow-hidden statement-actions">{{st.Action}}</div></td>
+									<td>{{st.Resource}}</td>
+									<td><a title="Remove statement" (click)="removeStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+                <!-- </form> -->
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="default" class="relative waves-light" mdbWavesEffect (click)="createPolicy()">Create</button>
+            </div>
+        </div>
+    </div >
+</div >
