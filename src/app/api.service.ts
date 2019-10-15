@@ -9,7 +9,7 @@ export class ApiService {
    
   constructor(private httpClient: HttpClient) { }
 
-  baseUrl='http://localhost:8080';
+  baseUrl='http://adminio-ui:8080';
 
   public serverInfo(){
     return this.httpClient.get(this.baseUrl+'/api/v1/server-info');
