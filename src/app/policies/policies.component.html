@@ -10,7 +10,7 @@
 	      <th>Options</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody *ngIf="policies">
 	    <tr mdbTableCol *ngFor="let pol of objectKeys(policies)">
 	      <td>{{pol}}</td>
 	      <td>

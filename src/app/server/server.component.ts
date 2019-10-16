@@ -9,6 +9,7 @@ import { ApiService } from '../api.service';
 export class ServerComponent implements OnInit {
 
   objectKeys = Object.keys;
+  math = Math;
   servers;
 
   constructor(private apiService: ApiService) { }

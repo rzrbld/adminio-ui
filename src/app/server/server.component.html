@@ -14,7 +14,7 @@
 	      <th>Avg. Duration</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody *ngIf="server.data.http">
 	    <tr mdbTableCol *ngFor="let op of objectKeys(server.data.http)">
 	      <th scope="row">{{op}}</th>
 	      <td>{{server.data.http[op].count}}</td>
@@ -31,7 +31,7 @@
 	      <th>transferred</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody *ngIf="server.data.network">
 	    <tr mdbTableCol>
 	      <td>{{server.data.network.received}}</td>
 	      <td>{{server.data.network.transferred}}</td>
@@ -48,11 +48,11 @@
 	      <th>Available</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody *ngIf="server.data.storage">
 	    <tr mdbTableCol>
-	      <td>{{server.data.storage.Total}}</td>
-	      <td>{{server.data.storage.Used}}</td>
-	      <td>{{server.data.storage.Available}}</td>
+	      <td>{{math.round(server.data.storage.Total/1024/1024/1024)}} Gb</td>
+	      <td>{{math.round(server.data.storage.Used/1024/1024/1024)}} Gb</td>
+	      <td>{{math.round(server.data.storage.Available/1024/1024/1024)}} Gb</td>
 	    </tr>
 	  </tbody>
 	</table>

@@ -8,7 +8,7 @@
 	      <th>Options</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody *ngIf="buckets">
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets)">
 	      <td>{{buckets[b].name}}</td>
 	      <td>{{buckets[b].creationDate}}</td>
