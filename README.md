@@ -5,10 +5,10 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 
 ### Web UI abilities:
 | Kind   |      Create      |  List  | Update | Delete |
-|--------------|:-----------------------:|:-----------:|:-----------:|:-----------:|
+|--------------|:-----------------------|:-----------:|:-----------:|:-----------:|
 | Bucket |  :heavy_check_mark: you can create multiple buckets at one time by using "," whitout spaces as delimiter  | :heavy_check_mark: | :x: | :heavy_check_mark: |
-| User |  :heavy_check_mark:  | :heavy_check_mark: | :x: | :heavy_check_mark:  and also enable or disable user |
-| Policy |  :heavy_check_mark: with policy constructor UI  | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| User |  :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  and also enable or disable user |
+| Policy |  :heavy_check_mark: with policy constructor UI  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 
 
