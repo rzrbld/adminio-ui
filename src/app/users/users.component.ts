@@ -12,12 +12,16 @@ import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstra
 })
 export class UsersComponent implements OnInit, AfterViewInit {
   validatingForm: FormGroup;
+  updateUser: FormGroup;
   users = {};
+  usersRaw = {};
   userToDelete;
+  userToUpdate;
   objectKeys = Object.keys;
   objectValues = Object.values;
   jsn = JSON;
   policies;
+  updateStatusValues = ['enabled','disabled'];
 
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
@@ -37,6 +41,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   	this.getListOfUsers()
   	this.getListOfPolicies()
     this.resetForm()
+    this.updateUserFrom()
   }
 
   searchItems() {
@@ -84,6 +89,31 @@ export class UsersComponent implements OnInit, AfterViewInit {
     return retVal;
   }
 
+  get accessKeyUpdate() {
+    return this.updateUser.get('accessKeyUpdate');
+  }
+
+  get secretKeyUpdate() {
+    return this.updateUser.get('secretKeyUpdate');
+  }
+
+  get policyUpdate() {
+    return this.updateUser.get('policyUpdate');
+  }
+
+  get statusUpdate() {
+    return this.updateUser.get('statusUpdate');
+  }
+
+  private updateUserFrom(){
+    this.updateUser = new FormGroup({
+      accessKeyUpdate: new FormControl({value: '', disabled: true}, Validators.required),
+      secretKeyUpdate: new FormControl(''),
+      policyUpdate: new FormControl('', Validators.required),
+      statusUpdate: new FormControl('', Validators.required)
+    });
+  }
+
   private resetForm(){
   	this.validatingForm = new FormGroup({
       newUserAccess: new FormControl(this.generatePassword(16), Validators.minLength(5)),
@@ -95,6 +125,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   private getListOfUsers(){
   	this.apiService.getUsers().subscribe((data)=>{
       console.log(data)
+      this.usersRaw = data;
       const arrayOfUsers = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
       this.users = arrayOfUsers;
       this.mdbTable.setDataSource(arrayOfUsers);
@@ -145,6 +176,42 @@ export class UsersComponent implements OnInit, AfterViewInit {
   private deleteUserPrepare(accessKey){
   	this.userToDelete = accessKey
   }
+
+  private updateUserPrepare(accessKey){
+    this.userToUpdate = accessKey
+    this.updateUser.patchValue({'accessKeyUpdate': accessKey});
+    if(this.usersRaw[accessKey]['policyName']){
+      this.updateUser.patchValue({'policyUpdate': this.usersRaw[accessKey]['policyName']});
+    }
+    if(this.usersRaw[accessKey]['status']){
+      this.updateUser.patchValue({'statusUpdate': this.usersRaw[accessKey]['status']});
+    }
+    console.log(this.usersRaw[accessKey])
+  }
+
+  private updateGenNewPassword(){
+    this.updateUser.patchValue({'secretKeyUpdate': this.generatePassword(24)});
+  }
+
+  private updateUserSave(){
+    var updatedSecret = this.updateUser.value.secretKeyUpdate;
+    var updatedPolicy = this.updateUser.value.policyUpdate;
+    var updatedStatus = this.updateUser.value.statusUpdate;
+
+    console.log(">>>>>>", this.updateUser.value, this.userToUpdate)
+    this.apiService.updateUser(this.userToUpdate,updatedSecret,updatedPolicy,updatedStatus).subscribe((data)=>{
+        console.log(data);
+        this.getListOfUsers();
+    });
+    // var userSecret = this.newUserSecret.value;
+    // var userPolicy = this.newUserPolicy.value;
+
+    // this.apiService.updateUser(this.userToDelete).subscribe((data)=>{
+    //   console.log(data);
+    //   this.getListOfUsers();
+    // });
+  }
+
 
   private deleteUser(){
   	this.apiService.deleteUser(this.userToDelete).subscribe((data)=>{
