@@ -4,7 +4,7 @@
 		<h1>List of users</h1>
 	</div>
 	<div class="col-md-3 col-3 align-right">
-		<button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addUser" (click)="addUserModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add user</button>
+		<button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addUser" (click)="resetForm();addUserModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add user</button>
 	</div>
 	</div>
 	<div class="row">
@@ -35,16 +35,19 @@
 					</div>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-					<a title="Remove User" (click)="deleteUserPrepare(objectKeys(users[key])); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
-		  <a title="Edit User" (click)="updateUserFrom();updateUserPrepare(objectKeys(users[key])); updateApproveModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+
+					<a title="Remove User" class="action-link" (click)="deleteUserPrepare(objectKeys(users[key])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
+
+		  		<a title="Edit User" class="action-link" (click)="updateUserFrom();updateUserPrepare(objectKeys(users[key])); updateApproveModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+
 				</td>
 			</tr>
 		</tbody>
 	<tfoot class="grey lighten-5 w-100">
 		<tr>
-		<td colspan="4">
-			<mdb-table-pagination [tableEl]="tableUsers" [searchDataSource]="users"></mdb-table-pagination>
-		</td>
+			<td colspan="4">
+				<mdb-table-pagination [tableEl]="tableUsers" [searchDataSource]="users"></mdb-table-pagination>
+			</td>
 	  </tr>
 	</tfoot>
 	</table>

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -21,7 +22,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   searchText: string = '';
 
-  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef) { }
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService) { }
 
   @HostListener('input') oninput() {
     if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
@@ -72,6 +73,11 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   private deleteBucket(){
   	this.apiService.deleteBucket(this.bucketToDelete).subscribe((data)=>{
       console.log(data);
+      if(data["Success"]){
+        this.toastr.success('Bucket has been deleted', 'Success');
+      }else{
+        this.toastr.success(JSON.stringify(data), 'Error while deleting bucket');
+      }
       this.getBuckets();
     });
   }
@@ -96,6 +102,11 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   private createBucketSimple(bucket){
   	this.apiService.createBucket(bucket).subscribe((data)=>{
       console.log(data);
+      if(data["Success"]){
+        this.toastr.success('Bucket: '+bucket+' has been created', 'Success');
+      }else{
+        this.toastr.success(JSON.stringify(data), 'Error while creating bucket');
+      }
       this.getBuckets();
     });
   }

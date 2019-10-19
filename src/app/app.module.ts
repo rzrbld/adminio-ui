@@ -15,6 +15,9 @@ import { LoaderService } from './loader.service';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoaderInterceptor } from './loader.interceptor';
 import { BucketsComponent } from './buckets/buckets.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -36,7 +39,10 @@ import { BucketsComponent } from './buckets/buckets.component';
     ReactiveFormsModule,
     NgxJsonViewerModule,
     AngularMultiSelectModule,
-    FormsModule
+    FormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     LoaderService,

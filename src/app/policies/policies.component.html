@@ -4,7 +4,7 @@
 		    <h1>Policies</h1>
 		</div>
 		<div class="col-md-3 col-3 align-right">
-		    <button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy" (click)="resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add policy</button>
+		    <button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy" (click)="isEditMode(false); resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add policy</button>
 		</div>
 	</div>
 	<div class="row">
@@ -45,8 +45,11 @@
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-					<a title="View Raw JSON" (click)="rawPrepare(b64unpack(objectValues(policies[pol]))); rawViewModal.show()"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a>
-					<a title="Remove Policy" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+					<a (click)="rawPrepare(b64unpack(objectValues(policies[pol]))); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
+					
+					<a mdbTooltip="Remove Policy" placement="top" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
+
+		  			<a mdbTooltip="Edit or Copy Policy" placement="top" class="action-link" (click)="isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 				</td>
 			</tr>
 		</tbody>
@@ -115,13 +118,18 @@
                 <button type="button" class="close pull-right" aria-label="Close" (click)="addPolicyModal.hide()">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title w-100" id="myModalLabel">Build up new policy</h4>
+                <h4 class="modal-title w-100" id="myModalLabel">{{modalCreateEditTitle}}</h4>
             </div>
             <div class="modal-body">
             	<!-- <form class="text-center" name="newPolicy"  > -->
             		<div class="row">
 					    <div class="col-md-2 ml-auto">&nbsp;</div>
 					    <div class="col-md-8 ml-auto">
+
+					    	<div class="alert alert-info" role="alert" *ngIf="modalEditMode">
+			                  <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  In Edit mode you can make a copy of policy - Just rename it!
+			                </div>
+
 
 					    	<div class="d-flex justify-content-around p-2 mb-3 text-center">
 								<input type="text" class="form-control" placeholder="Policy Name" [(ngModel)]="newPolicy.name" name="newPolicyName"  aria-label="policyName" aria-describedby="basic-addon1">
@@ -192,7 +200,7 @@
                 <!-- </form> -->
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="createPolicy();addPolicyModal.hide()">Create</button>
+                <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="createPolicy();addPolicyModal.hide()">{{modalCreateEditButtonText}}</button>
             </div>
         </div>
     </div >

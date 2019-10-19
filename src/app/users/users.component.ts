@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetect
 import { ApiService } from '../api.service';
 import {FormControl, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
-
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   searchText: string = '';
 
-  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef) { }
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService) { }
 
   @HostListener('input') oninput() {
     if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
@@ -152,11 +152,21 @@ export class UsersComponent implements OnInit, AfterViewInit {
   		this.apiService.addUserExtended(userAccess,userSecret,userPolicy).subscribe((data)=>{
 	      console.log(data);
 	      this.getListOfUsers();
+        if(data["Success"]){
+          this.toastr.success('User: '+userAccess+' with policy '+userPolicy+' has been created', 'Success');
+        }else{
+          this.toastr.success(JSON.stringify(data), 'Error while creating user');
+        }
 	    });
   	}else{
   		this.apiService.addUser(userAccess,userSecret).subscribe((data)=>{
 	      console.log(data);
 	      this.getListOfUsers();
+        if(data["Success"]){
+          this.toastr.success('User: '+userAccess+' has been created', 'Success');
+        }else{
+          this.toastr.success(JSON.stringify(data), 'Error while creating user');
+        }
 	    });
   	}
   }
@@ -169,6 +179,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
   	}
   	this.apiService.setStatusUser(accessKey,status).subscribe((data)=>{
       console.log(data);
+      if(data["Success"]){
+          this.toastr.success('User: '+accessKey+' status has changed to '+status, 'Success');
+      }else{
+        this.toastr.success(JSON.stringify(data), 'Error while changing state for user');
+      }
       this.getListOfUsers();
     });
   }
@@ -198,24 +213,25 @@ export class UsersComponent implements OnInit, AfterViewInit {
     var updatedPolicy = this.updateUser.value.policyUpdate;
     var updatedStatus = this.updateUser.value.statusUpdate;
 
-    console.log(">>>>>>", this.updateUser.value, this.userToUpdate)
     this.apiService.updateUser(this.userToUpdate,updatedSecret,updatedPolicy,updatedStatus).subscribe((data)=>{
         console.log(data);
         this.getListOfUsers();
+        if(data["Success"]){
+          this.toastr.success('User: '+this.userToUpdate+' has been updated', 'Success');
+        }else{
+          this.toastr.success(JSON.stringify(data), 'Error while updating user');
+        }
     });
-    // var userSecret = this.newUserSecret.value;
-    // var userPolicy = this.newUserPolicy.value;
-
-    // this.apiService.updateUser(this.userToDelete).subscribe((data)=>{
-    //   console.log(data);
-    //   this.getListOfUsers();
-    // });
   }
 
 
   private deleteUser(){
   	this.apiService.deleteUser(this.userToDelete).subscribe((data)=>{
       console.log(data);
+      if(data["Success"]){
+          this.toastr.success('User: '+this.userToDelete+' has been deleted', 'Success');
+        }
+      this.updateUserFrom();
       this.getListOfUsers();
     });
   }

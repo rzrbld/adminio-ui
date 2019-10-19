@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -13,9 +14,14 @@ export class PoliciesComponent implements OnInit {
   objectKeys = Object.keys;
   objectValues = Object.values;
   policies = {};
+  policiesRaw = {};
   b64decode;
   rawView = '';
   policyToDelete;
+  policyToUpdate;
+  modalEditMode;
+  modalCreateEditTitle;
+  modalCreateEditButtonText;
 
   dropdownList = [];
   selectedItems = [];
@@ -39,12 +45,22 @@ export class PoliciesComponent implements OnInit {
   searchText: string = '';
 
 
-  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef) { }
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService) { }
 
   @HostListener('input') oninput() {
     if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
        this.searchItems();
     }
+    if(event && event['target'] !== undefined && event.target["name"] !== undefined && event.target["name"] == "newPolicyName"){
+      if(this.modalEditMode){
+        if(this.newPolicy.name == this.policyToUpdate){
+          this.isEditMode(true)
+        }else{
+          this.isNowCopyMode();
+        }
+      }
+    }
+    
   }
 
   ngOnInit() {
@@ -138,7 +154,7 @@ export class PoliciesComponent implements OnInit {
   private getPolicies(){
   	this.apiService.getPolicies().subscribe((data)=>{
       console.log(data);
-      this.policies = data;
+      this.policiesRaw = data;
       const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
       this.policies = arrayOfPolicies;
       this.mdbTable.setDataSource(arrayOfPolicies);
@@ -151,6 +167,11 @@ export class PoliciesComponent implements OnInit {
   	this.apiService.deletePolicy(this.policyToDelete).subscribe((data)=>{
       console.log(data);
       this.getPolicies();
+      if(data["Success"]){
+        this.toastr.success('Policy '+this.policyToDelete+' has been deleted', 'Success');
+      }else{
+        this.toastr.success(JSON.stringify(data), 'Error while deleting policy');
+      }
     });
   }
 
@@ -171,7 +192,7 @@ export class PoliciesComponent implements OnInit {
   	this.newPolicyRaw = {
 	  	Version:"2012-10-17",
 	  	Statement: []
-	}
+  	}
   }
 
   private addStatement(){
@@ -208,12 +229,42 @@ export class PoliciesComponent implements OnInit {
   	console.log(this.newPolicy, this.newPolicyRaw)
 
   	let policyString = JSON.stringify(this.newPolicyRaw);
-  	console.log(">>>>>>>",policyString)
 
   	this.apiService.addPolicy(this.newPolicy.name,policyString).subscribe((data)=>{
       console.log(data);
+      if(data["Success"]){
+        this.toastr.success('Policy '+this.newPolicy.name+' has been created', 'Success');
+      }else{
+        this.toastr.success(JSON.stringify(data), 'Error while creating policy');
+      }
       this.getPolicies();
     });
+  }
+
+  private isEditMode(state){
+    this.modalEditMode = state;
+    if(state){
+      this.modalCreateEditTitle = "Edit policy"
+      this.modalCreateEditButtonText = "Update"
+    }else{
+      this.modalCreateEditTitle = "Build up new policy"
+      this.modalCreateEditButtonText = "Create"
+    }
+  }
+
+  private isNowCopyMode(){
+    this.modalCreateEditTitle = "Copy policy"
+    this.modalCreateEditButtonText = "Copy"
+  }
+
+  private updatePolicyPrepare(policy){
+    this.policyToUpdate = policy
+    this.prepareNewPolicyRaw()
+    this.resetPloicyForm(false)
+    this.newPolicy.name = policy;
+
+    var oldPolicy = this.b64unpack(this.policiesRaw[policy])
+    this.newPolicyRaw.Statement = oldPolicy.Statement;
   }
 
 }
