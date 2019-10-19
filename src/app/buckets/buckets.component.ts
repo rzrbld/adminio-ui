@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
+import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
+
 
 
 @Component({
@@ -7,22 +9,59 @@ import { ApiService } from '../api.service';
   templateUrl: './buckets.component.html',
   styleUrls: ['./buckets.component.scss']
 })
-export class BucketsComponent implements OnInit {
+export class BucketsComponent implements OnInit,  AfterViewInit  {
   objectKeys = Object.keys;
   buckets = {};
   bucketToDelete;
   newBucketName = "";
 
-  constructor(private apiService: ApiService) { }
+  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
+  @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
+  previous: string;
+
+  searchText: string = '';
+
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef) { }
+
+  @HostListener('input') oninput() {
+    if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
+       this.searchItems();
+    }
+  }
 
   ngOnInit() {
   	this.getBuckets()
+  }
+
+  private searchItems() {
+    console.log('callled')
+    const prev = this.mdbTable.getDataSource();
+
+    if (!this.searchText) {
+      this.mdbTable.setDataSource(this.previous);
+      this.buckets = this.mdbTable.getDataSource();
+    }
+
+    if (this.searchText) {
+      this.buckets = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.mdbTable.setDataSource(prev);
+    }
+  }
+
+  ngAfterViewInit() {
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(10);
+
+    this.mdbTablePagination.calculateFirstItemIndex();
+    this.mdbTablePagination.calculateLastItemIndex();
+    this.cdRef.detectChanges();
   }
 
   private getBuckets(){
   	this.apiService.getBuckets().subscribe((data)=>{
       console.log(data);
       this.buckets = data;
+      this.mdbTable.setDataSource(this.buckets);
+      this.previous = this.mdbTable.getDataSource();
     });
   }
 

@@ -1,42 +1,63 @@
 <div class="container" style="padding-top: 30px;">
-	<h1>Policies</h1>
-	<table mdbTable calss="table">
-	  <thead class="thead-light">
-	    <tr>
-	      <th>Name</th>
-	      <th>Action</th>
-	      <th>Effect</th>
-	      <th>Resource</th>
-	      <th>Options</th>
-	    </tr>
-	  </thead>
-	  <tbody *ngIf="policies">
-	    <tr mdbTableCol *ngFor="let pol of objectKeys(policies)">
-	      <td>{{pol}}</td>
-	      <td>
-	      	<ul class="type-none" >
-	      		<li class="type-none" *ngFor="let st of b64unpack(policies[pol]).Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
-	      	</ul>
-	  	  </td>
-	  	  <td>
-	      	<ul class="type-none" >
-	      		<li class="type-none" *ngFor="let st of b64unpack(policies[pol]).Statement">{{st.Effect}}</li>
-	      	</ul>
-	  	  </td>
-	  	  <td>
-	      	<ul class="type-none" >
-	      		<li class="type-none" *ngFor="let st of b64unpack(policies[pol]).Statement">{{st.Resource}}</li>
-	      	</ul>
-	  	  </td>
-	  	  <td>
-	  	  	<a title="View Raw JSON" (click)="rawPrepare(b64unpack(policies[pol])); rawViewModal.show()"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a>
-	  	  	<a title="Remove Policy" (click)="deletePolicyPrepare(pol); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
-	  	  </td>
-	    </tr>
-	  </tbody>
+	<div class="row">
+		<div class="col-9 col-md-9">
+		    <h1>Policies</h1>
+		</div>
+		<div class="col-md-3 col-3 align-right">
+		    <button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy" (click)="resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add policy</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-12 mx-auto">
+			<div class="md-form">
+			  <!-- <input type="text" class="form-control" id="search" mdbInput> -->
+			  <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchItems()" class="form-control" id="search" mdbInput>
+			  <label for="search">Search</label>
+			</div>
+		</div>
+	</div>
+	<table mdbTable calss="table"  #tablePolicies="mdbTable" >
+		<thead class="thead-light">
+			<tr>
+			  <th>Name</th>
+			  <th>Action</th>
+			  <th>Effect</th>
+			  <th>Resource</th>
+			  <th>Options</th>
+			</tr>
+		</thead>
+		<tbody *ngIf="policies">
+			<tr mdbTableCol *ngFor="let pol of objectKeys(policies); let i = index">
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{objectKeys(policies[pol])}}</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+					<ul class="type-none" >
+						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
+					</ul>
+				</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+					<ul class="type-none" >
+						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement">{{st.Effect}}</li>
+					</ul>
+				</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+					<ul class="type-none" >
+						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement">{{st.Resource}}</li>
+					</ul>
+				</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+					<a title="View Raw JSON" (click)="rawPrepare(b64unpack(objectValues(policies[pol]))); rawViewModal.show()"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a>
+					<a title="Remove Policy" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot class="grey lighten-5 w-100">
+			<tr>
+				<td colspan="5">
+				  <mdb-table-pagination [tableEl]="tablePolicies" [searchDataSource]="policies"></mdb-table-pagination>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
-	<button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy"
-  (click)="resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect>Add policy</button>
 </div>
 
 <!-- delete approve modal -->
@@ -55,8 +76,8 @@
                 Are you shure? <br/> After you click on <strong>"Delete"</strong> button policy <strong>{{policyToDelete}}</strong> will be removed.
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
-                <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="deletePolicy(); deleteApproveModal.hide()">Delete</button>
+                <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="deletePolicy(); deleteApproveModal.hide()">Delete</button>
             </div>
         </div>
     </div >
@@ -146,7 +167,7 @@
             		
 					
 					<div class="d-flex justify-content-around p-2 mb-3 text-center">
-						<button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="addStatement()">Add statement</button>
+						<button type="button" mdbBtn gradient="purple" rounded="true" class="relative waves-light" mdbWavesEffect (click)="addStatement()"><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add statement</button>
 					</div>
 					<div id="statements">
 						<hr/>
@@ -171,7 +192,7 @@
                 <!-- </form> -->
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" mdbBtn color="default" class="relative waves-light" mdbWavesEffect (click)="createPolicy();addPolicyModal.hide()">Create</button>
+                <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="createPolicy();addPolicyModal.hide()">Create</button>
             </div>
         </div>
     </div >

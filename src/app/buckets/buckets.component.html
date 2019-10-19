@@ -1,6 +1,21 @@
 <div class="container" style="padding-top: 30px;">
-	<h1>Buckets</h1>
-	<table mdbTable calss="table">
+    <div class="row">
+        <div class="col-9 col-md-9">
+            <h1>Buckets</h1>
+        </div>
+        <div class="col-md-3 col-3 align-right">
+            <button type="button" mdbBtn gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addBucket" mdbWavesEffect (click)="resetForm();addBucketModal.show()"><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add bucket</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-12 mx-auto">
+          <div class="md-form">
+            <input type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput>
+            <label for="search">Search</label>
+          </div>
+        </div>
+    </div>
+	<table mdbTable calss="table" #tableBuckets="mdbTable" >
 	  <thead class="thead-light">
 	    <tr>
 	      <th>Name</th>
@@ -9,16 +24,22 @@
 	    </tr>
 	  </thead>
 	  <tbody *ngIf="buckets">
-	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets)">
-	      <td>{{buckets[b].name}}</td>
-	      <td>{{buckets[b].creationDate}}</td>
-	  	  <td>
-	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong></td>
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
+	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>
+      <tfoot class="grey lighten-5 w-100">
+        <tr>
+          <td colspan="3">
+            <mdb-table-pagination [tableEl]="tableBuckets" [searchDataSource]="buckets"></mdb-table-pagination>
+          </td>
+        </tr>
+      </tfoot>
 	</table>
-	<button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addBucket" mdbWavesEffect (click)="resetForm();addBucketModal.show()">Add bucket</button>
 </div>
 
 <!-- delete approve modal -->
@@ -37,8 +58,8 @@
                 Are you shure? <br/> After you click on <strong>"Delete"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
-                <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="deleteBucket(); deleteApproveModal.hide()">Delete</button>
+                <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="deleteBucket(); deleteApproveModal.hide()">Delete</button>
             </div>
         </div>
     </div >
@@ -61,9 +82,12 @@
                 <div class="d-flex justify-content-around p-2 mb-3 text-center">
 					<input type="text" class="form-control" placeholder="Bucket Name" [(ngModel)]="newBucketName" name="newBucketName"  aria-label="bucketName" aria-describedby="basic-addon1" autofocus>
 				</div>
+                <div class="alert alert-info" role="alert">
+                  <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  You can pass multiple names with "," delimiter 
+                </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" mdbBtn color="default" class="relative waves-light" mdbWavesEffect (click)="createBucket(); addBucketModal.hide()">Create</button>
+                <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="createBucket(); addBucketModal.hide()">Create</button>
             </div>
         </div>
     </div >

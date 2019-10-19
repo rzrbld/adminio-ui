@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
 import {FormControl, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
+import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
+
 
 
 @Component({
@@ -8,19 +10,56 @@ import {FormControl, FormGroup, Validators, ReactiveFormsModule} from "@angular/
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, AfterViewInit {
   validatingForm: FormGroup;
-  users;
+  users = {};
   userToDelete;
   objectKeys = Object.keys;
+  objectValues = Object.values;
+  jsn = JSON;
   policies;
 
-  constructor(private apiService: ApiService) { }
+  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
+  @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
+  previous: string;
+
+  searchText: string = '';
+
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef) { }
+
+  @HostListener('input') oninput() {
+    if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
+       this.searchItems();
+    }
+  }
 
   ngOnInit() {
   	this.getListOfUsers()
   	this.getListOfPolicies()
-	this.resetForm()
+    this.resetForm()
+  }
+
+  searchItems() {
+    console.log(this.searchText)
+    const prev = this.mdbTable.getDataSource();
+
+    if (!this.searchText) {
+      this.mdbTable.setDataSource(this.previous);
+      this.users = this.mdbTable.getDataSource();
+    }
+
+    if (this.searchText) {
+      this.users = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.mdbTable.setDataSource(prev);
+    }
+  }
+
+  ngAfterViewInit() {
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(10);
+
+    this.mdbTablePagination.calculateFirstItemIndex();
+    this.mdbTablePagination.calculateLastItemIndex();
+    this.cdRef.detectChanges();
   }
 
   get newUserAccess() {
@@ -55,7 +94,12 @@ export class UsersComponent implements OnInit {
 
   private getListOfUsers(){
   	this.apiService.getUsers().subscribe((data)=>{
-      this.users = data;
+      console.log(data)
+      const arrayOfUsers = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
+      this.users = arrayOfUsers;
+      this.mdbTable.setDataSource(arrayOfUsers);
+      console.log(arrayOfUsers)
+      this.previous = this.mdbTable.getDataSource();
     });
   }
 

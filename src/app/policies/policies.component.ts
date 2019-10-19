@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
+import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
 
 
 
@@ -10,6 +11,7 @@ import { ApiService } from '../api.service';
 })
 export class PoliciesComponent implements OnInit {
   objectKeys = Object.keys;
+  objectValues = Object.values;
   policies = {};
   b64decode;
   rawView = '';
@@ -30,8 +32,20 @@ export class PoliciesComponent implements OnInit {
   	Statement: []
   }
 
+  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
+  @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
+  previous: string;
 
-  constructor(private apiService: ApiService) { }
+  searchText: string = '';
+
+
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef) { }
+
+  @HostListener('input') oninput() {
+    if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
+       this.searchItems();
+    }
+  }
 
   ngOnInit() {
   	this.getPolicies()
@@ -84,6 +98,29 @@ export class PoliciesComponent implements OnInit {
 	    console.log(items);
 	}
 
+  searchItems() {
+    console.log(this.searchText)
+    const prev = this.mdbTable.getDataSource();
+
+    if (!this.searchText) {
+      this.mdbTable.setDataSource(this.previous);
+      this.policies = this.mdbTable.getDataSource();
+    }
+
+    if (this.searchText) {
+      this.policies = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.mdbTable.setDataSource(prev);
+    }
+  }
+
+  ngAfterViewInit() {
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(10);
+
+    this.mdbTablePagination.calculateFirstItemIndex();
+    this.mdbTablePagination.calculateLastItemIndex();
+    this.cdRef.detectChanges();
+  }
+
   private resetPloicyForm(removeName){
   	console.log(removeName)
   	this.selectedItems = []
@@ -102,6 +139,11 @@ export class PoliciesComponent implements OnInit {
   	this.apiService.getPolicies().subscribe((data)=>{
       console.log(data);
       this.policies = data;
+      const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
+      this.policies = arrayOfPolicies;
+      this.mdbTable.setDataSource(arrayOfPolicies);
+      console.log(arrayOfPolicies)
+      this.previous = this.mdbTable.getDataSource();
     });
   }
 
