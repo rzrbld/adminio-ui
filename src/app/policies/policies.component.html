@@ -26,7 +26,7 @@
 			  <th>Options</th>
 			</tr>
 		</thead>
-		<tbody *ngIf="policies">
+		<tbody *ngIf="(policies | json) != ({} | json)">
 			<tr mdbTableCol *ngFor="let pol of objectKeys(policies); let i = index">
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{objectKeys(policies[pol])}}</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">

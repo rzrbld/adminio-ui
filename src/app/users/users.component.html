@@ -24,7 +24,7 @@
 				<th>Action</th>
 			</tr>
 		</thead>
-		<tbody *ngIf="users">
+		<tbody *ngIf="(users | json) != ({} | json)">
 			<tr mdbTableCol *ngFor="let key of objectKeys(users); let i = index" [ngClass]="users[key][objectKeys(users[key])].status == 'disabled' ? 'table-secondary' : 'none' && !users[key][objectKeys(users[key])].policyName ? 'table-warning' : 'none' ">
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{objectKeys(users[key])}}</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><span *ngIf="objectValues(users[key])[0].policyName">{{objectValues(users[key])[0].policyName}}</span></td>

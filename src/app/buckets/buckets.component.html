@@ -23,7 +23,7 @@
 	      <th>Options</th>
 	    </tr>
 	  </thead>
-	  <tbody *ngIf="buckets">
+	  <tbody *ngIf="(buckets | json) != ({} | json)">
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong></td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
