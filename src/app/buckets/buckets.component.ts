@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BucketsComponent implements OnInit,  AfterViewInit  {
   objectKeys = Object.keys;
-  buckets = [];
+  buckets = {};
   bucketToDelete;
   newBucketName = "";
 
@@ -63,7 +63,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       if(data!==null){
         this.buckets = data;
       }else{
-        this.buckets = [];
+        this.buckets = {};
       }
       this.mdbTable.setDataSource(this.buckets);
       this.previous = this.mdbTable.getDataSource();
