@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BucketsComponent implements OnInit,  AfterViewInit  {
   objectKeys = Object.keys;
-  buckets = {};
+  buckets = [];
   bucketToDelete;
   newBucketName = "";
 
@@ -50,17 +50,21 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   }
 
   ngAfterViewInit() {
-    this.mdbTablePagination.setMaxVisibleItemsNumberTo(10);
+      this.mdbTablePagination.setMaxVisibleItemsNumberTo(10);
 
-    this.mdbTablePagination.calculateFirstItemIndex();
-    this.mdbTablePagination.calculateLastItemIndex();
-    this.cdRef.detectChanges();
+      this.mdbTablePagination.calculateFirstItemIndex();
+      this.mdbTablePagination.calculateLastItemIndex();
+      this.cdRef.detectChanges();
   }
 
   private getBuckets(){
   	this.apiService.getBuckets().subscribe((data)=>{
       console.log(data);
-      this.buckets = data;
+      if(data!==null){
+        this.buckets = data;
+      }else{
+        this.buckets = [];
+      }
       this.mdbTable.setDataSource(this.buckets);
       this.previous = this.mdbTable.getDataSource();
     });
