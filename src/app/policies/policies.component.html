@@ -31,21 +31,21 @@
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{objectKeys(policies[pol])}}</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
-						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
+						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
-						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement">{{st.Effect}}</li>
+						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement">{{st.Effect}}</li>
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
-						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement"><div class="overflow-hidden statement-actions">{{st.Resource}}</div><div *ngIf="st.Resource.length > 4" class="lineCut">...</div></li>
+						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement"><div class="overflow-hidden statement-actions">{{st.Resource}}</div><div *ngIf="st.Resource.length > 4" class="lineCut">...</div></li>
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-					<a (click)="rawPrepare(b64unpack(objectValues(policies[pol]))); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
+					<a (click)="rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
 					
 					<a mdbTooltip="Remove Policy" placement="top" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
 

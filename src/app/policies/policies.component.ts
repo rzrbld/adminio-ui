@@ -168,7 +168,7 @@ export class PoliciesComponent implements OnInit {
   	this.apiService.getPolicies().subscribe((data)=>{
       console.log(data);
       this.policiesRaw = data;
-      const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
+      const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: this.b64unpack(e[1]) } ));
       this.policies = arrayOfPolicies;
       this.mdbTable.setDataSource(arrayOfPolicies);
       console.log(arrayOfPolicies)
