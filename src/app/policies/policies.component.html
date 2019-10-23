@@ -41,7 +41,7 @@
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
-						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement">{{st.Resource}}</li>
+						<li class="type-none" *ngFor="let st of b64unpack(objectValues(policies[pol])).Statement"><div class="overflow-hidden statement-actions">{{st.Resource}}</div><div *ngIf="st.Resource.length > 4" class="lineCut">...</div></li>
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
@@ -112,7 +112,7 @@
 
 <!-- Policy build up Modal-->
 
-<div mdbModal #addPolicyModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="addPolicyModalLabel"
+<div mdbModal #addPolicyModal="mdbModal" class="modal fade right overflow-auto" tabindex="-1" role="dialog" aria-labelledby="addPolicyModalLabel"
    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -133,11 +133,11 @@
 			                </div>
 
 
-					    	<div class="d-flex justify-content-around p-2 mb-3 text-center">
+					    	<div class="d-flex justify-content-around p-1 mb-3 text-center">
 								<input type="text" class="form-control" placeholder="Policy Name" [(ngModel)]="newPolicy.name" name="newPolicyName"  aria-label="policyName" aria-describedby="basic-addon1">
 							</div>
 
-							<div class="d-flex justify-content-around p-2 text-center">
+							<div class="d-flex justify-content-around p-1 text-center">
 								<div>
 									<!-- Allow -->
 									<div class="custom-control custom-radio custom-control-inline">
@@ -154,7 +154,7 @@
 								</div>
 							</div>
 
-							<div class="d-flex justify-content-around p-2 mb-3 text-center">
+							<div class="d-flex justify-content-around p-1 mb-3 text-center">
 								<angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" 
 							    [settings]="dropdownSettings" 
 							    (onSelect)="onItemSelect($event)" 
@@ -162,26 +162,45 @@
 							    (onSelectAll)="onSelectAll($event)"
 							    (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
 							</div>
-							<div class="d-flex justify-content-around p-2 mb-3 text-center">
+							<div class="d-flex justify-content-around p-1 mb-1 text-center">
 								<div class="input-group mb-3">
 								  <div class="input-group-prepend">
-								    <span class="input-group-text" id="basic-addon1">arn:aws:s3:::</span>
+								    <span class="input-group-text" id="s3-prefix">arn:aws:s3:::</span>
 								  </div>
-								  <input type="text" class="form-control" placeholder="<bucket_name>/<key_name>" [(ngModel)]="newPolicy.bucket" name="newBucketName" aria-label="bucketName" aria-describedby="basic-addon1">
+								  <input type="text" class="form-control" placeholder="<bucket_name>/<key_name>" [(ngModel)]="newPolicy.bucket" aria-label="Recipient's username"
+								    aria-describedby="s3-prefix">
+								  <div class="input-group-append">
+								    <button mdbBtn gradient="blue" rounded="true"  outline="true" size="md" class="m-0 px-3 py-2" type="button" id="s3-prefix"
+								      mdbWavesEffect (click)="addBucketStatement()">Add bucket</button>
+								  </div>
 								</div>
 							</div>
-
+							<div id="bucketStatements">
+								<table  mdbTable mdbTableScroll scrollY="true" maxHeight="300"  class="table"  small="true">
+									<thead class="thead-light">
+										<th>Bucket</th>
+										<th>Options</th>
+									</thead>
+									<tbody>
+										<tr *ngFor="let bst of newStatement.Resource; let i = index" [attr.data-index]="i">
+											<td>{{bst}}</td>
+											<td><a title="Remove bucket statement" (click)="removeBucketStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<hr/>
 						</div>
 						<div class="col-md-2 ml-auto">&nbsp;</div>
 					</div>
-            		
+
 					
-					<div class="d-flex justify-content-around p-2 mb-3 text-center">
-						<button type="button" mdbBtn gradient="purple" rounded="true" class="relative waves-light" mdbWavesEffect (click)="addStatement()"><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add statement</button>
+					<div class="d-flex justify-content-around p-1 mb-3 text-center">
+						<button type="button" mdbBtn gradient="purple" rounded="true" class="relative waves-light btn btn-sm" mdbWavesEffect (click)="addStatement()"><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add statement</button>
 					</div>
 					<div id="statements">
 						<hr/>
-						<table  mdbTable mdbTableScroll scrollY="true" maxHeight="200"  class="table"  small="true">
+						<table  mdbTable mdbTableScroll scrollY="true" maxHeight="300"  class="table"  small="true">
 							<thead class="thead-light">
 								<th>Effect</th>
 								<th>Action</th>
@@ -192,8 +211,12 @@
 								<tr *ngFor="let st of newPolicyRaw.Statement; let i = index" [attr.data-index]="i">
 									<td>{{st.Effect}}</td>
 									<td><div class="overflow-hidden statement-actions">{{st.Action}}</div></td>
-									<td>{{st.Resource}}</td>
-									<td><a title="Remove statement" (click)="removeStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a></td>
+									<td><div class="overflow-hidden statement-actions">{{st.Resource}}</div></td>
+									<td>
+										<a title="Remove statement" (click)="removeStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
+										&nbsp;&nbsp;
+										<a title="Edit statement" (click)="editStatement(i)"><mdb-icon fas icon="pencil-alt"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
+									</td>
 								</tr>
 							</tbody>
 						</table>

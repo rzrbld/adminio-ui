@@ -20,6 +20,7 @@ export class PoliciesComponent implements OnInit {
   policyToDelete;
   policyToUpdate;
   modalEditMode;
+  jsn = JSON;
   modalCreateEditTitle;
   modalCreateEditButtonText;
 
@@ -36,6 +37,12 @@ export class PoliciesComponent implements OnInit {
   newPolicyRaw = {
   	Version:"",
   	Statement: []
+  }
+
+  newStatement = {
+    Action: [],
+    Effect: "",
+    Resource: []
   }
 
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -148,6 +155,12 @@ export class PoliciesComponent implements OnInit {
 		this.newPolicy.effect = "Allow"
 		this.newPolicy.bucket = ""
   	}
+
+    this.newStatement = {
+      Action: [],
+      Effect: "",
+      Resource: []
+    }
   	
   }
 
@@ -195,34 +208,52 @@ export class PoliciesComponent implements OnInit {
   	}
   }
 
+
+
   private addStatement(){
 
-  	var newStatement = {
-  		Action: [],
-  		Effect: "",
-  		Resource: ""
-  	}
-
-  	if(this.selectedItems.length == 20){
-  		newStatement.Action.push("s3:*")
+  	if(this.selectedItems.length == this.dropdownList.length){
+  		this.newStatement.Action.push("s3:*")
   	}else{
 	  	for (var i = 0; i < this.selectedItems.length; i++) {
-	  		newStatement.Action.push(this.selectedItems[i].itemName)
+	  		this.newStatement.Action.push(this.selectedItems[i].itemName)
 	  	}
-	}
-  	newStatement.Effect = this.newPolicy.effect
-  	newStatement.Resource = "arn:aws:s3:::"+this.newPolicy.bucket
-  	console.log(newStatement)
+	  }
+  	this.newStatement.Effect = this.newPolicy.effect
+  	// this.newStatement.Resource = "arn:aws:s3:::"+this.newPolicy.bucket
+  	console.log(this.newStatement)
 
-  	this.newPolicyRaw.Statement.push(newStatement);
+  	this.newPolicyRaw.Statement.push(this.newStatement);
   	console.log(this.newPolicyRaw)
 
   	this.resetPloicyForm(false);
+  }
 
+  private editStatement(i){
+    this.newStatement = this.newPolicyRaw.Statement[i]
+    this.newPolicy.effect = this.newPolicyRaw.Statement[i].Effect
+    if(this.newStatement.Action[0] == "s3:*"){
+        this.selectedItems = this.dropdownList
+    }else{
+      for (var g = 0; g < this.newStatement.Action.length; g++) {
+        this.selectedItems.push({"id":g,"itemName":this.newStatement.Action[g]})
+      }
+    }
+    this.newStatement.Action = []
+    this.newPolicyRaw.Statement.splice(i,1)
+  }
+
+  private addBucketStatement(){
+    this.newStatement.Resource.push("arn:aws:s3:::"+this.newPolicy.bucket)
+    this.newPolicy.bucket = ''
   }
 
   private removeStatement(i){
   	this.newPolicyRaw.Statement.splice(i,1)
+  }
+
+  private removeBucketStatement(i){
+    this.newStatement.Resource.splice(i,1)
   }
 
   private createPolicy(){
