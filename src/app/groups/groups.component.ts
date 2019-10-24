@@ -26,6 +26,8 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	modalCreateEditTitle;
 	modalCreateEditButtonText;
 	modalEditMode = false;
+	rawView = '';
+
 
 
 
