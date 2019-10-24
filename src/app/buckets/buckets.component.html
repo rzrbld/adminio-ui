@@ -28,7 +28,7 @@
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong></td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
 	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>
@@ -47,7 +47,7 @@
 <!-- delete approve modal -->
 
 <div mdbModal #deleteApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -71,7 +71,7 @@
 <!-- create modal -->
 
 <div mdbModal #addBucketModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

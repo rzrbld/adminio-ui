@@ -104,7 +104,7 @@ export class PoliciesComponent implements OnInit {
 		unSelectAllText:'UnSelect All',
 		enableSearchFilter: true	
 	  };            
-  	}
+  }
 
 	onItemSelect(item:any){
 	    console.log(item);
@@ -183,7 +183,7 @@ export class PoliciesComponent implements OnInit {
       if(data["Success"]){
         this.toastr.success('Policy '+this.policyToDelete+' has been deleted', 'Success');
       }else{
-        this.toastr.success(JSON.stringify(data), 'Error while deleting policy');
+        this.toastr.error(JSON.stringify(data), 'Error while deleting policy');
       }
     });
   }
@@ -266,7 +266,7 @@ export class PoliciesComponent implements OnInit {
       if(data["Success"]){
         this.toastr.success('Policy '+this.newPolicy.name+' has been created', 'Success');
       }else{
-        this.toastr.success(JSON.stringify(data), 'Error while creating policy');
+        this.toastr.error(JSON.stringify(data), 'Error while creating policy');
       }
       this.getPolicies();
     });

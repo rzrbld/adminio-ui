@@ -18,6 +18,7 @@ import { BucketsComponent } from './buckets/buckets.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { GroupsComponent } from './groups/groups.component';
 
 
 
@@ -30,6 +31,7 @@ import { ToastrModule } from 'ngx-toastr';
     PoliciesComponent,
     LoaderComponent,
     BucketsComponent,
+    GroupsComponent,
   ],
   imports: [
     BrowserModule,

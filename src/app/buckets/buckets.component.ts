@@ -35,7 +35,6 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   }
 
   private searchItems() {
-    console.log('callled')
     const prev = this.mdbTable.getDataSource();
 
     if (!this.searchText) {
@@ -80,7 +79,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       if(data["Success"]){
         this.toastr.success('Bucket has been deleted', 'Success');
       }else{
-        this.toastr.success(JSON.stringify(data), 'Error while deleting bucket');
+        this.toastr.error(JSON.stringify(data), 'Error while deleting bucket');
       }
       this.getBuckets();
     });
@@ -109,7 +108,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       if(data["Success"]){
         this.toastr.success('Bucket: '+bucket+' has been created', 'Success');
       }else{
-        this.toastr.success(JSON.stringify(data), 'Error while creating bucket');
+        this.toastr.error(JSON.stringify(data), 'Error while creating bucket');
       }
       this.getBuckets();
     });

@@ -155,7 +155,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
         if(data["Success"]){
           this.toastr.success('User: '+userAccess+' with policy '+userPolicy+' has been created', 'Success');
         }else{
-          this.toastr.success(JSON.stringify(data), 'Error while creating user');
+          this.toastr.error(JSON.stringify(data), 'Error while creating user');
         }
 	    });
   	}else{
@@ -165,7 +165,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
         if(data["Success"]){
           this.toastr.success('User: '+userAccess+' has been created', 'Success');
         }else{
-          this.toastr.success(JSON.stringify(data), 'Error while creating user');
+          this.toastr.error(JSON.stringify(data), 'Error while creating user');
         }
 	    });
   	}
@@ -182,7 +182,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
       if(data["Success"]){
           this.toastr.success('User: '+accessKey+' status has changed to '+status, 'Success');
       }else{
-        this.toastr.success(JSON.stringify(data), 'Error while changing state for user');
+        this.toastr.error(JSON.stringify(data), 'Error while changing state for user');
       }
       this.getListOfUsers();
     });
@@ -219,7 +219,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
         if(data["Success"]){
           this.toastr.success('User: '+this.userToUpdate+' has been updated', 'Success');
         }else{
-          this.toastr.success(JSON.stringify(data), 'Error while updating user');
+          this.toastr.error(JSON.stringify(data), 'Error while updating user');
         }
     });
   }

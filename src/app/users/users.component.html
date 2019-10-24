@@ -26,7 +26,7 @@
 		</thead>
 		<tbody *ngIf="(users | json) != ({} | json)">
 			<tr mdbTableCol *ngFor="let key of objectKeys(users); let i = index" [ngClass]="users[key][objectKeys(users[key])].status == 'disabled' ? 'table-secondary' : 'none' && !users[key][objectKeys(users[key])].policyName ? 'table-warning' : 'none' ">
-				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{objectKeys(users[key])}}</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{objectKeys(users[key])}}</strong></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><span *ngIf="objectValues(users[key])[0].policyName">{{objectValues(users[key])[0].policyName}}</span></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<div class="custom-control custom-switch" title="enable or disable user">
@@ -38,7 +38,7 @@
 
 					<a title="Remove User" class="action-link" (click)="deleteUserPrepare(objectKeys(users[key])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
 
-		  		<a title="Edit User" class="action-link" (click)="updateUserFrom();updateUserPrepare(objectKeys(users[key])); updateApproveModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+		  			<a title="Edit User" class="action-link" (click)="updateUserFrom();updateUserPrepare(objectKeys(users[key])); updateApproveModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 
 				</td>
 			</tr>
@@ -57,7 +57,7 @@
 <!-- delete approve modal -->
 
 <div mdbModal #deleteApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -80,7 +80,7 @@
 <!-- update approve modal -->
 
 <div mdbModal #updateApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">

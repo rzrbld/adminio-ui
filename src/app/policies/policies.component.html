@@ -28,7 +28,7 @@
 		</thead>
 		<tbody *ngIf="(policies | json) != ({} | json)">
 			<tr mdbTableCol *ngFor="let pol of objectKeys(policies); let i = index">
-				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{objectKeys(policies[pol])}}</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{objectKeys(policies[pol])}}</strong></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
 						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
@@ -68,7 +68,7 @@
 <!-- delete approve modal -->
 
 <div mdbModal #deleteApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -91,7 +91,7 @@
 <!-- Raw view Modal -->
 
 <div mdbModal #rawViewModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="rawViewModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,7 +113,7 @@
 <!-- Policy build up Modal-->
 
 <div mdbModal #addPolicyModal="mdbModal" class="modal fade right overflow-auto" tabindex="-1" role="dialog" aria-labelledby="addPolicyModalLabel"
-   aria-hidden="true">
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

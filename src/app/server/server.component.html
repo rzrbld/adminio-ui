@@ -4,58 +4,62 @@
 		<strong>minio version:</strong> {{server.data.server.version}} <br/>
 		<strong>uptime:</strong> {{server.data.server.uptime}} 
 	</div>
-	
-	<h3>HTTP operation </h3>
-	<table mdbTable bordered="true" small="true">
-	  <thead>
-	    <tr>
-	      <th>Operation</th>
-	      <th>Count</th>
-	      <th>Avg. Duration</th>
-	    </tr>
-	  </thead>
-	  <tbody *ngIf="server.data.http">
-	    <tr mdbTableCol *ngFor="let op of objectKeys(server.data.http)">
-	      <th scope="row">{{op}}</th>
-	      <td>{{server.data.http[op].count}}</td>
-	      <td>{{server.data.http[op].avgDuration}}</td>
-	    </tr>
-	  </tbody>
-	</table>
+	<div class="row">
+		<div class="col-md-6">
+			<h3>HTTP operation </h3>
+			<table mdbTable bordered="true" small="true" class="table">
+			  <thead class="thead-light">
+			    <tr>
+			      <th>Operation</th>
+			      <th>Count</th>
+			      <th>Avg. Duration</th>
+			    </tr>
+			  </thead>
+			  <tbody *ngIf="server.data.http">
+			    <tr mdbTableCol *ngFor="let op of objectKeys(server.data.http)">
+			      <th scope="row"><strong>{{op}}</strong></th>
+			      <td>{{server.data.http[op].count}}</td>
+			      <td>{{server.data.http[op].avgDuration}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<h3>Network</h3>
+			<table mdbTable bordered="true" small="true" class="table">
+			  <thead class="thead-light">
+			    <tr>
+			      <th>received</th>
+			      <th>transferred</th>
+			    </tr>
+			  </thead>
+			  <tbody *ngIf="server.data.network">
+			    <tr mdbTableCol>
+			      <td>{{server.data.network.received}}</td>
+			      <td>{{server.data.network.transferred}}</td>
+			    </tr>
+			  </tbody>
+			</table>
 
-	<h3>Network</h3>
-	<table mdbTable bordered="true" small="true">
-	  <thead>
-	    <tr>
-	      <th>received</th>
-	      <th>transferred</th>
-	    </tr>
-	  </thead>
-	  <tbody *ngIf="server.data.network">
-	    <tr mdbTableCol>
-	      <td>{{server.data.network.received}}</td>
-	      <td>{{server.data.network.transferred}}</td>
-	    </tr>
-	  </tbody>
-	</table>
-	
-	<h3>Storage</h3>
-	<table mdbTable bordered="true" small="true">
-	  <thead>
-	    <tr>
-	      <th>Total</th>
-	      <th>Used</th>
-	      <th>Available</th>
-	    </tr>
-	  </thead>
-	  <tbody *ngIf="server.data.storage">
-	    <tr mdbTableCol>
-	      <td>{{math.round(server.data.storage.Total/1024/1024/1024)}} Gb</td>
-	      <td>{{math.round(server.data.storage.Used/1024/1024/1024)}} Gb</td>
-	      <td>{{math.round(server.data.storage.Available/1024/1024/1024)}} Gb</td>
-	    </tr>
-	  </tbody>
-	</table>
+			<h3>Storage</h3>
+			<table mdbTable bordered="true" small="true" class="table">
+			  <thead class="thead-light">
+			    <tr>
+			      <th>Total</th>
+			      <th>Used</th>
+			      <th>Available</th>
+			    </tr>
+			  </thead>
+			  <tbody *ngIf="server.data.storage">
+			    <tr mdbTableCol>
+			      <td>{{math.round(server.data.storage.Total/1024/1024/1024)}} Gb</td>
+			      <td>{{math.round(server.data.storage.Used/1024/1024/1024)}} Gb</td>
+			      <td>{{math.round(server.data.storage.Available/1024/1024/1024)}} Gb</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
 </div>
 <br/>
 <br/>

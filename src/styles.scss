@@ -5,6 +5,12 @@
 
 /* You can add global styles to this file, and also import other style files */
 
+.transparent {
+    background-color: #ffffff !important;
+    opacity: .4;
+    color: #222;
+}
+
 div.align-right {
   text-align: right;
 }
