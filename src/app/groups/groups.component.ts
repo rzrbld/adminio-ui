@@ -27,6 +27,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	modalCreateEditButtonText;
 	modalEditMode = false;
 	rawView = '';
+	usersToRemove = [];
 
 
 
@@ -85,6 +86,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	    console.log(this.selectedItems);
 	}
 	OnItemDeSelect(item:any){
+		this.usersToRemove.push(item["itemName"])
 	    console.log(item);
 	    console.log(this.selectedItems);
 	}
@@ -217,11 +219,13 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	}
 
 	private wipeGroupMembers(){
-		this.apiService.updateMembersGroup(this.newGroupName,this.groupToUpdate["members"],"true").subscribe((data)=>{
+
+		this.apiService.updateMembersGroup(this.newGroupName,this.usersToRemove,"true").subscribe((data)=>{
 	      if(data["Success"]){
-	        this.toastr.success('Group: '+this.newGroupName+' members has been wiped', 'Success');
+	        this.toastr.success('Group: '+this.newGroupName+' members has been removed', 'Success');
+	        this.usersToRemove = [];
 	      }else{
-	        this.toastr.error(JSON.stringify(data), 'Error while wiping group');
+	        this.toastr.error(JSON.stringify(data), 'Error while removing members from group');
 	      }
 	    });
 	}
