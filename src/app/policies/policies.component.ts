@@ -29,8 +29,8 @@ export class PoliciesComponent implements OnInit {
   dropdownConditionKeyList = [];
 
   selectedActions = [];
-  selectedCondition = "";
-  selectedConditionKey = "";
+  selectedCondition = [];
+  selectedConditionKey = [];
 
   dropdownActionSettings = {};
   dropdownConditionSettings = {};
@@ -274,11 +274,11 @@ export class PoliciesComponent implements OnInit {
   //condition select actions
   onConditionItemSelect(item:any){
 	    console.log(item);
-	    console.log(this.selectedConditions);
+	    console.log(this.selectedCondition);
 	}
 	onConditionItemDeSelect(item:any){
 	    console.log(item);
-	    console.log(this.selectedConditions);
+	    console.log(this.selectedCondition);
 	}
 	onConditionSelectAll(items: any){
 	    console.log(items);
@@ -290,11 +290,11 @@ export class PoliciesComponent implements OnInit {
   //condition key select actions
   onConditionKeyItemSelect(item:any){
       console.log(item);
-      console.log(this.selectedConditionsKey);
+      console.log(this.selectedConditionKey);
   }
   onConditionKeyItemDeSelect(item:any){
       console.log(item);
-      console.log(this.selectedConditionsKey);
+      console.log(this.selectedConditionKey);
   }
   onConditionKeySelectAll(items: any){
       console.log(items);
@@ -419,8 +419,8 @@ export class PoliciesComponent implements OnInit {
       this.newStatement.Condition[this.selectedCondition[0].itemName][this.selectedConditionKey[0].itemName].push(this.newConditionValue)
     }
 
-    this.selectedCondition = ""
-    this.selectedConditionKey = ""
+    this.selectedCondition = []
+    this.selectedConditionKey = []
     this.newConditionValue = ""
     console.log(this.newStatement.Condition)
   }
@@ -442,7 +442,7 @@ export class PoliciesComponent implements OnInit {
       console.log("Condition removed cause empty")
       delete this.newStatement.Condition
     }else{
-      if(!this.newStatement.Principal || !this.newStatement.Principal == ""){
+      if(!this.newStatement.Principal || this.newStatement.Principal == ""){
         console.log("Principal set to * cause condition not empty")
         this.newStatement.Principal = "*"
       }
