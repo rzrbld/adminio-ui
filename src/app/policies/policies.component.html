@@ -21,8 +21,10 @@
 			<tr>
 			  <th>Name</th>
 			  <th>Action</th>
+			  <th>Principal</th>
 			  <th>Effect</th>
 			  <th>Resource</th>
+			  <th>Conditions</th>
 			  <th>Options</th>
 			</tr>
 		</thead>
@@ -31,8 +33,17 @@
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{objectKeys(policies[pol])}}</strong></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
-						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement"><div class="overflow-hidden statement-actions">{{st.Action}}</div><div *ngIf="st.Action.length > 4" class="lineCut">...</div></li>
+						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement">
+								<ul  class="type-none">
+									<li  class="type-none" *ngFor="let action of st.Action">{{action}}</li>
+								</ul>
+						</li>
 					</ul>
+				</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+					<div *ngIf="policies[pol].Statement?.Principal">
+						{{policies[pol].Statement.Principal}}
+					</div>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
@@ -41,12 +52,36 @@
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<ul class="type-none" >
-						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement"><div class="overflow-hidden statement-actions">{{st.Resource}}</div><div *ngIf="st.Resource.length > 4" class="lineCut">...</div></li>
+						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement">
+							<ul class="type-none">
+								<li class="type-none" *ngFor="let resource of st.Resource">{{resource}}</li>
+							</ul>
+						</li>
+					</ul>
+				</td>
+				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+					<ul class="type-none" >
+						<li class="type-none" *ngFor="let st of objectValues(policies[pol])[0].Statement">
+							<ul class="type-none" *ngIf="st?.Condition">
+								<li class="type-none" *ngFor="let condition of objectKeys(st.Condition)">
+										{{condition}}
+									<ul >
+										<li *ngFor="let con of objectKeys(st.Condition[condition])">{{con}}
+											<ul>
+												<li *ngFor="let conKeyVal of st.Condition[condition][con]">
+													{{conKeyVal}}
+											  </li>
+										  </ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<a (click)="rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
-					
+
 					<a mdbTooltip="Remove Policy" placement="top" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
 
 		  			<a mdbTooltip="Edit or Copy Policy" placement="top" class="action-link" (click)="isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
@@ -55,7 +90,7 @@
 		</tbody>
 		<tfoot class="grey lighten-5 w-100">
 			<tr>
-				<td colspan="5">
+				<td colspan="7">
 				  <mdb-table-pagination [tableEl]="tablePolicies" [searchDataSource]="policies"></mdb-table-pagination>
 				</td>
 			</tr>
@@ -128,12 +163,12 @@
 					    <div class="col-md-2 ml-auto">&nbsp;</div>
 					    <div class="col-md-8 ml-auto">
 
-					    	<div class="alert alert-info" role="alert" *ngIf="modalEditMode">
-			                  <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  In Edit mode you can make a copy of policy - Just rename it!
-			                </div>
+				    	<div class="alert alert-info" role="alert" *ngIf="modalEditMode">
+                <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  In Edit mode you can make a copy of policy - Just rename it!
+              </div>
 
 
-					    	<div class="d-flex justify-content-around p-1 mb-3 text-center">
+					    <div class="d-flex justify-content-around p-1 mb-3 text-center">
 								<input type="text" class="form-control" placeholder="Policy Name" [(ngModel)]="newPolicy.name" name="newPolicyName"  aria-label="policyName" aria-describedby="basic-addon1">
 							</div>
 
@@ -155,46 +190,113 @@
 							</div>
 
 							<div class="d-flex justify-content-around p-1 mb-3 text-center">
-								<angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" 
-							    [settings]="dropdownSettings" 
-							    (onSelect)="onItemSelect($event)" 
-							    (onDeSelect)="OnItemDeSelect($event)"
-							    (onSelectAll)="onSelectAll($event)"
-							    (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+								<angular2-multiselect [data]="dropdownActionList" [(ngModel)]="selectedActions"
+							    [settings]="dropdownActionSettings"
+							    (onSelect)="onActionItemSelect($event)"
+							    (onDeSelect)="onActionItemDeSelect($event)"
+							    (onSelectAll)="onActionSelectAll($event)"
+							    (onDeSelectAll)="onActionDeSelectAll($event)"></angular2-multiselect>
 							</div>
-							<div class="d-flex justify-content-around p-1 mb-1 text-center">
-								<div class="input-group mb-3">
-								  <div class="input-group-prepend">
-								    <span class="input-group-text" id="s3-prefix">arn:aws:s3:::</span>
-								  </div>
-								  <input type="text" class="form-control" placeholder="<bucket_name>/<key_name>" [(ngModel)]="newPolicy.bucket" aria-label="Recipient's username"
-								    aria-describedby="s3-prefix">
-								  <div class="input-group-append">
-								    <button mdbBtn gradient="blue" rounded="true"  outline="true" size="md" class="m-0 px-3 py-2" type="button" id="s3-prefix"
-								      mdbWavesEffect (click)="addBucketStatement()">Add bucket</button>
-								  </div>
+
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="inputGroup-sizing-default">Principal</span>
+							  </div>
+							  <input type="text" class="form-control" aria-label="Principal" [(ngModel)]="newStatement.Principal" name="newPrincipal" aria-describedby="inputGroup-sizing-default">
+							</div>
+
+							<hr/>
+							<h6>Buckets block</h6>
+							<fieldset>
+								<div class="d-flex justify-content-around p-1 mb-1 text-center">
+									<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <span class="input-group-text" id="s3-prefix">arn:aws:s3:::</span>
+									  </div>
+									  <input type="text" class="form-control" placeholder="<bucket_name>/<key_name>" [(ngModel)]="newPolicy.bucket" aria-label="Recipient's username"
+									    aria-describedby="s3-prefix">
+									  <div class="input-group-append">
+									    <button mdbBtn gradient="blue" rounded="true"  outline="true" size="md" class="m-0 px-3 py-2" type="button" id="s3-prefix"
+									      mdbWavesEffect (click)="addBucketStatement()">Add bucket</button>
+									  </div>
+									</div>
 								</div>
-							</div>
-							<div id="bucketStatements">
-								<table  mdbTable mdbTableScroll scrollY="true" maxHeight="300"  class="table"  small="true">
-									<thead class="thead-light">
-										<th>Bucket</th>
-										<th>Options</th>
-									</thead>
-									<tbody>
-										<tr *ngFor="let bst of newStatement.Resource; let i = index" [attr.data-index]="i">
-											<td>{{bst}}</td>
-											<td><a title="Remove bucket statement" (click)="removeBucketStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+								<div id="bucketStatements">
+									<table  mdbTable mdbTableScroll scrollY="true" maxHeight="300"  class="table"  small="true">
+										<thead class="thead-light">
+											<th>Bucket</th>
+											<th>Options</th>
+										</thead>
+										<tbody>
+											<tr *ngFor="let bst of newStatement.Resource; let i = index" [attr.data-index]="i">
+												<td>{{bst}}</td>
+												<td><a title="Remove bucket statement" (click)="removeBucketStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</fieldset>
+							<hr/>
+
+							<fieldset>
+								<h6>Conditions block</h6>
+								<div id="conditionStatements" class="d-flex justify-content-around p-1 mb-3 text-center">
+									<angular2-multiselect [data]="dropdownConditionList" [(ngModel)]="selectedCondition"
+								    [settings]="dropdownConditionSettings"
+								    (onSelect)="onConditionItemSelect($event)"
+								    (onDeSelect)="onConditionItemDeSelect($event)"
+								    (onSelectAll)="onConditionSelectAll($event)"
+								    (onDeSelectAll)="onConditionDeSelectAll($event)"></angular2-multiselect>
+								</div>
+								<div id="conditionKeyStatements" class="d-flex justify-content-around p-1 mb-3 text-center">
+									<angular2-multiselect [data]="dropdownConditionKeyList" [(ngModel)]="selectedConditionKey"
+								    [settings]="dropdownConditionKeySettings"
+								    (onSelect)="onConditionKeyItemSelect($event)"
+								    (onDeSelect)="onConditionItemDeSelect($event)"
+								    (onSelectAll)="onConditionKeySelectAll($event)"
+								    (onDeSelectAll)="onConditionKeyDeSelectAll($event)"></angular2-multiselect>
+								</div>
+								<div class="d-flex justify-content-around p-1 mb-3 text-center">
+									<div class="input-group mb-3">
+									  <input type="text" class="form-control" placeholder="Condition Value" aria-label="Condition Value" [(ngModel)]="newConditionValue" name="newConditionValue"
+									    aria-describedby="button-addCondition">
+									  <div class="input-group-append">
+									    <button mdbBtn gradient="blue" outline="true" size="md" class="m-0 px-3 py-2 relative waves-light" type="button" id="button-addCondition"  (click)="addCondition()"
+											 mdbWavesEffect >Add Condition</button>
+									  </div>
+									</div>
+								</div>
+								<div id="conditionStatementsList">
+									<table  mdbTable mdbTableScroll scrollY="true" maxHeight="300"  class="table"  small="true">
+										<thead class="thead-light">
+											<th>Condition and options</th>
+										</thead>
+										<tbody *ngIf="newStatement?.Condition">
+											<tr *ngFor="let condition of objectKeys(newStatement.Condition)">
+												<td>
+													{{condition}}
+													<ul>
+														<li *ngFor="let con of objectKeys(newStatement.Condition[condition])">{{con}}
+															<ul>
+																<li *ngFor="let conKeyVal of newStatement.Condition[condition][con]; let i = index;" [attr.data-index]="i">
+																	{{conKeyVal}}&nbsp;&nbsp;<a title="Remove condition" (click)="removeCondition(i,con,condition)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-3" aria-hidden="true"></mdb-icon></a>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</fieldset>
+
 							<hr/>
 						</div>
 						<div class="col-md-2 ml-auto">&nbsp;</div>
 					</div>
 
-					
+
 					<div class="d-flex justify-content-around p-1 mb-3 text-center">
 						<button type="button" mdbBtn gradient="purple" rounded="true" class="relative waves-light btn btn-sm" mdbWavesEffect (click)="addStatement()"><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add statement</button>
 					</div>
@@ -205,13 +307,38 @@
 								<th>Effect</th>
 								<th>Action</th>
 								<th>Resource</th>
+								<th>Conditions</th>
 								<th>Options</th>
 							</thead>
 							<tbody>
 								<tr *ngFor="let st of newPolicyRaw.Statement; let i = index" [attr.data-index]="i">
 									<td>{{st.Effect}}</td>
-									<td><div class="overflow-hidden statement-actions">{{st.Action}}</div></td>
-									<td><div class="overflow-hidden statement-actions">{{st.Resource}}</div></td>
+									<td>
+										<ul  class="type-none">
+											<li  class="type-none" *ngFor="let action of st.Action">{{action}}</li>
+										</ul>
+									</td>
+									<td>
+										<ul  class="type-none">
+											<li  class="type-none" *ngFor="let resource of st.Resource">{{resource}}</li>
+										</ul>
+									</td>
+									<td>
+										<ul class="type-none" *ngIf="st?.Condition">
+											<li class="type-none" *ngFor="let condition of objectKeys(st.Condition)">
+													{{condition}}
+												<ul >
+													<li *ngFor="let con of objectKeys(st.Condition[condition])">{{con}}
+														<ul>
+															<li *ngFor="let conKeyVal of st.Condition[condition][con]">
+																{{conKeyVal}}
+														  </li>
+													  </ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</td>
 									<td>
 										<a title="Remove statement" (click)="removeStatement(i)"><mdb-icon fas icon="times-circle"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
 										&nbsp;&nbsp;
