@@ -5,13 +5,15 @@ LABEL maintainer="rzrbld <razblade@gmail.com>"
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
+ENV API_BASE_URL http://localhost:8080
+ENV ADMINIO_PROD false
 
 RUN \
     git clone https://github.com/rzrbld/adminio-ui && \
     cd adminio-ui && \
     npm install -g @angular/cli@8.3.8 && npm install
-    
-RUN cd /app/adminio-ui && ng build --output-path=dist
+
+RUN cd /app/adminio-ui && npm run build
 
 
 

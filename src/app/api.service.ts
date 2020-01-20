@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from './../environments/environment';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-   
+
   constructor(private httpClient: HttpClient) { }
 
-  baseUrl='http://localhost:8080';
+  baseUrl = environment.apiBaseUrl;
 
   public serverInfo(){
     return this.httpClient.get(this.baseUrl+'/api/v1/server-info');
@@ -110,7 +112,7 @@ export class ApiService {
 
   public getGroups(){
     return this.httpClient.get(this.baseUrl+'/api/v1/list-groups');
-  } 
+  }
 
   public updateMembersGroup(group,members,IsRemove){
     let form = new FormData();
@@ -135,7 +137,7 @@ export class ApiService {
 
     form.append('group', group);
     form.append('status', status);
-    
+
     return this.httpClient.post(this.baseUrl+'/api/v1/set-status-group', form);
   }
 
@@ -145,9 +147,8 @@ export class ApiService {
     form.append('policyName', policyName);
     form.append('entityName', entityName);
     form.append('isGroup', isGroup);
-    
+
     return this.httpClient.post(this.baseUrl+'/api/v1/set-policy', form);
   }
 
 }
-

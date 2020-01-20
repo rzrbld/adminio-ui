@@ -1,10 +1,13 @@
 {
   "name": "minio-ng",
-  "version": "0.0.0",
+  "version": "0.6.3",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "prestart": "eval \"echo \\\"$(cat src/environments/environment.ts.template)\\\"\" > src/environments/environment.ts",
+    "start": "ng serve -o --port 4201",
+    "prebuild": "eval \"echo \\\"$(cat src/environments/environment.ts.template)\\\"\" > src/environments/environment.ts",
+    "prebuild:prod": "eval \"echo \\\"$(cat src/environments/environment.ts.template)\\\"\" > src/environments/environment.prod.ts",
+    "build": "ng build --output-path dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -42,8 +45,9 @@
     "@angular/language-service": "~8.2.9",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.9.5",
     "codelyzer": "^5.0.0",
+    "dotenv": "^8.2.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -53,7 +57,8 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "npm-force-resolutions": "0.0.2",
     "protractor": "~5.4.0",
-    "ts-node": "~7.0.0",
+    "replace": "^1.1.5",
+    "ts-node": "^7.0.1",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
   },
