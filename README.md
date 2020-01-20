@@ -43,7 +43,7 @@ In real life cases you'll need to change two environment variables at `` Dockerf
 
 #### npm build
 Method that described above also works if you build with `` npm run build ``.
-In this case example command will be look like this ``$ export API_BASE_URL=http://example.com:8099 && export ADMINIO_PROD=false && npm run build `` after that distributive can be obtaned at `` ./dist `` folder.
+In this case example command will be look like this ``$ export API_BASE_URL=http://example.com:8099 && export ADMINIO_PROD=false && npm run build `` after that distributive can be obtained at `` ./dist `` folder.
 
 #### ng build
 If you build project with `` ng build `` you will need to set [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint at `` apiBaseUrl `` variable in file `` src/environments/environment.ts `` or `` src/environments/environment.prod.ts ``.
