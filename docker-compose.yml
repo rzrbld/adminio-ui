@@ -8,18 +8,18 @@ services:
       MINIO_ACCESS_KEY: test
       MINIO_SECRET_KEY: testtest123
     command: server /data
- adminio-ui:
-   image: rzrbld/adminio-ui:latest
-   ports:
-     - "80:80"
- adminio-api:
-   image: mytest/adminio-api:test
-   environment:
-     MINIO_ACCESS: test
-     MINIO_SECRET: testtest123
-     MINIO_HOST_PORT: minio:9000
-   depends_on:
-     - minio
-     - adminio-ui
-   ports:
-     - "8080:8080"
+  adminio-ui:
+    image: rzrbld/adminio-ui:release-0.7
+    ports:
+      - "80:80"
+  adminio-api:
+    image: rzrbld/adminio-api:release-0.6
+    environment:
+      MINIO_ACCESS: test
+      MINIO_SECRET: testtest123
+      MINIO_HOST_PORT: minio:9000
+    depends_on:
+      - minio
+      - adminio-ui
+    ports:
+      - "8080:8080"
