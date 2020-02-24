@@ -1,65 +1,58 @@
-<div class="container" style="padding-top: 30px;" *ngFor="let server of servers">
-	<h1>Server statistics {{server.addr}} </h1>
+<div class="container" style="padding-top: 30px;" *ngFor="let server of serviceInfo?.servers">
+	<h1>Server statistics {{server.endpoint}} </h1>
 	<div class="mb-4">
-		<strong>minio version:</strong> {{server.data.server.version}} <br/>
-		<strong>uptime:</strong> {{server.data.server.uptime}} 
+		<a (click)="rawPrepare(serviceInfo); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top" style="text-decoration: underline;"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon>View Raw JSON</a><span class="pr-3">&nbsp;</span><br/>
+		<strong>minio version:</strong> {{server.version}} <br/>
+		<strong>uptime:</strong> {{math.round(server.uptime/60)}} min. <br/>
+		<strong>network:</strong> {{server.network[server.endpoint]}}
 	</div>
 	<div class="row">
-		<div class="col-md-6">
-			<h3>HTTP operation </h3>
-			<table mdbTable bordered="true" small="true" class="table">
-			  <thead class="thead-light">
-			    <tr>
-			      <th>Operation</th>
-			      <th>Count</th>
-			      <th>Avg. Duration</th>
-			    </tr>
-			  </thead>
-			  <tbody *ngIf="server.data.http">
-			    <tr mdbTableCol *ngFor="let op of objectKeys(server.data.http)">
-			      <th scope="row"><strong>{{op}}</strong></th>
-			      <td>{{server.data.http[op].count}}</td>
-			      <td>{{server.data.http[op].avgDuration}}</td>
-			    </tr>
-			  </tbody>
-			</table>
-		</div>
-		<div class="col-md-6">
-			<h3>Network</h3>
-			<table mdbTable bordered="true" small="true" class="table">
-			  <thead class="thead-light">
-			    <tr>
-			      <th>received</th>
-			      <th>transferred</th>
-			    </tr>
-			  </thead>
-			  <tbody *ngIf="server.data.network">
-			    <tr mdbTableCol>
-			      <td>{{server.data.network.received}}</td>
-			      <td>{{server.data.network.transferred}}</td>
-			    </tr>
-			  </tbody>
-			</table>
-
+		<div class="col-md-12">
 			<h3>Storage</h3>
-			<table mdbTable bordered="true" small="true" class="table">
-			  <thead class="thead-light">
-			    <tr>
-			      <th>Total</th>
-			      <th>Used</th>
-			      <th>Available</th>
-			    </tr>
-			  </thead>
-			  <tbody *ngIf="server.data.storage">
-			    <tr mdbTableCol>
-			      <td>{{math.round(server.data.storage.Total/1024/1024/1024)}} Gb</td>
-			      <td>{{math.round(server.data.storage.Used/1024/1024/1024)}} Gb</td>
-			      <td>{{math.round(server.data.storage.Available/1024/1024/1024)}} Gb</td>
-			    </tr>
-			  </tbody>
-			</table>
+			<div class="container" style="padding-top: 10px;" *ngFor="let disk of server.disks">
+				<table mdbTable bordered="true" small="true" class="table">
+				  <thead class="thead-light">
+				    <tr>
+				      <th>Total</th>
+				      <th>Used</th>
+				      <th>State</th>
+				      <th>Path</th>
+				    </tr>
+				  </thead>
+				  <tbody *ngIf="disk">
+				    <tr mdbTableCol>
+				      <td>{{math.round(disk.totalspace/1024/1024/1024)}} Gb</td>
+				      <td>{{math.round(disk.usedspace/1024/1024/1024)}} Gb</td>
+				      <td>{{disk.state}}</td>
+				      <td>{{disk.path}}</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
 <br/>
 <br/>
+
+<!-- Raw view Modal -->
+
+<div mdbModal #rawViewModal="mdbModal" class="modal fade right overflow-auto" tabindex="-1" role="dialog" aria-labelledby="rawViewModalLabel"
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="rawViewModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Raw Server Info</h4>
+            </div>
+            <div class="modal-body">
+            	<ngx-json-viewer [json]="rawView"></ngx-json-viewer>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="rawViewModal.hide()" mdbWavesEffect>Close</button>
+            </div>
+        </div>
+    </div >
+</div >

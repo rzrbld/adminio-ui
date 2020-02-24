@@ -10,7 +10,8 @@ export class ServerComponent implements OnInit {
 
   objectKeys = Object.keys;
   math = Math;
-  servers;
+  rawView = '';
+  serviceInfo;
 
   constructor(private apiService: ApiService) { }
 
@@ -20,9 +21,12 @@ export class ServerComponent implements OnInit {
 
   private serverInfo(){
   	this.apiService.serverInfo().subscribe((data)=>{
-      console.log(data);
-      this.servers = data;
+      this.serviceInfo = data;
     });
+  }
+
+  private rawPrepare(obj){
+    this.rawView = obj;
   }
 
 }

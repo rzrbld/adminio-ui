@@ -94,6 +94,37 @@ export class ApiService {
     return this.httpClient.get(this.baseUrl+'/api/v1/list-buckets');
   }
 
+  public getBucketsExtended(){
+    return this.httpClient.get(this.baseUrl+'/api/v1/list-buckets-extended');
+  }
+
+  public enableNotificationForBucket(bucket, stsARN, eventTypes, filterPrefix, filterSuffix){
+    //put,get,delete
+    let form = new FormData();
+
+    form.append('bucket', bucket);
+    form.append('stsARN', stsARN);
+    form.append('eventTypes', eventTypes);
+    form.append('filterPrefix', filterPrefix);
+    form.append('filterSuffix', filterSuffix);
+
+    return this.httpClient.post(this.baseUrl+'/api/v1/set-bucket-events', form)
+  }
+
+  public getBucketEvents(bucket){
+    let form = new FormData();
+
+    form.append('bucket', bucket);
+    return this.httpClient.post(this.baseUrl+'/api/v1/get-bucket-events',form)
+  }
+
+  public removeBucketEvents(bucket){
+    let form = new FormData();
+
+    form.append('bucket', bucket);
+    return this.httpClient.post(this.baseUrl+'/api/v1/remove-bucket-events',form)
+  }
+
   public deleteBucket(bucket){
     let form = new FormData();
 

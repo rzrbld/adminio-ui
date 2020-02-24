@@ -16,7 +16,6 @@ RUN \
 RUN cd /app/adminio-ui && npm run build
 
 
-
 FROM nginx:1.16.0-alpine
 
 COPY --from=build /app/adminio-ui/dist /usr/share/nginx/html

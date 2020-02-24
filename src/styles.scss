@@ -4,11 +4,34 @@
 @import '~ngx-toastr/toastr-bs4-alert';
 
 /* You can add global styles to this file, and also import other style files */
+.dropdownFix{
+}
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 10px;
+}
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+.separator::before {
+    margin-right: .25em;
+}
+.separator::after {
+    margin-left: .25em;
+}
 
 .transparent {
     background-color: #ffffff !important;
-    opacity: .4;
+    opacity: .8;
     color: #222;
+}
+
+.transparent > a  {
+  color: #222 !important;
 }
 
 div.align-right {

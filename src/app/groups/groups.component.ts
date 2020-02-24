@@ -72,13 +72,13 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 		    {"id":1,"itemName":"wait! i'm getting policies ASAP"}
 	    ];
 
-	    this.dropdownSettings = { 
-			singleSelection: false, 
+	    this.dropdownSettings = {
+			singleSelection: false,
 			text:"Select Members",
 			selectAllText:'Select All',
 			unSelectAllText:'UnSelect All',
-			enableSearchFilter: true	
-		};            
+			enableSearchFilter: true
+		};
 	}
 
 	onItemSelect(item:any){
@@ -174,7 +174,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 			console.log(this.groupsWithMembers)
 			this.groups = this.groupsWithMembers;
 		  }
-		  
+
 
 		});
 	}
@@ -200,7 +200,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 					var tempMember = data["members"][i];
 					this.selectedItems.push({"id":tempMember,"itemName":tempMember})
 				}
-			} 
+			}
 		});
 	}
 
@@ -255,34 +255,38 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	}
 
 	private createGroup(){
-		
+		console.log("CREATE GROUP CALLED")
 		let newMembers = []
 		for (var i = 0; i < this.selectedItems.length; i++) {
 			newMembers.push(this.selectedItems[i].itemName)
 		}
 
-		//remove all old users from group
+		//remove users from group
 		if(this.groupToUpdate!==null && this.groupToUpdate!="" && this.groupToUpdate){
-			if(this.groupToUpdate["members"] && this.groupToUpdate["members"].length > 0){
+			if(this.usersToRemove.length > 0){
 				this.wipeGroupMembers()
 			}
 		}
 
 		//add all new users to group
-		console.log('>>>>>>>>>>>>',this.newGroupName,this.selectedItems,newMembers);
-		this.apiService.updateMembersGroup(this.newGroupName,newMembers,"false").subscribe((data)=>{
-	      if(data["Success"]){
-	        this.toastr.success('Group: '+this.newGroupName+' has been created', 'Success');
-	      }else{
-	        this.toastr.error(JSON.stringify(data), 'Error while creating group');
-	      }
-	      this.updatePolicy();
-	      this.updateStatus();
-	    });
-
-	    this.getGroups();
-	    this.isEditMode(false);
-	    this.groupToUpdate = {};
+		if(newMembers.length > 0){
+			this.apiService.updateMembersGroup(this.newGroupName,newMembers,"false").subscribe((data)=>{
+		      if(data["Success"]){
+		        this.toastr.success('Group: '+this.newGroupName+' has been created', 'Success');
+		      }else{
+		        this.toastr.error(JSON.stringify(data), 'Error while creating group');
+		      }
+		      this.updatePolicy();
+		      this.updateStatus();
+					this.getGroups();
+		  });
+		}else{
+			this.updatePolicy();
+			this.updateStatus();
+			this.getGroups();
+		}
+    this.isEditMode(false);
+    this.groupToUpdate = {};
 	}
 
 }

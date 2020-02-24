@@ -125,7 +125,7 @@
 
 <!-- Raw view Modal -->
 
-<div mdbModal #rawViewModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="rawViewModalLabel"
+<div mdbModal #rawViewModal="mdbModal" class="modal fade right overflow-auto" tabindex="-1" role="dialog" aria-labelledby="rawViewModalLabel"
    aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -205,8 +205,7 @@
 							  <input type="text" class="form-control" aria-label="Principal" [(ngModel)]="newStatement.Principal" name="newPrincipal" aria-describedby="inputGroup-sizing-default">
 							</div>
 
-							<hr/>
-							<h6>Buckets block</h6>
+							<div class="separator">Buckets section</div>
 							<fieldset>
 								<div class="d-flex justify-content-around p-1 mb-1 text-center">
 									<div class="input-group mb-3">
@@ -236,10 +235,9 @@
 									</table>
 								</div>
 							</fieldset>
-							<hr/>
 
 							<fieldset>
-								<h6>Conditions block</h6>
+								<div class="separator">Conditions section</div>
 								<div id="conditionStatements" class="d-flex justify-content-around p-1 mb-3 text-center">
 									<angular2-multiselect [data]="dropdownConditionList" [(ngModel)]="selectedCondition"
 								    [settings]="dropdownConditionSettings"

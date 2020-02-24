@@ -20,21 +20,59 @@
 	    <tr>
 	      <th>Name</th>
 	      <th>Creation Date</th>
+	      <th *ngIf="serviceInfo?.sqsARN">Event</th>
 	      <th>Options</th>
 	    </tr>
 	  </thead>
 	  <tbody *ngIf="buckets">
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong></td>
-	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].info.creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN">
+          <span *ngIf="buckets[b].events.LambdaConfigs?.length">
+            Lambda:
+            <span *ngFor="let c of buckets[b].events?.LambdaConfigs">
+              {{c.Lambda}}<br/>
+              <ul class="type-none">
+                <li *ngFor="let e of c?.Events">
+                  {{e}}
+                </li>
+              </ul>
+            </span>
+          </span>
+          <span *ngIf="buckets[b].events.TopicConfigs?.length">
+          Topic:
+          <span *ngFor="let c of buckets[b].events?.TopicConfigs">
+             {{c.Topic}} <br/>
+              <ul class="type-none">
+                <li *ngFor="let e of c?.Events">
+                  {{e}}
+                </li>
+              </ul>
+            </span>
+          </span>
+          <span *ngIf="buckets[b].events.QueueConfigs?.length">
+          Queue:
+            <span *ngFor="let c of buckets[b].events?.QueueConfigs">
+              {{c.Queue}} <br/>
+              <ul class="type-none">
+                <li *ngFor="let e of c?.Events">
+                  {{e}}
+                </li>
+              </ul>
+            </span>
+          </span>
+        </td>
 	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+	  	  	<a *ngIf="serviceInfo?.sqsARN" title="Update Bucket" (click)="updateBucketPrepare(buckets[b].name); editBucketModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
+	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
+	  	  	<a *ngIf="buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length" title="Remove Bucket Events" (click)="removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()"><mdb-icon fas icon="bell-slash" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>
       <tfoot class="grey lighten-5 w-100">
         <tr>
-          <td colspan="3">
+          <td colspan="100%">
             <mdb-table-pagination [tableEl]="tableBuckets" [searchDataSource]="buckets"></mdb-table-pagination>
           </td>
         </tr>
@@ -67,6 +105,29 @@
     </div >
 </div >
 
+<!-- remove notify approve modal -->
+
+<div mdbModal #removeNotificationApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="removeNotificationApproveModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Remove Bucket Notifications</h4>
+            </div>
+            <div class="modal-body">
+                Are you shure? <br/> After you click on <strong>"remove"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="removeNotificationApproveModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="removeBucketEvents(); removeNotificationApproveModal.hide()">Remove</button>
+            </div>
+        </div>
+    </div >
+</div >
+
 
 <!-- create modal -->
 
@@ -81,15 +142,83 @@
                 <h4 class="modal-title w-100" id="myModalLabel">Create Bucket</h4>
             </div>
             <div class="modal-body">
-                <div class="d-flex justify-content-around p-2 mb-3 text-center">
-					<input type="text" class="form-control" placeholder="Bucket Name" [(ngModel)]="newBucketName" name="newBucketName"  aria-label="bucketName" aria-describedby="basic-addon1" autofocus>
-				</div>
+                <div class="d-flex justify-content-around mb-3 text-center">
+        					<input type="text" class="form-control" placeholder="Bucket Name" [(ngModel)]="newBucketName" name="newBucketName"  aria-label="bucketName" aria-describedby="basic-addon1" autofocus>
+        				</div>
                 <div class="alert alert-info" role="alert">
-                  <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  You can pass multiple names with "," delimiter 
+                  <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  You can pass multiple names with "," delimiter
+                </div>
+                <div class="mb-3" *ngIf="serviceInfo?.sqsARN">
+                  <div class="separator">Events section</div>
+                  <select class="browser-default custom-select" [(ngModel)]="newBucketEventARN" title="Enable notifications">
+                    <option value="" disabled selected>Select sqsARN</option>
+                    <option [value]="eventARN" *ngFor="let eventARN of serviceInfo?.sqsARN">{{eventARN}}</option>
+                  </select><br/><br/>
+                  <div id="eventTypeSelector" class="d-flex justify-content-around p-1 mb-3 text-center">
+  									<angular2-multiselect [data]="dropdownEventTypesList" [(ngModel)]="selectedEventTypes"
+  								    [settings]="dropdownEventTypesSettings"
+  								    (onSelect)="onEventTypesItemSelect($event)"
+  								    (onDeSelect)="onEventTypesItemDeSelect($event)"
+  								    (onSelectAll)="onEventTypesSelectAll($event)"
+  								    (onDeSelectAll)="onEventTypesDeSelectAll($event)"></angular2-multiselect>
+  								</div>
+                  <div class="d-flex justify-content-around mb-3 text-center">
+          					<input type="text" class="form-control" placeholder="Filter Prefix" [(ngModel)]="newBucketEventFilterPrefix" name="newBucketEventFilterPrefix"  aria-label="bucketName" aria-describedby="basic-addon1">
+          				</div>
+                  <div class="d-flex justify-content-around mb-3 text-center">
+          					<input type="text" class="form-control" placeholder="Filter Suffix" [(ngModel)]="newBucketEventFilterSuffix" name="newBucketEventFilterSuffix"  aria-label="bucketName" aria-describedby="basic-addon1">
+          				</div>
+                  <br/>
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="createBucket(); addBucketModal.hide()">Create</button>
+            </div>
+        </div>
+    </div >
+</div >
+
+<!-- edit modal -->
+
+<div mdbModal #editBucketModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="editBucketModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Update Bucket</h4>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-around mb-3 text-center">
+        					<input type="text" class="form-control" placeholder="Bucket Name" [(ngModel)]="editBucketName" name="editBucketName"  aria-label="bucketName" aria-describedby="basic-addon1" disabled>
+        				</div>
+                <div class="mb-3" *ngIf="serviceInfo?.sqsARN">
+                  <div class="separator">Events section</div>
+                  <select class="browser-default custom-select" [(ngModel)]="updateBucketEventARN" title="Enable notifications">
+                    <option value="" disabled selected>Select sqsARN</option>
+                    <option [value]="eventARN" *ngFor="let eventARN of serviceInfo?.sqsARN">{{eventARN}}</option>
+                  </select><br/><br/>
+                  <div id="eventTypeSelector" class="d-flex justify-content-around p-1 mb-3 text-center">
+  									<angular2-multiselect [data]="dropdownEventTypesList" [(ngModel)]="selectedEventTypes"
+  								    [settings]="dropdownEventTypesSettings"
+  								    (onSelect)="onEventTypesItemSelect($event)"
+  								    (onDeSelect)="onEventTypesItemDeSelect($event)"
+  								    (onSelectAll)="onEventTypesSelectAll($event)"
+  								    (onDeSelectAll)="onEventTypesDeSelectAll($event)"></angular2-multiselect>
+  								</div>
+                  <div class="d-flex justify-content-around mb-3 text-center">
+          					<input type="text" class="form-control" placeholder="Filter Prefix" [(ngModel)]="updateBucketEventFilterPrefix" name="updateBucketEventFilterPrefix"  aria-label="bucketName" aria-describedby="basic-addon1">
+          				</div>
+                  <div class="d-flex justify-content-around mb-3 text-center">
+          					<input type="text" class="form-control" placeholder="Filter Suffix" [(ngModel)]="updateBucketEventFilterSuffix" name="updateBucketEventFilterSuffix"  aria-label="bucketName" aria-describedby="basic-addon1">
+          				</div>
+                  <br/>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="updateBucket(); editBucketModal.hide(); resetUpdateForm();">Update</button>
             </div>
         </div>
     </div >

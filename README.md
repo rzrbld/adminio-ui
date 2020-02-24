@@ -6,10 +6,10 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 ### Web UI abilities:
 | Kind   |      Create      |  List  | Update | Delete |
 |--------------|:-----------------------|:-----------:|:-----------:|:-----------:|
-| Bucket |  :heavy_check_mark:  | :heavy_check_mark: | :x: | :heavy_check_mark: |
-| User |  :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| Policy |  :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| Group |  :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: |
+| Bucket |  V  | V | add/remove events | V |
+| User | V | V | update password, change policy | V |
+| Policy |  V | V | V | V |
+| Group |  V | V | add users to group, remove users, change ploicy | X |
 
 
 ### Extra features:
@@ -24,7 +24,7 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 
 it will bring up:
 
- -  minio server on 9000 port
+ - minio server on 9000 port
  - adminio API on 8080 port
  - adminio UI on 80 port
 
