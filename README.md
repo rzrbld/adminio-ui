@@ -3,6 +3,8 @@ This is a Web UI for [minio](https://min.io) s3 server.
 Web UI works on top of REST API - [adminio-API](https://github.com/rzrbld/adminio-api)
 Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.com)
 
+![screenshot1](https://raw.githubusercontent.com/rzrbld/adminio-ui/master/images/image.gif)
+
 ### Web UI abilities:
 | Kind   |      Create      |  List  | Update | Delete |
 |--------------|:-----------------------|:-----------:|:-----------:|:-----------:|
@@ -56,9 +58,6 @@ in this case example command will be look like this - ``$ export API_BASE_URL=ht
 
 #### ng serve
 you will need to set [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint at `` apiBaseUrl `` variable in file `` src/environments/environment.ts `` or `` src/environments/environment.prod.ts `` then run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## screenshot
-![screenshot1](https://raw.githubusercontent.com/rzrbld/adminio-ui/master/images/screenshot1.png)
 
 ## Default angular README
 
