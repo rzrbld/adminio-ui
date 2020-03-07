@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./buckets.component.scss']
 })
 export class BucketsComponent implements OnInit,  AfterViewInit  {
+  math = Math;
   objectKeys = Object.keys;
   buckets = {};
   bucketToDelete;
@@ -18,6 +19,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   editBucketName;
   newBucketName = "";
   serviceInfo;
+  diskUsageInfo;
   newBucketEventARN = "";
   updateBucketEventARN = "";
   updateBucketEventFilterPrefix = "";
@@ -46,6 +48,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   ngOnInit() {
   	this.getBuckets()
     this.getServerInfo()
+    this.getDiskInfo()
 
     this.dropdownEventTypesList = [
 	    {"id":1,"itemName":"put"},
@@ -83,6 +86,12 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   private getServerInfo(){
     this.apiService.serverInfo().subscribe((data)=>{
       this.serviceInfo = data;
+    });
+  }
+
+  private getDiskInfo(){
+  	this.apiService.diskInfo().subscribe((data)=>{
+      this.diskUsageInfo = data;
     });
   }
 

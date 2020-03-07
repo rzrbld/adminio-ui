@@ -20,6 +20,7 @@
 	    <tr>
 	      <th>Name</th>
 	      <th>Creation Date</th>
+	      <th *ngIf="(diskUsageInfo?.bucketsSizes | json) != ({} | json)">Size</th>
 	      <th *ngIf="serviceInfo?.sqsARN">Event</th>
 	      <th>Options</th>
 	    </tr>
@@ -28,6 +29,9 @@
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong></td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].info.creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)" title="{{diskUsageInfo?.bucketsSizes[buckets[b].name]}}">
+          {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+' Mb'}}
+        </td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN">
           <span *ngIf="buckets[b].events.LambdaConfigs?.length">
             Lambda:

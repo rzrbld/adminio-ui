@@ -17,6 +17,10 @@ export class ApiService {
     return this.httpClient.get(this.baseUrl+'/api/v1/server-info');
   }
 
+  public diskInfo(){
+    return this.httpClient.get(this.baseUrl+'/api/v1/disk-info');
+  }
+
   public getUsers(){
     return this.httpClient.get(this.baseUrl+'/api/v1/list-users');
   }

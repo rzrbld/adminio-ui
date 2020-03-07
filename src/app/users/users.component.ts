@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
-import {FormControl, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
 import { ToastrService } from 'ngx-toastr';
 
@@ -73,11 +73,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   get newUserSecret() {
 	return this.validatingForm.get('newUserSecret');
-  } 
+  }
 
   get newUserPolicy() {
 	return this.validatingForm.get('newUserPolicy');
-  } 
+  }
 
   private generatePassword(length) {
     var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
