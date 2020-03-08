@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class BucketsComponent implements OnInit,  AfterViewInit  {
   math = Math;
   objectKeys = Object.keys;
+  isNaN: Function = Number.isNaN;
   buckets = {};
   bucketToDelete;
   bucketToRemoveNotifications;

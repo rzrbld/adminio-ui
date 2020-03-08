@@ -1,4 +1,4 @@
-FROM node:12.2.0 as build
+FROM node:12 as build
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
@@ -16,7 +16,7 @@ RUN \
 RUN cd /app/adminio-ui && npm run build
 
 
-FROM nginx:1.16.0-alpine
+FROM nginx:1.17-alpine
 
 COPY --from=build /app/adminio-ui/dist /usr/share/nginx/html
 

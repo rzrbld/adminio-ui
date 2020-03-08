@@ -53,7 +53,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<style>\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI</a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n<!-- <div class=\"content hidden\" role=\"main\" [routerLink]=\"['/']\" routerLinkActive=\"visible\" [routerLinkActiveOptions]=\"{exact: true}\">\n</div> -->\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.7 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
+    __webpack_exports__["default"] = "<style>\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI</a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n<!-- <div class=\"content hidden\" role=\"main\" [routerLink]=\"['/']\" routerLinkActive=\"visible\" [routerLinkActiveOptions]=\"{exact: true}\">\n</div> -->\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.75 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
     /***/
   },
 
@@ -73,7 +73,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{buckets[b].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a *ngIf=\"serviceInfo?.sqsARN\" title=\"Update Bucket\" (click)=\"updateBucketPrepare(buckets[b].name); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-3\">&nbsp;</span>\n\t  \t  \t<a title=\"Remove Bucket\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-3\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" title=\"Remove Bucket Events\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
+    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{buckets[b].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\" title=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}}\">\n          {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a *ngIf=\"serviceInfo?.sqsARN\" title=\"Update Bucket\" (click)=\"updateBucketPrepare(buckets[b].name); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-3\">&nbsp;</span>\n\t  \t  \t<a title=\"Remove Bucket\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-3\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" title=\"Remove Bucket Events\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
     /***/
   },
 
@@ -153,7 +153,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\" *ngFor=\"let server of serviceInfo?.servers\">\n\t<h1>Server statistics {{server.endpoint}} </h1>\n\t<div class=\"mb-4\">\n\t\t<a (click)=\"rawPrepare(serviceInfo); rawViewModal.show()\"  mdbTooltip=\"View Raw JSON\" placement=\"top\" style=\"text-decoration: underline;\"><mdb-icon fas icon=\"eye\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon>View Raw JSON</a><span class=\"pr-3\">&nbsp;</span><br/>\n\t\t<strong>minio version:</strong> {{server.version}} <br/>\n\t\t<strong>uptime:</strong> {{math.round(server.uptime/60)}} min. <br/>\n\t\t<strong>network:</strong> {{server.network[server.endpoint]}}\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-md-12\">\n\t\t\t<h3>Storage</h3>\n\t\t\t<div class=\"container\" style=\"padding-top: 10px;\" *ngFor=\"let disk of server.disks\">\n\t\t\t\t<table mdbTable bordered=\"true\" small=\"true\" class=\"table\">\n\t\t\t\t  <thead class=\"thead-light\">\n\t\t\t\t    <tr>\n\t\t\t\t      <th>Total</th>\n\t\t\t\t      <th>Used</th>\n\t\t\t\t      <th>State</th>\n\t\t\t\t      <th>Path</th>\n\t\t\t\t    </tr>\n\t\t\t\t  </thead>\n\t\t\t\t  <tbody *ngIf=\"disk\">\n\t\t\t\t    <tr mdbTableCol>\n\t\t\t\t      <td>{{math.round(disk.totalspace/1024/1024/1024)}} Gb</td>\n\t\t\t\t      <td>{{math.round(disk.usedspace/1024/1024/1024)}} Gb</td>\n\t\t\t\t      <td>{{disk.state}}</td>\n\t\t\t\t      <td>{{disk.path}}</td>\n\t\t\t\t    </tr>\n\t\t\t\t  </tbody>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<br/>\n<br/>\n\n<!-- Raw view Modal -->\n\n<div mdbModal #rawViewModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"rawViewModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Raw Server Info</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<ngx-json-viewer [json]=\"rawView\"></ngx-json-viewer>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\" mdbWavesEffect>Close</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
+    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\" *ngFor=\"let server of serviceInfo?.servers\">\n\t<h1>Server statistics {{server.endpoint}} </h1>\n\t<div class=\"mb-4\">\n\t\t<a (click)=\"rawPrepare(serviceInfo); rawViewModal.show()\"  mdbTooltip=\"View Raw JSON\" placement=\"top\" style=\"text-decoration: underline;\"><mdb-icon fas icon=\"eye\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon>View Raw JSON</a><span class=\"pr-3\">&nbsp;</span><br/>\n\t\t<strong>minio version:</strong> {{server.version}} <br/>\n\t\t<strong>uptime:</strong> {{math.round(server.uptime/60)}} min. <br/>\n\t\t<strong>network:</strong> {{server.network[server.endpoint]}}\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-md-12\">\n\t\t\t<h3>Storage</h3>\n\t\t\t<div class=\"container\" style=\"padding-top: 10px;\" *ngFor=\"let disk of server.disks\">\n\t\t\t\t<table mdbTable bordered=\"true\" small=\"true\" class=\"table\">\n\t\t\t\t  <thead class=\"thead-light\">\n\t\t\t\t    <tr>\n\t\t\t\t      <th>Total</th>\n\t\t\t\t      <th>Used</th>\n\t\t\t\t      <th>State</th>\n\t\t\t\t      <th>Path</th>\n\t\t\t\t    </tr>\n\t\t\t\t  </thead>\n\t\t\t\t  <tbody *ngIf=\"disk\">\n\t\t\t\t    <tr mdbTableCol>\n\t\t\t\t      <td>{{math.round(disk.totalspace/1024/1024/1024)}} Gb</td>\n\t\t\t\t      <td>{{math.round(disk.usedspace/1024/1024/1024)}} Gb</td>\n\t\t\t\t      <td>{{disk.state}}</td>\n\t\t\t\t      <td>{{disk.path}}</td>\n\t\t\t\t    </tr>\n\t\t\t\t  </tbody>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<br/>\n\t<br/>\n\t<div class=\"row\" *ngIf=\"diskUsageInfo?.lastUpdate\">\n\t\t<div class=\"col-md-12\">\n\t\t\t<h3>Disk usage info</h3>\n\t\t\t<div class=\"container\" style=\"padding-top: 10px;\">\n\t\t\t\t<p>Last update: {{diskUsageInfo?.lastUpdate.split('T').join(' ').split('.')[0]}}</p>\n\t\t\t\t<table  mdbTable bordered=\"true\" small=\"true\" class=\"table\">\n\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Objects count</th>\n\t\t\t\t\t\t\t<th>Objects total size</th>\n\t\t\t\t\t\t\t<th>Buckets count</th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</thead>\n\t\t\t\t\t<tbody *ngIf=\"diskUsageInfo\">\n\t\t\t\t\t\t<tr mdbTableCol>\n\t\t\t\t\t\t\t<td>{{diskUsageInfo.objectsCount}}</td>\n\t\t\t\t\t\t\t<td>{{math.round(diskUsageInfo.objectsTotalSize/1024/1024/1024)}} Gb</td>\n\t\t\t\t\t\t\t<td>{{diskUsageInfo.bucketsCount}}</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</tbody>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<br/>\n\t<br/>\n\t<div class=\"row\" *ngIf=\"diskUsageInfo?.objectsSizesHistogram && szChartDatasets[0].data.length>0\">\n\t\t<div class=\"col-md-12\">\n\t\t\t<h3>Bucket sizes chart</h3>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-1\">\n\t\t\t\t\t&nbsp;\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10\">\n\t\t\t\t\t<div class=\"container\" style=\"padding-top: 10px; display: block;\">\n\t\t\t\t\t\t<canvas mdbChart\n\t\t\t\t\t\t\t\t[chartType]=\"szChartType\"\n\t\t\t\t\t\t\t\t[datasets]=\"szChartDatasets\"\n\t\t\t\t\t\t\t\t[labels]=\"szChartLabels\"\n\t\t\t\t\t\t\t\t[colors]=\"szChartColors\"\n\t\t\t\t\t\t\t\t[options]=\"szChartOptions\"\n\t\t\t\t\t\t\t\t[legend]=\"true\"\n\t\t\t\t\t\t\t\t(chartHover)=\"szChartHovered($event)\"\n\t\t\t\t\t\t\t\t(chartClick)=\"szChartClicked($event)\">\n\t\t\t\t\t\t</canvas>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-1\">\n\t\t\t\t\t\t&nbsp;\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<br/>\n\t<br/>\n\t<div class=\"row\" *ngIf=\"diskUsageInfo?.objectsSizesHistogram && hgChartDatasets[0].data.length>0\">\n\t\t<div class=\"col-md-12\">\n\t  \t<h3>Object sizes histogram</h3>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-2\">\n\t\t\t\t\t&nbsp;\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"container\" style=\"padding-top: 10px; display: block;\">\n\t\t\t\t\t\t<canvas mdbChart\n\t\t\t\t\t\t\t\t[chartType]=\"hgChartType\"\n\t\t\t\t\t\t\t\t[datasets]=\"hgChartDatasets\"\n\t\t\t\t\t\t\t\t[labels]=\"hgChartLabels\"\n\t\t\t\t\t\t\t\t[colors]=\"hgChartColors\"\n\t\t\t\t\t\t\t\t[options]=\"hgChartOptions\"\n\t\t\t\t\t\t\t\t[legend]=\"false\"\n\t\t\t\t\t\t\t\t(chartHover)=\"hgChartHovered($event)\"\n\t\t\t\t\t\t\t\t(chartClick)=\"hgChartClicked($event)\">\n\t\t\t\t\t\t</canvas>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-2\">\n\t\t\t\t\t\t&nbsp;\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<br/>\n<br/>\n\n<!-- Raw view Modal -->\n\n<div mdbModal #rawViewModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"rawViewModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Raw Server Info</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<ngx-json-viewer [json]=\"rawView\"></ngx-json-viewer>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\" mdbWavesEffect>Close</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
     /***/
   },
 
@@ -795,6 +795,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           return this.httpClient.get(this.baseUrl + '/api/v1/server-info');
         }
       }, {
+        key: "diskInfo",
+        value: function diskInfo() {
+          return this.httpClient.get(this.baseUrl + '/api/v1/disk-info');
+        }
+      }, {
         key: "getUsers",
         value: function getUsers() {
           return this.httpClient.get(this.baseUrl + '/api/v1/list-users');
@@ -1380,7 +1385,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.apiService = apiService;
         this.cdRef = cdRef;
         this.toastr = toastr;
+        this.math = Math;
         this.objectKeys = Object.keys;
+        this.isNaN = Number.isNaN;
         this.buckets = {};
         this.newBucketName = "";
         this.newBucketEventARN = "";
@@ -1407,6 +1414,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function ngOnInit() {
           this.getBuckets();
           this.getServerInfo();
+          this.getDiskInfo();
           this.dropdownEventTypesList = [{
             "id": 1,
             "itemName": "put"
@@ -1459,6 +1467,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           });
         }
       }, {
+        key: "getDiskInfo",
+        value: function getDiskInfo() {
+          var _this2 = this;
+
+          this.apiService.diskInfo().subscribe(function (data) {
+            _this2.diskUsageInfo = data;
+          });
+        }
+      }, {
         key: "searchItems",
         value: function searchItems() {
           var prev = this.mdbTable.getDataSource();
@@ -1484,20 +1501,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getBuckets",
         value: function getBuckets() {
-          var _this2 = this;
+          var _this3 = this;
 
           this.apiService.getBucketsExtended().subscribe(function (data) {
             console.log("BUCKETS >>>>>>", data);
 
             if (data !== null) {
-              _this2.buckets = data;
+              _this3.buckets = data;
             } else {
-              _this2.buckets = {};
+              _this3.buckets = {};
             }
 
-            _this2.mdbTable.setDataSource(_this2.buckets);
+            _this3.mdbTable.setDataSource(_this3.buckets);
 
-            _this2.previous = _this2.mdbTable.getDataSource();
+            _this3.previous = _this3.mdbTable.getDataSource();
           });
         }
       }, {
@@ -1518,18 +1535,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "deleteBucket",
         value: function deleteBucket() {
-          var _this3 = this;
+          var _this4 = this;
 
           this.apiService.deleteBucket(this.bucketToDelete).subscribe(function (data) {
             console.log(data);
 
             if (data["Success"]) {
-              _this3.toastr.success('Bucket has been deleted', 'Success');
+              _this4.toastr.success('Bucket has been deleted', 'Success');
             } else {
-              _this3.toastr.error(JSON.stringify(data), 'Error while deleting bucket');
+              _this4.toastr.error(JSON.stringify(data), 'Error while deleting bucket');
             }
 
-            _this3.getBuckets();
+            _this4.getBuckets();
           });
         }
       }, {
@@ -1572,7 +1589,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "enableNotificationForBucket",
         value: function enableNotificationForBucket(bucket, stsARN, eventTypes, filterPrefix, filterSuffix, updateListAfter) {
-          var _this4 = this;
+          var _this5 = this;
 
           var eventTypesArr = [];
 
@@ -1582,53 +1599,53 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           this.apiService.enableNotificationForBucket(bucket, stsARN, eventTypesArr.join(','), filterPrefix, filterSuffix).subscribe(function (data) {
             if (data["Success"]) {
-              _this4.toastr.success('Events for bucket: ' + bucket + ' has been enabled', 'Success');
+              _this5.toastr.success('Events for bucket: ' + bucket + ' has been enabled', 'Success');
 
               if (updateListAfter) {
-                _this4.getBuckets();
+                _this5.getBuckets();
               }
             } else {
-              _this4.toastr.error(JSON.stringify(data), 'Error while enabling events for bucket' + bucket);
+              _this5.toastr.error(JSON.stringify(data), 'Error while enabling events for bucket' + bucket);
             }
           });
         }
       }, {
         key: "removeBucketEvents",
         value: function removeBucketEvents() {
-          var _this5 = this;
+          var _this6 = this;
 
           var bucket = this.bucketToRemoveNotifications;
           this.apiService.removeBucketEvents(bucket).subscribe(function (data) {
             console.log(data);
 
             if (data["Success"]) {
-              _this5.toastr.success('Events for bucket ' + bucket + ' has been removed', 'Success');
+              _this6.toastr.success('Events for bucket ' + bucket + ' has been removed', 'Success');
             } else {
-              _this5.toastr.error(JSON.stringify(data), 'Error while removing bucket events');
+              _this6.toastr.error(JSON.stringify(data), 'Error while removing bucket events');
             }
 
-            _this5.getBuckets();
+            _this6.getBuckets();
           });
         }
       }, {
         key: "createBucketSimple",
         value: function createBucketSimple(bucket, eventARN) {
-          var _this6 = this;
+          var _this7 = this;
 
           this.apiService.createBucket(bucket).subscribe(function (data) {
             console.log(data);
 
             if (data["Success"]) {
-              _this6.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
+              _this7.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
 
               if (eventARN != "") {
-                _this6.enableNotificationForBucket(bucket, eventARN, _this6.selectedEventTypes, _this6.newBucketEventFilterPrefix, _this6.newBucketEventFilterSuffix, false);
+                _this7.enableNotificationForBucket(bucket, eventARN, _this7.selectedEventTypes, _this7.newBucketEventFilterPrefix, _this7.newBucketEventFilterSuffix, false);
               }
             } else {
-              _this6.toastr.error(JSON.stringify(data), 'Error while creating bucket');
+              _this7.toastr.error(JSON.stringify(data), 'Error while creating bucket');
             }
 
-            _this6.getBuckets();
+            _this7.getBuckets();
           });
         }
       }]);
@@ -1955,7 +1972,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getGroups",
         value: function getGroups() {
-          var _this7 = this;
+          var _this8 = this;
 
           this.groups = {};
           this.groupsWithMembers = [];
@@ -1964,35 +1981,35 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(data);
 
             if (data !== null) {
-              _this7.groups = data;
+              _this8.groups = data;
 
-              for (var i = 0; i < _this7.objectKeys(data).length; i++) {
+              for (var i = 0; i < _this8.objectKeys(data).length; i++) {
                 var tempGroupName = data[i];
 
-                _this7.apiService.getGroupDescription(tempGroupName).subscribe(function (data) {
+                _this8.apiService.getGroupDescription(tempGroupName).subscribe(function (data) {
                   if (data !== null) {
-                    _this7.groupsWithMembers.push(data);
+                    _this8.groupsWithMembers.push(data);
 
-                    _this7.mdbTable.setDataSource(_this7.groupsWithMembers);
+                    _this8.mdbTable.setDataSource(_this8.groupsWithMembers);
 
-                    _this7.previous = _this7.mdbTable.getDataSource();
+                    _this8.previous = _this8.mdbTable.getDataSource();
                   }
                 });
               }
 
-              console.log(_this7.groupsWithMembers);
-              _this7.groups = _this7.groupsWithMembers;
+              console.log(_this8.groupsWithMembers);
+              _this8.groups = _this8.groupsWithMembers;
             }
           });
         }
       }, {
         key: "getListOfUsers",
         value: function getListOfUsers() {
-          var _this8 = this;
+          var _this9 = this;
 
           this.apiService.getUsers().subscribe(function (data) {
             if (data !== null) {
-              _this8.dropdownList = Object.entries(data).map(function (e) {
+              _this9.dropdownList = Object.entries(data).map(function (e) {
                 return {
                   "id": e[0],
                   "itemName": e[0]
@@ -2004,22 +2021,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getGroupDescription",
         value: function getGroupDescription(group) {
-          var _this9 = this;
+          var _this10 = this;
 
           this.isEditMode(true);
           console.log(group);
           this.apiService.getGroupDescription(group).subscribe(function (data) {
             if (data !== null) {
               console.log(data);
-              _this9.groupToUpdate = data;
-              _this9.newGroupName = data["name"];
-              _this9.newGroupPolicy = data["policy"];
-              _this9.newGroupStatus = data["status"];
+              _this10.groupToUpdate = data;
+              _this10.newGroupName = data["name"];
+              _this10.newGroupPolicy = data["policy"];
+              _this10.newGroupStatus = data["status"];
 
               for (var i = 0; i < data["members"].length; i++) {
                 var tempMember = data["members"][i];
 
-                _this9.selectedItems.push({
+                _this10.selectedItems.push({
                   "id": tempMember,
                   "itemName": tempMember
                 });
@@ -2030,11 +2047,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getListOfPolicies",
         value: function getListOfPolicies() {
-          var _this10 = this;
+          var _this11 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this10.policies = Object.keys(data);
-            _this10.rawPolicies = data;
+            _this11.policies = Object.keys(data);
+            _this11.rawPolicies = data;
           });
         }
       }, {
@@ -2048,29 +2065,29 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "wipeGroupMembers",
         value: function wipeGroupMembers() {
-          var _this11 = this;
+          var _this12 = this;
 
           this.apiService.updateMembersGroup(this.newGroupName, this.usersToRemove, "true").subscribe(function (data) {
             if (data["Success"]) {
-              _this11.toastr.success('Group: ' + _this11.newGroupName + ' members has been removed', 'Success');
+              _this12.toastr.success('Group: ' + _this12.newGroupName + ' members has been removed', 'Success');
 
-              _this11.usersToRemove = [];
+              _this12.usersToRemove = [];
             } else {
-              _this11.toastr.error(JSON.stringify(data), 'Error while removing members from group');
+              _this12.toastr.error(JSON.stringify(data), 'Error while removing members from group');
             }
           });
         }
       }, {
         key: "updatePolicy",
         value: function updatePolicy() {
-          var _this12 = this;
+          var _this13 = this;
 
           if (this.newGroupPolicy !== null && this.newGroupPolicy != "") {
             this.apiService.setPolicy(this.newGroupPolicy, this.newGroupName, "true").subscribe(function (data) {
               if (data["Success"]) {
-                _this12.toastr.success('Group: ' + _this12.newGroupName + ' policy has been set to ' + _this12.newGroupPolicy, 'Success');
+                _this13.toastr.success('Group: ' + _this13.newGroupName + ' policy has been set to ' + _this13.newGroupPolicy, 'Success');
               } else {
-                _this12.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
+                _this13.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
               }
             });
           }
@@ -2078,14 +2095,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "updateStatus",
         value: function updateStatus() {
-          var _this13 = this;
+          var _this14 = this;
 
           if (this.newGroupStatus !== null && this.newGroupStatus != "") {
             this.apiService.setStatusGroup(this.newGroupName, this.newGroupStatus).subscribe(function (data) {
               if (data["Success"]) {
-                _this13.toastr.success('Group: ' + _this13.newGroupName + ' status has been set to ' + _this13.newGroupStatus, 'Success');
+                _this14.toastr.success('Group: ' + _this14.newGroupName + ' status has been set to ' + _this14.newGroupStatus, 'Success');
               } else {
-                _this13.toastr.error(JSON.stringify(data), 'Error while setting status to group');
+                _this14.toastr.error(JSON.stringify(data), 'Error while setting status to group');
               }
             });
           }
@@ -2093,7 +2110,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "createGroup",
         value: function createGroup() {
-          var _this14 = this;
+          var _this15 = this;
 
           console.log("CREATE GROUP CALLED");
           var newMembers = [];
@@ -2113,16 +2130,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           if (newMembers.length > 0) {
             this.apiService.updateMembersGroup(this.newGroupName, newMembers, "false").subscribe(function (data) {
               if (data["Success"]) {
-                _this14.toastr.success('Group: ' + _this14.newGroupName + ' has been created', 'Success');
+                _this15.toastr.success('Group: ' + _this15.newGroupName + ' has been created', 'Success');
               } else {
-                _this14.toastr.error(JSON.stringify(data), 'Error while creating group');
+                _this15.toastr.error(JSON.stringify(data), 'Error while creating group');
               }
 
-              _this14.updatePolicy();
+              _this15.updatePolicy();
 
-              _this14.updateStatus();
+              _this15.updateStatus();
 
-              _this14.getGroups();
+              _this15.getGroups();
             });
           } else {
             this.updatePolicy();
@@ -2242,31 +2259,31 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "intercept",
         value: function intercept(req, next) {
-          var _this15 = this;
+          var _this16 = this;
 
           this.requests.push(req);
           this.loaderService.isLoading.next(true);
           return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].create(function (observer) {
             var subscription = next.handle(req).subscribe(function (event) {
               if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]) {
-                _this15.removeRequest(req);
+                _this16.removeRequest(req);
 
                 observer.next(event);
               }
             }, function (err) {
               alert('error returned');
 
-              _this15.removeRequest(req);
+              _this16.removeRequest(req);
 
               observer.error(err);
             }, function () {
-              _this15.removeRequest(req);
+              _this16.removeRequest(req);
 
               observer.complete();
             }); // remove request from queue when cancelled
 
             return function () {
-              _this15.removeRequest(req);
+              _this16.removeRequest(req);
 
               subscription.unsubscribe();
             };
@@ -2401,13 +2418,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /*#__PURE__*/
     function () {
       function LoaderComponent(loaderService) {
-        var _this16 = this;
+        var _this17 = this;
 
         _classCallCheck(this, LoaderComponent);
 
         this.loaderService = loaderService;
         this.loaderService.isLoading.subscribe(function (v) {
-          _this16.loading = v;
+          _this17.loading = v;
         });
       }
 
@@ -3119,36 +3136,36 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getPolicies",
         value: function getPolicies() {
-          var _this17 = this;
+          var _this18 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
             console.log(data);
-            _this17.policiesRaw = data;
+            _this18.policiesRaw = data;
             var arrayOfPolicies = Object.entries(data).map(function (e) {
-              return _defineProperty({}, e[0], _this17.b64unpack(e[1]));
+              return _defineProperty({}, e[0], _this18.b64unpack(e[1]));
             });
-            _this17.policies = arrayOfPolicies;
+            _this18.policies = arrayOfPolicies;
 
-            _this17.mdbTable.setDataSource(arrayOfPolicies);
+            _this18.mdbTable.setDataSource(arrayOfPolicies);
 
             console.log(arrayOfPolicies);
-            _this17.previous = _this17.mdbTable.getDataSource();
+            _this18.previous = _this18.mdbTable.getDataSource();
           });
         }
       }, {
         key: "deletePolicy",
         value: function deletePolicy() {
-          var _this18 = this;
+          var _this19 = this;
 
           this.apiService.deletePolicy(this.policyToDelete).subscribe(function (data) {
             console.log(data);
 
-            _this18.getPolicies();
+            _this19.getPolicies();
 
             if (data["Success"]) {
-              _this18.toastr.success('Policy ' + _this18.policyToDelete + ' has been deleted', 'Success');
+              _this19.toastr.success('Policy ' + _this19.policyToDelete + ' has been deleted', 'Success');
             } else {
-              _this18.toastr.error(JSON.stringify(data), 'Error while deleting policy');
+              _this19.toastr.error(JSON.stringify(data), 'Error while deleting policy');
             }
           });
         }
@@ -3280,7 +3297,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "createPolicy",
         value: function createPolicy() {
-          var _this19 = this;
+          var _this20 = this;
 
           console.log(this.newPolicy, this.newPolicyRaw);
           var policyString = JSON.stringify(this.newPolicyRaw);
@@ -3288,12 +3305,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(data);
 
             if (data["Success"]) {
-              _this19.toastr.success('Policy ' + _this19.newPolicy.name + ' has been created', 'Success');
+              _this20.toastr.success('Policy ' + _this20.newPolicy.name + ' has been created', 'Success');
             } else {
-              _this19.toastr.error(JSON.stringify(data), 'Error while creating policy');
+              _this20.toastr.error(JSON.stringify(data), 'Error while creating policy');
             }
 
-            _this19.getPolicies();
+            _this20.getPolicies();
           });
         }
       }, {
@@ -3425,22 +3442,105 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         this.apiService = apiService;
         this.objectKeys = Object.keys;
+        this.objectValues = Object.values;
         this.math = Math;
         this.rawView = '';
+        this.bucketSizes = [];
+        this.hgChartDatasets = [{
+          data: [],
+          label: 'Number of objects'
+        }];
+        this.hgChartLabels = [];
+        this.hgChartType = 'radar';
+        this.hgChartColors = [{
+          backgroundColor: 'rgba(151,187,205,0.9)',
+          borderColor: 'rgba(151,187,205,1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(151,187,205,1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(151,187,205,1)'
+        }];
+        this.hgChartOptions = {
+          responsive: true
+        };
+        this.szChartDatasets = [{
+          data: [],
+          label: 'Size of bucket in Bytes'
+        }];
+        this.szChartLabels = [];
+        this.szChartType = 'bar';
+        this.szChartColors = [{
+          backgroundColor: 'rgba(151,187,205,0.9)',
+          borderColor: 'rgba(151,187,205,1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(151,187,205,1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(151,187,205,1)'
+        }];
+        this.szChartOptions = {
+          responsive: true
+        };
       }
 
       _createClass(ServerComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
           this.serverInfo();
+          this.diskInfo();
         }
+      }, {
+        key: "hgChartClicked",
+        value: function hgChartClicked(e) {}
+      }, {
+        key: "hgChartHovered",
+        value: function hgChartHovered(e) {}
+      }, {
+        key: "szChartClicked",
+        value: function szChartClicked(e) {}
+      }, {
+        key: "szChartHovered",
+        value: function szChartHovered(e) {}
       }, {
         key: "serverInfo",
         value: function serverInfo() {
-          var _this20 = this;
+          var _this21 = this;
 
           this.apiService.serverInfo().subscribe(function (data) {
-            _this20.serviceInfo = data;
+            _this21.serviceInfo = data;
+          });
+        }
+      }, {
+        key: "diskInfo",
+        value: function diskInfo() {
+          var _this22 = this;
+
+          this.apiService.diskInfo().subscribe(function (data) {
+            console.log("Disk Usege >>>>>>>>>>>>", data);
+            _this22.diskUsageInfo = data;
+
+            if (data.hasOwnProperty('objectsSizesHistogram')) {
+              var objectsSizesHistogram = _this22.diskUsageInfo.objectsSizesHistogram;
+              var histogramKeysRawArr = Object.keys(objectsSizesHistogram);
+              var histogramValsRawArr = Object.values(objectsSizesHistogram);
+              _this22.hgChartDatasets[0].data = histogramValsRawArr;
+              _this22.hgChartLabels = [];
+
+              for (var i = 0; i < histogramKeysRawArr.length; i++) {
+                var histogramLabel = histogramKeysRawArr[i].split('_').join(' ');
+
+                _this22.hgChartLabels.push(histogramLabel);
+              }
+            }
+
+            if (data.hasOwnProperty('bucketsSizes') && _this22.diskUsageInfo.bucketsSizes != {}) {
+              var objectBucketSizes = _this22.diskUsageInfo.bucketsSizes;
+              var bucketSizesKeysRawArr = Object.keys(objectBucketSizes);
+              var bucketSizesValsRawArr = Object.values(objectBucketSizes);
+              _this22.szChartDatasets[0].data = bucketSizesValsRawArr;
+              _this22.szChartLabels = bucketSizesKeysRawArr;
+            }
           });
         }
       }, {
@@ -3641,35 +3741,35 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getListOfUsers",
         value: function getListOfUsers() {
-          var _this21 = this;
+          var _this23 = this;
 
           this.apiService.getUsers().subscribe(function (data) {
             console.log(data);
-            _this21.usersRaw = data;
+            _this23.usersRaw = data;
             var arrayOfUsers = Object.entries(data).map(function (e) {
               return _defineProperty({}, e[0], e[1]);
             });
-            _this21.users = arrayOfUsers;
+            _this23.users = arrayOfUsers;
 
-            _this21.mdbTable.setDataSource(arrayOfUsers);
+            _this23.mdbTable.setDataSource(arrayOfUsers);
 
             console.log(arrayOfUsers);
-            _this21.previous = _this21.mdbTable.getDataSource();
+            _this23.previous = _this23.mdbTable.getDataSource();
           });
         }
       }, {
         key: "getListOfPolicies",
         value: function getListOfPolicies() {
-          var _this22 = this;
+          var _this24 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this22.policies = Object.keys(data);
+            _this24.policies = Object.keys(data);
           });
         }
       }, {
         key: "createUser",
         value: function createUser() {
-          var _this23 = this;
+          var _this25 = this;
 
           var userAccess = this.newUserAccess.value;
           var userSecret = this.newUserSecret.value;
@@ -3680,24 +3780,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             this.apiService.addUserExtended(userAccess, userSecret, userPolicy).subscribe(function (data) {
               console.log(data);
 
-              _this23.getListOfUsers();
+              _this25.getListOfUsers();
 
               if (data["Success"]) {
-                _this23.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
+                _this25.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
               } else {
-                _this23.toastr.error(JSON.stringify(data), 'Error while creating user');
+                _this25.toastr.error(JSON.stringify(data), 'Error while creating user');
               }
             });
           } else {
             this.apiService.addUser(userAccess, userSecret).subscribe(function (data) {
               console.log(data);
 
-              _this23.getListOfUsers();
+              _this25.getListOfUsers();
 
               if (data["Success"]) {
-                _this23.toastr.success('User: ' + userAccess + ' has been created', 'Success');
+                _this25.toastr.success('User: ' + userAccess + ' has been created', 'Success');
               } else {
-                _this23.toastr.error(JSON.stringify(data), 'Error while creating user');
+                _this25.toastr.error(JSON.stringify(data), 'Error while creating user');
               }
             });
           }
@@ -3705,7 +3805,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "setStatusUser",
         value: function setStatusUser(accessKey, status) {
-          var _this24 = this;
+          var _this26 = this;
 
           if (status == 'enabled') {
             status = 'disabled';
@@ -3717,12 +3817,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(data);
 
             if (data["Success"]) {
-              _this24.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
+              _this26.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
             } else {
-              _this24.toastr.error(JSON.stringify(data), 'Error while changing state for user');
+              _this26.toastr.error(JSON.stringify(data), 'Error while changing state for user');
             }
 
-            _this24.getListOfUsers();
+            _this26.getListOfUsers();
           });
         }
       }, {
@@ -3762,7 +3862,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "updateUserSave",
         value: function updateUserSave() {
-          var _this25 = this;
+          var _this27 = this;
 
           var updatedSecret = this.updateUser.value.secretKeyUpdate;
           var updatedPolicy = this.updateUser.value.policyUpdate;
@@ -3770,30 +3870,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.apiService.updateUser(this.userToUpdate, updatedSecret, updatedPolicy, updatedStatus).subscribe(function (data) {
             console.log(data);
 
-            _this25.getListOfUsers();
+            _this27.getListOfUsers();
 
             if (data["Success"]) {
-              _this25.toastr.success('User: ' + _this25.userToUpdate + ' has been updated', 'Success');
+              _this27.toastr.success('User: ' + _this27.userToUpdate + ' has been updated', 'Success');
             } else {
-              _this25.toastr.error(JSON.stringify(data), 'Error while updating user');
+              _this27.toastr.error(JSON.stringify(data), 'Error while updating user');
             }
           });
         }
       }, {
         key: "deleteUser",
         value: function deleteUser() {
-          var _this26 = this;
+          var _this28 = this;
 
           this.apiService.deleteUser(this.userToDelete).subscribe(function (data) {
             console.log(data);
 
             if (data["Success"]) {
-              _this26.toastr.success('User: ' + _this26.userToDelete + ' has been deleted', 'Success');
+              _this28.toastr.success('User: ' + _this28.userToDelete + ' has been deleted', 'Success');
             }
 
-            _this26.updateUserFrom();
+            _this28.updateUserFrom();
 
-            _this26.getListOfUsers();
+            _this28.getListOfUsers();
           });
         }
       }, {
