@@ -29,8 +29,10 @@
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong></td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{buckets[b].info.creationDate | date : "dd/MM/yy HH:mm:ss" }}</td>
-	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)" title="{{diskUsageInfo?.bucketsSizes[buckets[b].name]}}">
-          {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)">
+          <span mdbTooltip="{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes" placement="top">
+            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}
+          </span>
         </td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN">
           <span *ngIf="buckets[b].events.LambdaConfigs?.length">
@@ -68,9 +70,10 @@
           </span>
         </td>
 	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-	  	  	<a *ngIf="serviceInfo?.sqsARN" title="Update Bucket" (click)="updateBucketPrepare(buckets[b].name); editBucketModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
-	  	  	<a title="Remove Bucket" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
-	  	  	<a *ngIf="buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length" title="Remove Bucket Events" (click)="removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()"><mdb-icon fas icon="bell-slash" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+	  	  	<a *ngIf="serviceInfo?.sqsARN" mdbTooltip="Update Bucket Events" placement="top" (click)="updateBucketPrepare(buckets[b].name); editBucketModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+	  	  	<a mdbTooltip="Remove Bucket" placement="top" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+	  	  	<a mdbTooltip="Bucket Lifecycyle" placement="top" (click)="bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()"><mdb-icon fas icon="recycle" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+	  	  	<a *ngIf="buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length" mdbTooltip="Remove Bucket Events" placement="top" (click)="removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()"><mdb-icon fas icon="bell-slash" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>
@@ -85,6 +88,48 @@
 </div>
 <br/>
 <br/>
+
+<!-- lifecycyle modal -->
+
+<div mdbModal #lifecycyleModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="lifecycyleModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Bucket Lifecycyle</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12 col-12 mx-auto">
+                  <div class="alert alert-info" role="alert" *ngIf="downloadLifecycleAvailable == 1" >
+                    <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on "dowload icon" >
+                    <a mdbTooltip="Download Lifecycle" placement="top" [href]="downloadJsonHref" download="{{lifecycleBucketName}}-lifecycle.xml" (click)="downloadLifecycle()"><mdb-icon fas icon="download" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+                    <br/>
+                    Or override it by upload a new lifecycle policy.
+                  </div>
+                  <div class="alert alert-info" role="alert" *ngIf="downloadLifecycleAvailable == 0" >
+                    <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio
+                    <a href="https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle" target="_blank">documentation</a>. Or use an AWS S3 documentation
+                    <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html" target="_blank">Object Lifecycle Management</a>
+                  </div>
+                  <div class="d-flex justify-content-around p-1 mb-3 text-center">
+										<div class="custom-file">
+										  <input type="file" accept=".lifecycle,.xml" class="custom-file-input" (change)="fileChanged($event)" #uploadLifecycleFile name="uploadLifecycleFile">
+										  <label class="custom-file-label" for="customFileLang">{{uploadLifecycleFileName == "" ? "Choose .lifecycle or .xml file" : uploadLifecycleFileName}}</label>
+										</div>
+									</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="uploadLifecycle();lifecycyleModal.hide()">Upload</button>
+            </div>
+        </div>
+    </div >
+</div >
 
 <!-- delete approve modal -->
 
