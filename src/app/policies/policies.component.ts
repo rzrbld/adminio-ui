@@ -384,7 +384,7 @@ export class PoliciesComponent implements OnInit {
     console.log("theJSON>>>>>>>>>>>",theJSON);
     var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
     this.downloadJsonHref = uri;
-}
+  }
 
   public b64unpack(str){
     // console.log(JSON.parse(atob(str)))
@@ -505,7 +505,8 @@ export class PoliciesComponent implements OnInit {
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       console.log(fileReader.result);
-      this.apiService.addPolicy(this.uploadPolicyName,fileReader.result).subscribe((data)=>{
+      let policyFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ')
+      this.apiService.addPolicy(this.uploadPolicyName,policyFileString).subscribe((data)=>{
         console.log(data);
         if(data["Success"]){
           this.toastr.success('Policy '+this.newPolicy.name+' has been created', 'Success');
@@ -521,8 +522,8 @@ export class PoliciesComponent implements OnInit {
   private resetUploadForm(){
     this.uploadFileInput.nativeElement.value = "";
     this.uploadPolicyFile;
-    this.uploadPolicyName="";
-    this.uploadPolicyFileName="";
+    this.uploadPolicyName = "";
+    this.uploadPolicyFileName = "";
   }
 
   private createPolicy(){

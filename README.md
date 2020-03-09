@@ -18,6 +18,7 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 - create multiple buckets at once
 - fully editable policy constructor
 - copy policies
+- upload and download bucket lifecycles
 
 
 ### Run full stack demo
