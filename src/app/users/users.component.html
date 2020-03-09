@@ -29,17 +29,14 @@
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{objectKeys(users[key])}}</strong></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><span *ngIf="objectValues(users[key])[0].policyName">{{objectValues(users[key])[0].policyName}}</span></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-					<div class="custom-control custom-switch" title="enable or disable user">
+					<div class="custom-control custom-switch">
 					  <input type="checkbox" class="custom-control-input" id="customSwitch{{objectKeys(users[key])}}" [attr.checked]="objectValues(users[key])[0].status == 'enabled' ? '' : null" (click)="setStatusUser(objectKeys(users[key]),objectValues(users[key])[0].status)">
-					  <label class="custom-control-label" for="customSwitch{{objectKeys(users[key])}}">&nbsp;{{objectValues(users[key])[0].status}}</label>
+					  <label mdbTooltip="Enable or Disable User" placement="top" class="custom-control-label" for="customSwitch{{objectKeys(users[key])}}">&nbsp;{{objectValues(users[key])[0].status}}</label>
 					</div>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-
-					<a title="Remove User" class="action-link" (click)="deleteUserPrepare(objectKeys(users[key])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
-
-		  			<a title="Edit User" class="action-link" (click)="updateUserFrom();updateUserPrepare(objectKeys(users[key])); updateApproveModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
-
+					<a mdbTooltip="Remove User" placement="top" class="action-link" (click)="deleteUserPrepare(objectKeys(users[key])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+		  		<a mdbTooltip="Edit User" placement="top" class="action-link" (click)="updateUserFrom();updateUserPrepare(objectKeys(users[key])); updateApproveModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 				</td>
 			</tr>
 		</tbody>
@@ -122,7 +119,7 @@
 						<option [value]="policy" *ngFor="let policy of policies">{{policy}}</option>
 				  </select>
 				</div>
-				
+
 				<div class="md-form mb-4">
 				  <select class="browser-default custom-select" [formControl]="statusUpdate" title="select status">
 						<option value="" disabled selected>Select status</option>
@@ -195,6 +192,3 @@
 	</div>
   </div>
 </div>
-
-
-

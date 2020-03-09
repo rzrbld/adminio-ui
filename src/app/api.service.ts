@@ -186,4 +186,22 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl+'/api/v1/set-policy', form);
   }
 
+  public setLifecycle(bucketName,lifecycle){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+    form.append('lifecycle', lifecycle);
+
+    return this.httpClient.post(this.baseUrl+'/api/v1/set-bucket-lifecycle', form);
+  }
+
+
+  public getLifecycle(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v1/get-bucket-lifecycle', form);
+  }
+
 }

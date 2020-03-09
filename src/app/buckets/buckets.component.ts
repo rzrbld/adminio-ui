@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import { ApiService } from '../api.service';
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
 import { ToastrService } from 'ngx-toastr';
@@ -32,19 +33,29 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   newBucketEventFilterPrefix = "";
   newBucketEventFilterSuffix = "";
 
+  uploadLifecycleName;
+  uploadLifecycleFile;
+  uploadLifecycleFileName;
+  lifecycleBucketName;
+  downloadJsonHref;
+  downloadLifecycleAvailable = 0;
+
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   previous: string;
 
   searchText: string = '';
 
-  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService, private sanitizer: DomSanitizer) { }
 
   @HostListener('input') oninput() {
     if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
        this.searchItems();
     }
   }
+
+  @ViewChild('uploadLifecycleFile', { static: true })
+  uploadFileInput: any;
 
   ngOnInit() {
   	this.getBuckets()
@@ -183,6 +194,10 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   	}
   }
 
+  private bucketLifecycle(bucket){
+    this.lifecycleBucketName = bucket;
+  }
+
   private updateBucket() {
     this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true)
   }
@@ -230,6 +245,54 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       }
       this.getBuckets();
     });
+  }
+
+  private fileChanged(e) {
+    console.log("eventTriggered");
+
+    this.uploadLifecycleFile = e.target.files[0];
+    this.uploadLifecycleFileName = e.target.files[0].name;
+  }
+
+  private resetLifecycleForm(){
+    this.uploadFileInput.nativeElement.value = "";
+    this.uploadLifecycleFile;
+    this.uploadLifecycleName = "";
+    this.uploadLifecycleFileName = "";
+    this.downloadLifecycleAvailable = 0;
+  }
+
+  private downloadLifecycle(bucket) {
+    this.apiService.getLifecycle(bucket).subscribe((data)=>{
+      console.log(data);
+      if(data["error"]){
+        this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
+      }else{
+        if(data==""){
+          // this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');
+        }else{
+          this.downloadLifecycleAvailable = 1;
+          var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/xml;charset=UTF-8," + encodeURIComponent(data.toString()));
+          this.downloadJsonHref = uri;
+        }
+      }
+    });
+  }
+
+  private uploadLifecycle(){
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      let lifecycleFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ')
+      this.apiService.setLifecycle(this.lifecycleBucketName,lifecycleFileString).subscribe((data)=>{
+        console.log(data);
+        if(data["Success"]){
+          this.toastr.success('Lifecycyle has been uploaded for bucket: '+this.lifecycleBucketName+'', 'Success');
+        }else{
+          this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+        }
+      });
+    }
+    fileReader.readAsText(this.uploadLifecycleFile);
   }
 
 }

@@ -1,10 +1,18 @@
 <div class="container" style="padding-top: 30px;">
 	<div class="row">
-		<div class="col-9 col-md-9">
+		<div class="col-6 col-md-6">
 		    <h1>Policies</h1>
 		</div>
-		<div class="col-md-3 col-3 align-right">
-		    <button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy" (click)="isEditMode(false); resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Add policy</button>
+		<div class="col-md-6 col-6 align-right">
+			<div class="btn-group" role="group">
+				<button type="button" mdbBtn  gradient="purple" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#uploadPolicy" (click)="this.resetUploadForm(); uploadModal.show()" mdbWavesEffect>
+					<mdb-icon fas icon="upload" class="mr-1"></mdb-icon>Upload policy
+				</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" mdbBtn  gradient="aqua" rounded="true" class="relative waves-light" mdbWavesEffect rounded="true" data-toggle="modal" data-target="#addPolicy" (click)="isEditMode(false); resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()" mdbWavesEffect>
+					<mdb-icon fas icon="plus" class="mr-1"></mdb-icon>Build policy
+				</button>
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -80,11 +88,10 @@
 					</ul>
 				</td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-					<a (click)="rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
-
-					<a mdbTooltip="Remove Policy" placement="top" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-3">&nbsp;</span>
-
-		  			<a mdbTooltip="Edit or Copy Policy" placement="top" class="action-link" (click)="isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+					<a (click)="rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+					<a mdbTooltip="Remove Policy" placement="top" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+		  		<a mdbTooltip="Edit or Copy Policy" placement="top" class="action-link" (click)="isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+					<a mdbTooltip="Download Policy" placement="top" [href]="downloadJsonHref" download="{{objectKeys(policies[pol])}}.json" (click)="downloadPolicy(objectValues(policies[pol])[0])"><mdb-icon fas icon="download" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 				</td>
 			</tr>
 		</tbody>
@@ -118,6 +125,41 @@
             <div class="modal-footer justify-content-center">
                 <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="deleteApproveModal.hide()" mdbWavesEffect>Cancel</button>
                 <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="deletePolicy(); deleteApproveModal.hide()">Delete</button>
+            </div>
+        </div>
+    </div >
+</div >
+
+<!-- Upload -->
+
+<div mdbModal #uploadModal="mdbModal" class="modal fade right overflow-auto" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="uploadModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Upload Policy</h4>
+            </div>
+            <div class="modal-body">
+							<div class="row">
+								<div class="col-md-12 ml-auto">
+									<div class="d-flex justify-content-around p-1 mb-3 text-center">
+										<input type="text" class="form-control" placeholder="Policy Name" [(ngModel)]="uploadPolicyName" name="uploadPolicyName"  aria-label="policyName" aria-describedby="basic-addon1">
+									</div>
+									<div class="d-flex justify-content-around p-1 mb-3 text-center">
+										<div class="custom-file">
+										  <input type="file" accept=".policy,.json" class="custom-file-input" (change)="fileChanged($event)" #uploadPolicyFile name="uploadPolicyFile">
+										  <label class="custom-file-label" for="customFileLang">{{uploadPolicyFileName == "" ? "Choose .policy or .json file" : uploadPolicyFileName}}</label>
+										</div>
+									</div>
+								</div>
+						  </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="uploadModal.hide()" mdbWavesEffect>Cancel</button>
+		           	<button type="button" mdbBtn gradient="peach" rounded="true" class="relative waves-light" mdbWavesEffect (click)="uploadPolicy();uploadModal.hide()">Upload</button>
             </div>
         </div>
     </div >

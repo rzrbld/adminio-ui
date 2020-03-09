@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import { ApiService } from '../api.service';
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
 import { ToastrService } from 'ngx-toastr';
-
-
 
 @Component({
   selector: 'app-policies',
@@ -21,6 +20,10 @@ export class PoliciesComponent implements OnInit {
   policyToUpdate;
   modalEditMode;
   jsn = JSON;
+  uploadPolicyName;
+  uploadPolicyFile;
+  uploadPolicyFileName;
+  downloadJsonHref;
   modalCreateEditTitle;
   modalCreateEditButtonText;
 
@@ -64,7 +67,7 @@ export class PoliciesComponent implements OnInit {
   searchText: string = '';
 
 
-  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private cdRef: ChangeDetectorRef, private toastr: ToastrService, private sanitizer: DomSanitizer) { }
 
   @HostListener('input') oninput() {
     if(event && event['target'] !== undefined && event.target["id"] !== undefined && event.target["id"] == "search"){
@@ -81,6 +84,9 @@ export class PoliciesComponent implements OnInit {
     }
 
   }
+
+  @ViewChild('uploadPolicyFile', { static: true })
+  uploadFileInput: any;
 
   ngOnInit() {
   	this.getPolicies()
@@ -373,6 +379,13 @@ export class PoliciesComponent implements OnInit {
     });
   }
 
+  private downloadPolicy(jsonObj) {
+    var theJSON = JSON.stringify(jsonObj);
+    console.log("theJSON>>>>>>>>>>>",theJSON);
+    var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
+    this.downloadJsonHref = uri;
+  }
+
   public b64unpack(str){
     // console.log(JSON.parse(atob(str)))
   	return JSON.parse(atob(str));
@@ -479,6 +492,38 @@ export class PoliciesComponent implements OnInit {
 
   private removeBucketStatement(i){
     this.newStatement.Resource.splice(i,1)
+  }
+
+  private fileChanged(e) {
+    console.log("eventTriggered");
+
+    this.uploadPolicyFile = e.target.files[0];
+    this.uploadPolicyFileName = e.target.files[0].name;
+  }
+
+  private uploadPolicy(){
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      console.log(fileReader.result);
+      let policyFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ')
+      this.apiService.addPolicy(this.uploadPolicyName,policyFileString).subscribe((data)=>{
+        console.log(data);
+        if(data["Success"]){
+          this.toastr.success('Policy '+this.newPolicy.name+' has been created', 'Success');
+        }else{
+          this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+        }
+        this.getPolicies();
+      });
+    }
+    fileReader.readAsText(this.uploadPolicyFile);
+  }
+
+  private resetUploadForm(){
+    this.uploadFileInput.nativeElement.value = "";
+    this.uploadPolicyFile;
+    this.uploadPolicyName = "";
+    this.uploadPolicyFileName = "";
   }
 
   private createPolicy(){
