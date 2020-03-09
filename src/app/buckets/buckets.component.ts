@@ -183,6 +183,11 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   	}
   }
 
+  private bucketLifecycle(bucket){
+    console.log("Lifecycyle>>>>>>>>",bucket);
+
+  }
+
   private updateBucket() {
     this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true)
   }
