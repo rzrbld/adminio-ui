@@ -8,7 +8,7 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 ### Web UI abilities:
 | Kind   |      Create      |  List  | Update | Delete |
 |--------------|:-----------------------|:-----------:|:-----------:|:-----------:|
-| Bucket |  V  | V | add/remove events | V |
+| Bucket |  V  | V | add/remove events, change lifecycle | V |
 | User | V | V | update password, change policy | V |
 | Policy |  V | V | V | V |
 | Group |  V | V | add users to group, remove users, change ploicy | X |
@@ -18,7 +18,7 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 - create multiple buckets at once
 - fully editable policy constructor
 - copy policies
-- upload and download bucket lifecycles
+- upload and download bucket lifecycles and policies
 
 
 ### Run full stack demo
