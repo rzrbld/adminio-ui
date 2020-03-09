@@ -18,7 +18,6 @@ services:
       MINIO_ACCESS: test
       MINIO_SECRET: testtest123
       MINIO_HOST_PORT: minio:9000
-      ADMINIO_CORS_DOMAIN: *
     depends_on:
       - minio
       - adminio-ui
