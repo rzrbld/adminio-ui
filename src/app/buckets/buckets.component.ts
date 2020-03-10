@@ -264,9 +264,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private downloadLifecycle(bucket) {
     this.apiService.getLifecycle(bucket).subscribe((data)=>{
-      console.log(data);
+      // console.log(bucket, data);
       if(data["error"]){
-        this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
+        this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle'); //??????????????????
       }else{
         if(data==""){
           // this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');
@@ -288,7 +288,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
         if(data["Success"]){
           this.toastr.success('Lifecycyle has been uploaded for bucket: '+this.lifecycleBucketName+'', 'Success');
         }else{
-          this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+          this.toastr.error(JSON.stringify(data), 'Error while uploading lifecycyle');
         }
       });
     }
