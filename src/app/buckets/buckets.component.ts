@@ -266,7 +266,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.apiService.getLifecycle(bucket).subscribe((data)=>{
       // console.log(bucket, data);
       if(data["error"]){
-        this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle'); //??????????????????
+        this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
       }else{
         if(data==""){
           // this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');

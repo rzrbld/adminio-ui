@@ -90,8 +90,8 @@
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<a (click)="rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()"  mdbTooltip="View Raw JSON" placement="top"><mdb-icon fas icon="eye"  size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
 					<a mdbTooltip="Remove Policy" placement="top" (click)="deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
-		  		<a mdbTooltip="Edit or Copy Policy" placement="top" class="action-link" (click)="isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
-					<a mdbTooltip="Download Policy" placement="top" [href]="downloadJsonHref" download="{{objectKeys(policies[pol])}}.json" (click)="downloadPolicy(objectValues(policies[pol])[0])"><mdb-icon fas icon="download" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+		  		<a mdbTooltip="Edit or Copy Policy" placement="top" class="action-link" (click)="isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+					<a mdbTooltip="Download Policy" placement="top" [href]="downloadJsonHref" download="{{objectKeys(policies[pol])}}.json" (click)="downloadPolicy(objectValues(policies[pol])[0])"><mdb-icon fas icon="download" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
 				</td>
 			</tr>
 		</tbody>
