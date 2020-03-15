@@ -204,4 +204,8 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl+'/api/v1/get-bucket-lifecycle', form);
   }
 
+  public checkAuthStatus(){
+    return this.httpClient.get(this.baseUrl+'/auth/check');
+  }
+
 }
