@@ -97,12 +97,14 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private getServerInfo(){
     this.apiService.serverInfo().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       this.serviceInfo = data;
     });
   }
 
   private getDiskInfo(){
   	this.apiService.diskInfo().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       this.diskUsageInfo = data;
     });
   }
@@ -131,6 +133,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private getBuckets(){
   	this.apiService.getBucketsExtended().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log("BUCKETS >>>>>>",data);
       if(data!==null){
         this.buckets = data;
@@ -156,6 +159,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private deleteBucket(){
   	this.apiService.deleteBucket(this.bucketToDelete).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       if(data["Success"]){
         this.toastr.success('Bucket has been deleted', 'Success');
@@ -208,6 +212,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       eventTypesArr.push(eventTypes[i].itemName)
     }
     this.apiService.enableNotificationForBucket(bucket, stsARN, eventTypesArr.join(','), filterPrefix, filterSuffix).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       if(data["Success"]){
         this.toastr.success('Events for bucket: '+bucket+' has been enabled', 'Success');
         if(updateListAfter){
@@ -222,6 +227,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   private removeBucketEvents(){
     var bucket = this.bucketToRemoveNotifications;
     this.apiService.removeBucketEvents(bucket).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       if(data["Success"]){
         this.toastr.success('Events for bucket '+bucket+' has been removed', 'Success');
@@ -234,6 +240,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private createBucketSimple(bucket, eventARN){
   	this.apiService.createBucket(bucket).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       if(data["Success"]){
         this.toastr.success('Bucket: '+bucket+' has been created', 'Success');
@@ -264,6 +271,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private downloadLifecycle(bucket) {
     this.apiService.getLifecycle(bucket).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       // console.log(bucket, data);
       if(data["error"]){
         this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
@@ -284,6 +292,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     fileReader.onload = (e) => {
       let lifecycleFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ')
       this.apiService.setLifecycle(this.lifecycleBucketName,lifecycleFileString).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
         console.log(data);
         if(data["Success"]){
           this.toastr.success('Lifecycyle has been uploaded for bucket: '+this.lifecycleBucketName+'', 'Success');

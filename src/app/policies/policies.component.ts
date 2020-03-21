@@ -357,6 +357,7 @@ export class PoliciesComponent implements OnInit {
 
   private getPolicies(){
   	this.apiService.getPolicies().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       this.policiesRaw = data;
       const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: this.b64unpack(e[1]) } ));
@@ -369,6 +370,7 @@ export class PoliciesComponent implements OnInit {
 
   private deletePolicy(){
   	this.apiService.deletePolicy(this.policyToDelete).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       this.getPolicies();
       if(data["Success"]){
@@ -507,6 +509,7 @@ export class PoliciesComponent implements OnInit {
       console.log(fileReader.result);
       let policyFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ')
       this.apiService.addPolicy(this.uploadPolicyName,policyFileString).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
         console.log(data);
         if(data["Success"]){
           this.toastr.success('Policy '+this.newPolicy.name+' has been created', 'Success');
@@ -532,6 +535,7 @@ export class PoliciesComponent implements OnInit {
   	let policyString = JSON.stringify(this.newPolicyRaw);
 
   	this.apiService.addPolicy(this.newPolicy.name,policyString).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       if(data["Success"]){
         this.toastr.success('Policy '+this.newPolicy.name+' has been created', 'Success');

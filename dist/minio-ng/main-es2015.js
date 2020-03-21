@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n<!-- <div class=\"content hidden\" role=\"main\" [routerLink]=\"['/']\" routerLinkActive=\"visible\" [routerLinkActiveOptions]=\"{exact: true}\">\n</div> -->\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.81 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n<!-- <div class=\"content hidden\" role=\"main\" [routerLink]=\"['/']\" routerLinkActive=\"visible\" [routerLinkActiveOptions]=\"{exact: true}\">\n</div> -->\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.9 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n");
 
 /***/ }),
 
@@ -118,7 +118,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************!*\
   !*** ./node_modules/tslib/tslib.es6.js ***!
   \*****************************************/
-/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
+/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault, __classPrivateFieldGet, __classPrivateFieldSet */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -143,6 +143,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function() { return __makeTemplateObject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importStar", function() { return __importStar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importDefault", function() { return __importDefault; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__classPrivateFieldGet", function() { return __classPrivateFieldGet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__classPrivateFieldSet", function() { return __classPrivateFieldSet; });
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -211,10 +213,11 @@ function __metadata(metadataKey, metadataValue) {
 }
 
 function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 }
@@ -252,14 +255,15 @@ function __exportStar(m, exports) {
 }
 
 function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
-    return {
+    if (o && typeof o.length === "number") return {
         next: function () {
             if (o && i >= o.length) o = void 0;
             return { value: o && o[i++], done: !o };
         }
     };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
 
 function __read(o, n) {
@@ -340,6 +344,21 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
 
 /***/ }),
 
@@ -366,27 +385,32 @@ let ApiService = class ApiService {
         this.httpClient = httpClient;
         this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBaseUrl;
     }
+    validateAuthInResponse(data) {
+        if (data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true) {
+            window.location.href = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBaseUrl + '/auth/?state=' + window.location.href;
+        }
+    }
     serverInfo() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/server-info');
+        return this.httpClient.get(this.baseUrl + '/api/v2/server/common-info');
     }
     diskInfo() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/disk-info');
+        return this.httpClient.get(this.baseUrl + '/api/v2/server/disk-info');
     }
     getUsers() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/list-users');
+        return this.httpClient.get(this.baseUrl + '/api/v2/users/list');
     }
     addUser(access, secret) {
         let form = new FormData();
         form.append('accessKey', access);
         form.append('secretKey', secret);
-        return this.httpClient.post(this.baseUrl + '/api/v1/add-user', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/user/create', form);
     }
     addUserExtended(access, secret, policy) {
         let form = new FormData();
         form.append('accessKey', access);
         form.append('secretKey', secret);
         form.append('policyName', policy);
-        return this.httpClient.post(this.baseUrl + '/api/v1/create-user-extended', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/user/create-extended', form);
     }
     updateUser(access, secret, policy, status) {
         let form = new FormData();
@@ -394,38 +418,38 @@ let ApiService = class ApiService {
         form.append('secretKey', secret);
         form.append('policyName', policy);
         form.append('status', status);
-        return this.httpClient.post(this.baseUrl + '/api/v1/set-user', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/user/update', form);
     }
     setStatusUser(access, status) {
         let form = new FormData();
         form.append('accessKey', access);
         form.append('status', status);
-        return this.httpClient.post(this.baseUrl + '/api/v1/set-status-user', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/user/set-status', form);
     }
     deleteUser(access) {
         let form = new FormData();
         form.append('accessKey', access);
-        return this.httpClient.post(this.baseUrl + '/api/v1/delete-user', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/user/delete', form);
     }
     getPolicies() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/list-policies');
+        return this.httpClient.get(this.baseUrl + '/api/v2/policies/list');
     }
     deletePolicy(policy) {
         let form = new FormData();
         form.append('policyName', policy);
-        return this.httpClient.post(this.baseUrl + '/api/v1/delete-policy', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/policy/delete', form);
     }
     addPolicy(policyName, policyString) {
         let form = new FormData();
         form.append('policyName', policyName);
         form.append('policyString', policyString);
-        return this.httpClient.post(this.baseUrl + '/api/v1/add-policy', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/policy/create', form);
     }
     getBuckets() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/list-buckets');
+        return this.httpClient.get(this.baseUrl + '/api/v2/buckets/list');
     }
     getBucketsExtended() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/list-buckets-extended');
+        return this.httpClient.get(this.baseUrl + '/api/v2/buckets/list-extended');
     }
     enableNotificationForBucket(bucket, stsARN, eventTypes, filterPrefix, filterSuffix) {
         //put,get,delete
@@ -435,66 +459,69 @@ let ApiService = class ApiService {
         form.append('eventTypes', eventTypes);
         form.append('filterPrefix', filterPrefix);
         form.append('filterSuffix', filterSuffix);
-        return this.httpClient.post(this.baseUrl + '/api/v1/set-bucket-events', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/set-events', form);
     }
     getBucketEvents(bucket) {
         let form = new FormData();
         form.append('bucket', bucket);
-        return this.httpClient.post(this.baseUrl + '/api/v1/get-bucket-events', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-events', form);
     }
     removeBucketEvents(bucket) {
         let form = new FormData();
         form.append('bucket', bucket);
-        return this.httpClient.post(this.baseUrl + '/api/v1/remove-bucket-events', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/remove-events', form);
     }
     deleteBucket(bucket) {
         let form = new FormData();
         form.append('bucketName', bucket);
-        return this.httpClient.post(this.baseUrl + '/api/v1/delete-bucket', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/delete', form);
     }
     createBucket(bucket) {
         let form = new FormData();
         form.append('newBucket', bucket);
-        return this.httpClient.post(this.baseUrl + '/api/v1/make-bucket', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/create', form);
     }
     getGroups() {
-        return this.httpClient.get(this.baseUrl + '/api/v1/list-groups');
+        return this.httpClient.get(this.baseUrl + '/api/v2/groups/list');
     }
     updateMembersGroup(group, members, IsRemove) {
         let form = new FormData();
         form.append('group', group);
         form.append('members', members);
         form.append('IsRemove', IsRemove);
-        return this.httpClient.post(this.baseUrl + '/api/v1/update-members-group', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/group/update-members', form);
     }
     getGroupDescription(group) {
         let form = new FormData();
         form.append('group', group);
-        return this.httpClient.post(this.baseUrl + '/api/v1/get-description-group', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/group/get-description', form);
     }
     setStatusGroup(group, status) {
         let form = new FormData();
         form.append('group', group);
         form.append('status', status);
-        return this.httpClient.post(this.baseUrl + '/api/v1/set-status-group', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/group/set-status', form);
     }
     setPolicy(policyName, entityName, isGroup) {
         let form = new FormData();
         form.append('policyName', policyName);
         form.append('entityName', entityName);
         form.append('isGroup', isGroup);
-        return this.httpClient.post(this.baseUrl + '/api/v1/set-policy', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/policy/update', form);
     }
     setLifecycle(bucketName, lifecycle) {
         let form = new FormData();
         form.append('bucketName', bucketName);
         form.append('lifecycle', lifecycle);
-        return this.httpClient.post(this.baseUrl + '/api/v1/set-bucket-lifecycle', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/set-lifecycle', form);
     }
     getLifecycle(bucketName) {
         let form = new FormData();
         form.append('bucketName', bucketName);
-        return this.httpClient.post(this.baseUrl + '/api/v1/get-bucket-lifecycle', form);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-lifecycle', form);
+    }
+    checkAuthStatus() {
+        return this.httpClient.get(this.baseUrl + '/auth/check');
     }
 };
 ApiService.ctorParameters = () => [
@@ -581,13 +608,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api.service */ "./src/app/api.service.ts");
+
 
 
 let AppComponent = class AppComponent {
-    constructor() {
-        this.title = 'minio-ng';
+    constructor(apiService) {
+        this.apiService = apiService;
+        this.title = 'Adminio-UI';
+    }
+    ngOnInit() {
+        this.checkAuthStatus();
+    }
+    checkAuthStatus() {
+        this.apiService.checkAuthStatus().subscribe((data) => {
+            console.log("DATA AUTH>>>", data);
+            this.apiService.validateAuthInResponse(data);
+        });
     }
 };
+AppComponent.ctorParameters = () => [
+    { type: _api_service__WEBPACK_IMPORTED_MODULE_2__["ApiService"] }
+];
 AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-root',
@@ -791,11 +833,13 @@ let BucketsComponent = class BucketsComponent {
     }
     getServerInfo() {
         this.apiService.serverInfo().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             this.serviceInfo = data;
         });
     }
     getDiskInfo() {
         this.apiService.diskInfo().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             this.diskUsageInfo = data;
         });
     }
@@ -818,6 +862,7 @@ let BucketsComponent = class BucketsComponent {
     }
     getBuckets() {
         this.apiService.getBucketsExtended().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log("BUCKETS >>>>>>", data);
             if (data !== null) {
                 this.buckets = data;
@@ -840,6 +885,7 @@ let BucketsComponent = class BucketsComponent {
     }
     deleteBucket() {
         this.apiService.deleteBucket(this.bucketToDelete).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data["Success"]) {
                 this.toastr.success('Bucket has been deleted', 'Success');
@@ -888,6 +934,7 @@ let BucketsComponent = class BucketsComponent {
             eventTypesArr.push(eventTypes[i].itemName);
         }
         this.apiService.enableNotificationForBucket(bucket, stsARN, eventTypesArr.join(','), filterPrefix, filterSuffix).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             if (data["Success"]) {
                 this.toastr.success('Events for bucket: ' + bucket + ' has been enabled', 'Success');
                 if (updateListAfter) {
@@ -902,6 +949,7 @@ let BucketsComponent = class BucketsComponent {
     removeBucketEvents() {
         var bucket = this.bucketToRemoveNotifications;
         this.apiService.removeBucketEvents(bucket).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data["Success"]) {
                 this.toastr.success('Events for bucket ' + bucket + ' has been removed', 'Success');
@@ -914,6 +962,7 @@ let BucketsComponent = class BucketsComponent {
     }
     createBucketSimple(bucket, eventARN) {
         this.apiService.createBucket(bucket).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data["Success"]) {
                 this.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
@@ -941,6 +990,7 @@ let BucketsComponent = class BucketsComponent {
     }
     downloadLifecycle(bucket) {
         this.apiService.getLifecycle(bucket).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             // console.log(bucket, data);
             if (data["error"]) {
                 this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
@@ -962,6 +1012,7 @@ let BucketsComponent = class BucketsComponent {
         fileReader.onload = (e) => {
             let lifecycleFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ');
             this.apiService.setLifecycle(this.lifecycleBucketName, lifecycleFileString).subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 console.log(data);
                 if (data["Success"]) {
                     this.toastr.success('Lifecycyle has been uploaded for bucket: ' + this.lifecycleBucketName + '', 'Success');
@@ -1197,6 +1248,7 @@ let GroupsComponent = class GroupsComponent {
         this.groupsWithMembers = [];
         this.previous = "";
         this.apiService.getGroups().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data !== null) {
                 this.groups = data;
@@ -1217,6 +1269,7 @@ let GroupsComponent = class GroupsComponent {
     }
     getListOfUsers() {
         this.apiService.getUsers().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             if (data !== null) {
                 this.dropdownList = Object.entries(data).map((e) => ({ "id": e[0], "itemName": e[0] }));
             }
@@ -1241,6 +1294,7 @@ let GroupsComponent = class GroupsComponent {
     }
     getListOfPolicies() {
         this.apiService.getPolicies().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             this.policies = Object.keys(data);
             this.rawPolicies = data;
         });
@@ -1253,6 +1307,7 @@ let GroupsComponent = class GroupsComponent {
     }
     wipeGroupMembers() {
         this.apiService.updateMembersGroup(this.newGroupName, this.usersToRemove, "true").subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             if (data["Success"]) {
                 this.toastr.success('Group: ' + this.newGroupName + ' members has been removed', 'Success');
                 this.usersToRemove = [];
@@ -1265,6 +1320,7 @@ let GroupsComponent = class GroupsComponent {
     updatePolicy() {
         if (this.newGroupPolicy !== null && this.newGroupPolicy != "") {
             this.apiService.setPolicy(this.newGroupPolicy, this.newGroupName, "true").subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 if (data["Success"]) {
                     this.toastr.success('Group: ' + this.newGroupName + ' policy has been set to ' + this.newGroupPolicy, 'Success');
                 }
@@ -1277,6 +1333,7 @@ let GroupsComponent = class GroupsComponent {
     updateStatus() {
         if (this.newGroupStatus !== null && this.newGroupStatus != "") {
             this.apiService.setStatusGroup(this.newGroupName, this.newGroupStatus).subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 if (data["Success"]) {
                     this.toastr.success('Group: ' + this.newGroupName + ' status has been set to ' + this.newGroupStatus, 'Success');
                 }
@@ -1301,6 +1358,7 @@ let GroupsComponent = class GroupsComponent {
         //add all new users to group
         if (newMembers.length > 0) {
             this.apiService.updateMembersGroup(this.newGroupName, newMembers, "false").subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 if (data["Success"]) {
                     this.toastr.success('Group: ' + this.newGroupName + ' has been created', 'Success');
                 }
@@ -1381,6 +1439,9 @@ let LoaderInterceptor = class LoaderInterceptor {
         this.loaderService.isLoading.next(this.requests.length > 0);
     }
     intercept(req, next) {
+        req = req.clone({
+            withCredentials: true
+        });
         this.requests.push(req);
         this.loaderService.isLoading.next(true);
         return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].create(observer => {
@@ -1458,7 +1519,7 @@ LoaderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("dialog {\n  width: 300px;\n}\n\ndialog::-webkit-backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3J6cmJsZC9yZXBvcy9hZG1pbmlvLXVpL3NyYy9hcHAvbG9hZGVyL2xvYWRlci5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvbG9hZGVyL2xvYWRlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFlBQUE7QUNDSjs7QURDRztFQUNDLDhCQUFBO0FDRUo7O0FESEc7RUFDQyw4QkFBQTtBQ0VKIiwiZmlsZSI6InNyYy9hcHAvbG9hZGVyL2xvYWRlci5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImRpYWxvZyB7XG4gICAgd2lkdGg6IDMwMHB4O1xuICAgfVxuICAgZGlhbG9nOjpiYWNrZHJvcCB7XG4gICAgYmFja2dyb3VuZDogcmdiYSgwLDAsMCwwLjcpO1xuICAgfSIsImRpYWxvZyB7XG4gIHdpZHRoOiAzMDBweDtcbn1cblxuZGlhbG9nOjpiYWNrZHJvcCB7XG4gIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC43KTtcbn0iXX0= */");
+/* harmony default export */ __webpack_exports__["default"] = ("dialog {\n  width: 300px;\n}\n\ndialog::-webkit-backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9yenJibGQvcmVwb3MvYWRtaW5pby11aS9zcmMvYXBwL2xvYWRlci9sb2FkZXIuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2xvYWRlci9sb2FkZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0FDQ0o7O0FEQ0c7RUFDQyw4QkFBQTtBQ0VKOztBREhHO0VBQ0MsOEJBQUE7QUNFSiIsImZpbGUiOiJzcmMvYXBwL2xvYWRlci9sb2FkZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJkaWFsb2cge1xuICAgIHdpZHRoOiAzMDBweDtcbiAgIH1cbiAgIGRpYWxvZzo6YmFja2Ryb3Age1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwwLDAsMC43KTtcbiAgIH0iLCJkaWFsb2cge1xuICB3aWR0aDogMzAwcHg7XG59XG5cbmRpYWxvZzo6YmFja2Ryb3Age1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNyk7XG59Il19 */");
 
 /***/ }),
 
@@ -1843,6 +1904,7 @@ let PoliciesComponent = class PoliciesComponent {
     }
     getPolicies() {
         this.apiService.getPolicies().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             this.policiesRaw = data;
             const arrayOfPolicies = Object.entries(data).map((e) => ({ [e[0]]: this.b64unpack(e[1]) }));
@@ -1854,6 +1916,7 @@ let PoliciesComponent = class PoliciesComponent {
     }
     deletePolicy() {
         this.apiService.deletePolicy(this.policyToDelete).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             this.getPolicies();
             if (data["Success"]) {
@@ -1978,6 +2041,7 @@ let PoliciesComponent = class PoliciesComponent {
             console.log(fileReader.result);
             let policyFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ');
             this.apiService.addPolicy(this.uploadPolicyName, policyFileString).subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 console.log(data);
                 if (data["Success"]) {
                     this.toastr.success('Policy ' + this.newPolicy.name + ' has been created', 'Success');
@@ -2000,6 +2064,7 @@ let PoliciesComponent = class PoliciesComponent {
         console.log(this.newPolicy, this.newPolicyRaw);
         let policyString = JSON.stringify(this.newPolicyRaw);
         this.apiService.addPolicy(this.newPolicy.name, policyString).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data["Success"]) {
                 this.toastr.success('Policy ' + this.newPolicy.name + ' has been created', 'Success');
@@ -2150,11 +2215,13 @@ let ServerComponent = class ServerComponent {
     }
     serverInfo() {
         this.apiService.serverInfo().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             this.serviceInfo = data;
         });
     }
     diskInfo() {
         this.apiService.diskInfo().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log("Disk Usege >>>>>>>>>>>>", data);
             this.diskUsageInfo = data;
             if (data.hasOwnProperty('objectsSizesHistogram')) {
@@ -2319,6 +2386,7 @@ let UsersComponent = class UsersComponent {
     }
     getListOfUsers() {
         this.apiService.getUsers().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             this.usersRaw = data;
             const arrayOfUsers = Object.entries(data).map((e) => ({ [e[0]]: e[1] }));
@@ -2330,6 +2398,7 @@ let UsersComponent = class UsersComponent {
     }
     getListOfPolicies() {
         this.apiService.getPolicies().subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             this.policies = Object.keys(data);
         });
     }
@@ -2340,6 +2409,7 @@ let UsersComponent = class UsersComponent {
         console.log(userPolicy);
         if (userPolicy != '') {
             this.apiService.addUserExtended(userAccess, userSecret, userPolicy).subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 console.log(data);
                 this.getListOfUsers();
                 if (data["Success"]) {
@@ -2352,6 +2422,7 @@ let UsersComponent = class UsersComponent {
         }
         else {
             this.apiService.addUser(userAccess, userSecret).subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
                 console.log(data);
                 this.getListOfUsers();
                 if (data["Success"]) {
@@ -2371,6 +2442,7 @@ let UsersComponent = class UsersComponent {
             status = 'enabled';
         }
         this.apiService.setStatusUser(accessKey, status).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data["Success"]) {
                 this.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
@@ -2403,6 +2475,7 @@ let UsersComponent = class UsersComponent {
         var updatedPolicy = this.updateUser.value.policyUpdate;
         var updatedStatus = this.updateUser.value.statusUpdate;
         this.apiService.updateUser(this.userToUpdate, updatedSecret, updatedPolicy, updatedStatus).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             this.getListOfUsers();
             if (data["Success"]) {
@@ -2415,6 +2488,7 @@ let UsersComponent = class UsersComponent {
     }
     deleteUser() {
         this.apiService.deleteUser(this.userToDelete).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
             console.log(data);
             if (data["Success"]) {
                 this.toastr.success('User: ' + this.userToDelete + ' has been deleted', 'Success');
@@ -2505,7 +2579,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/rzrbld/repos/adminio-ui/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/rzrbld/repos/adminio-ui/src/main.ts */"./src/main.ts");
 
 
 /***/ })

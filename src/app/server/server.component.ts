@@ -72,12 +72,14 @@ export class ServerComponent implements OnInit {
 
   private serverInfo(){
   	this.apiService.serverInfo().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       this.serviceInfo = data;
     });
   }
 
   private diskInfo(){
   	this.apiService.diskInfo().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log("Disk Usege >>>>>>>>>>>>",data);
       this.diskUsageInfo = data;
       if(data.hasOwnProperty('objectsSizesHistogram')){
