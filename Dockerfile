@@ -18,6 +18,8 @@ RUN cd /app/adminio-ui && npm run build
 
 FROM nginx:1.17-alpine
 
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=build /app/adminio-ui/dist /usr/share/nginx/html
 
 EXPOSE 80

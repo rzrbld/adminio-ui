@@ -9,11 +9,11 @@ services:
       MINIO_SECRET_KEY: testtest123
     command: server /data
   adminio-ui:
-    image: rzrbld/adminio-ui:latest
+    image: rzrbldt/adminio-ui:test2
     ports:
       - "80:80"
   adminio-api:
-    image: rzrbld/adminio-api:latest
+    image: rzrbldt/adminio-api:test
     environment:
       MINIO_ACCESS: test
       MINIO_SECRET: testtest123
