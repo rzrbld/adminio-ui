@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../environments/environment';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,15 +18,15 @@ export class ApiService {
   }
 
   public serverInfo(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/server-info');
+    return this.httpClient.get(this.baseUrl+'/api/v2/server/common-info');
   }
 
   public diskInfo(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/disk-info');
+    return this.httpClient.get(this.baseUrl+'/api/v2/server/disk-info');
   }
 
   public getUsers(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/list-users');
+    return this.httpClient.get(this.baseUrl+'/api/v2/users/list');
   }
 
   public addUser(access,secret){
@@ -37,7 +35,7 @@ export class ApiService {
     form.append('accessKey', access);
     form.append('secretKey', secret);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/add-user', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/user/create', form)
   }
 
   public addUserExtended(access,secret,policy){
@@ -47,7 +45,7 @@ export class ApiService {
     form.append('secretKey', secret);
     form.append('policyName', policy);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/create-user-extended', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/user/create-extended', form)
   }
 
   public updateUser(access,secret,policy,status){
@@ -58,7 +56,7 @@ export class ApiService {
     form.append('policyName', policy);
     form.append('status', status);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/set-user', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/user/update', form)
   }
 
 
@@ -68,7 +66,7 @@ export class ApiService {
     form.append('accessKey', access);
     form.append('status', status);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/set-status-user', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/user/set-status', form)
   }
 
   public deleteUser(access){
@@ -76,11 +74,11 @@ export class ApiService {
 
     form.append('accessKey', access);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/delete-user', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/user/delete', form)
   }
 
   public getPolicies(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/list-policies');
+    return this.httpClient.get(this.baseUrl+'/api/v2/policies/list');
   }
 
   public deletePolicy(policy){
@@ -88,7 +86,7 @@ export class ApiService {
 
     form.append('policyName', policy);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/delete-policy', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/policy/delete', form)
   }
 
   public addPolicy(policyName, policyString){
@@ -97,15 +95,15 @@ export class ApiService {
     form.append('policyName', policyName);
     form.append('policyString', policyString);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/add-policy', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/policy/create', form)
   }
 
   public getBuckets(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/list-buckets');
+    return this.httpClient.get(this.baseUrl+'/api/v2/buckets/list');
   }
 
   public getBucketsExtended(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/list-buckets-extended');
+    return this.httpClient.get(this.baseUrl+'/api/v2/buckets/list-extended');
   }
 
   public enableNotificationForBucket(bucket, stsARN, eventTypes, filterPrefix, filterSuffix){
@@ -118,21 +116,21 @@ export class ApiService {
     form.append('filterPrefix', filterPrefix);
     form.append('filterSuffix', filterSuffix);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/set-bucket-events', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-events', form)
   }
 
   public getBucketEvents(bucket){
     let form = new FormData();
 
     form.append('bucket', bucket);
-    return this.httpClient.post(this.baseUrl+'/api/v1/get-bucket-events',form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-events',form)
   }
 
   public removeBucketEvents(bucket){
     let form = new FormData();
 
     form.append('bucket', bucket);
-    return this.httpClient.post(this.baseUrl+'/api/v1/remove-bucket-events',form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/remove-events',form)
   }
 
   public deleteBucket(bucket){
@@ -140,7 +138,7 @@ export class ApiService {
 
     form.append('bucketName', bucket);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/delete-bucket', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/delete', form)
   }
 
   public createBucket(bucket){
@@ -148,11 +146,11 @@ export class ApiService {
 
     form.append('newBucket', bucket);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/make-bucket', form)
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/create', form)
   }
 
   public getGroups(){
-    return this.httpClient.get(this.baseUrl+'/api/v1/list-groups');
+    return this.httpClient.get(this.baseUrl+'/api/v2/groups/list');
   }
 
   public updateMembersGroup(group,members,IsRemove){
@@ -162,7 +160,7 @@ export class ApiService {
     form.append('members', members);
     form.append('IsRemove', IsRemove);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/update-members-group', form);
+    return this.httpClient.post(this.baseUrl+'/api/v2/group/update-members', form);
   }
 
   public getGroupDescription(group){
@@ -170,7 +168,7 @@ export class ApiService {
 
     form.append('group', group);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/get-description-group', form);
+    return this.httpClient.post(this.baseUrl+'/api/v2/group/get-description', form);
   }
 
   public setStatusGroup(group,status){
@@ -179,7 +177,7 @@ export class ApiService {
     form.append('group', group);
     form.append('status', status);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/set-status-group', form);
+    return this.httpClient.post(this.baseUrl+'/api/v2/group/set-status', form);
   }
 
   public setPolicy(policyName,entityName,isGroup){
@@ -189,7 +187,7 @@ export class ApiService {
     form.append('entityName', entityName);
     form.append('isGroup', isGroup);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/set-policy', form);
+    return this.httpClient.post(this.baseUrl+'/api/v2/policy/update', form);
   }
 
   public setLifecycle(bucketName,lifecycle){
@@ -198,7 +196,7 @@ export class ApiService {
     form.append('bucketName', bucketName);
     form.append('lifecycle', lifecycle);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/set-bucket-lifecycle', form);
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-lifecycle', form);
   }
 
 
@@ -207,7 +205,7 @@ export class ApiService {
 
     form.append('bucketName', bucketName);
 
-    return this.httpClient.post(this.baseUrl+'/api/v1/get-bucket-lifecycle', form);
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-lifecycle', form);
   }
 
   public checkAuthStatus(){
