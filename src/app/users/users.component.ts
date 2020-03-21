@@ -124,6 +124,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   private getListOfUsers(){
   	this.apiService.getUsers().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data)
       this.usersRaw = data;
       const arrayOfUsers = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
@@ -137,6 +138,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   private getListOfPolicies(){
   	this.apiService.getPolicies().subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       this.policies = Object.keys(data);
     });
   }
@@ -150,6 +152,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   	if(userPolicy!=''){
   		this.apiService.addUserExtended(userAccess,userSecret,userPolicy).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
 	      console.log(data);
 	      this.getListOfUsers();
         if(data["Success"]){
@@ -160,6 +163,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 	    });
   	}else{
   		this.apiService.addUser(userAccess,userSecret).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
 	      console.log(data);
 	      this.getListOfUsers();
         if(data["Success"]){
@@ -178,6 +182,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   		status = 'enabled'
   	}
   	this.apiService.setStatusUser(accessKey,status).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       if(data["Success"]){
           this.toastr.success('User: '+accessKey+' status has changed to '+status, 'Success');
@@ -214,6 +219,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     var updatedStatus = this.updateUser.value.statusUpdate;
 
     this.apiService.updateUser(this.userToUpdate,updatedSecret,updatedPolicy,updatedStatus).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
         console.log(data);
         this.getListOfUsers();
         if(data["Success"]){
@@ -227,6 +233,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   private deleteUser(){
   	this.apiService.deleteUser(this.userToDelete).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
       console.log(data);
       if(data["Success"]){
           this.toastr.success('User: '+this.userToDelete+' has been deleted', 'Success');

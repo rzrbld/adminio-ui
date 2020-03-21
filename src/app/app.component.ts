@@ -19,13 +19,7 @@ export class AppComponent implements OnInit {
   private checkAuthStatus(){
     this.apiService.checkAuthStatus().subscribe((data)=>{
       console.log("DATA AUTH>>>", data);
-      this.validateAuth(data)
+      this.apiService.validateAuthInResponse(data)
     });
-  }
-
-  private validateAuth(data){
-    if(data.oauth != false && data.auth != true){
-      window.location.href = environment.apiBaseUrl+'/auth/?state='+window.location.href;
-    }
   }
 }

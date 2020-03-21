@@ -158,6 +158,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 		this.groupsWithMembers = [];
 		this.previous = "";
 		this.apiService.getGroups().subscribe((data)=>{
+			this.apiService.validateAuthInResponse(data)
 		  console.log(data);
 		  if(data!==null){
 		    this.groups = data;
@@ -180,6 +181,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	}
 	private getListOfUsers(){
 		this.apiService.getUsers().subscribe((data)=>{
+			this.apiService.validateAuthInResponse(data)
 			if(data!==null){
 				this.dropdownList = Object.entries(data).map((e) => ( { "id":e[0],"itemName":e[0] } ));
 			}
@@ -206,6 +208,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 
 	private getListOfPolicies(){
 		this.apiService.getPolicies().subscribe((data)=>{
+			this.apiService.validateAuthInResponse(data)
 		  this.policies = Object.keys(data);
 		  this.rawPolicies = data;
 		});
@@ -221,6 +224,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	private wipeGroupMembers(){
 
 		this.apiService.updateMembersGroup(this.newGroupName,this.usersToRemove,"true").subscribe((data)=>{
+			  this.apiService.validateAuthInResponse(data)
 	      if(data["Success"]){
 	        this.toastr.success('Group: '+this.newGroupName+' members has been removed', 'Success');
 	        this.usersToRemove = [];
@@ -233,6 +237,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	private updatePolicy(){
 		if(this.newGroupPolicy !== null && this.newGroupPolicy != ""){
 	    	this.apiService.setPolicy(this.newGroupPolicy,this.newGroupName,"true").subscribe((data)=>{
+					this.apiService.validateAuthInResponse(data)
 		      if(data["Success"]){
 		        this.toastr.success('Group: '+this.newGroupName+' policy has been set to '+this.newGroupPolicy, 'Success');
 		      }else{
@@ -245,6 +250,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	private updateStatus(){
 		if(this.newGroupStatus !== null && this.newGroupStatus != ""){
 	    	this.apiService.setStatusGroup(this.newGroupName,this.newGroupStatus).subscribe((data)=>{
+					this.apiService.validateAuthInResponse(data)
 		      if(data["Success"]){
 		        this.toastr.success('Group: '+this.newGroupName+' status has been set to '+this.newGroupStatus, 'Success');
 		      }else{
@@ -271,6 +277,7 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 		//add all new users to group
 		if(newMembers.length > 0){
 			this.apiService.updateMembersGroup(this.newGroupName,newMembers,"false").subscribe((data)=>{
+				  this.apiService.validateAuthInResponse(data)
 		      if(data["Success"]){
 		        this.toastr.success('Group: '+this.newGroupName+' has been created', 'Success');
 		      }else{

@@ -13,6 +13,12 @@ export class ApiService {
 
   baseUrl = environment.apiBaseUrl;
 
+  public validateAuthInResponse(data){
+    if(data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true){
+      window.location.href = environment.apiBaseUrl+'/auth/?state='+window.location.href;
+    }
+  }
+
   public serverInfo(){
     return this.httpClient.get(this.baseUrl+'/api/v1/server-info');
   }
