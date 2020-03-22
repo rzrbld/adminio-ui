@@ -13,7 +13,7 @@ services:
     ports:
       - "80:80"
   adminio-api:
-    image: rzrbld/adminio-api:release-0.91
+    image: rzrbld/adminio-api:release-0.92
     environment:
       MINIO_ACCESS: test
       MINIO_SECRET: testtest123
