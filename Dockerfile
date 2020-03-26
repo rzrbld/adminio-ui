@@ -11,7 +11,7 @@ ENV ADMINIO_PROD false
 RUN \
     git clone https://github.com/rzrbld/adminio-ui && \
     cd adminio-ui && \
-    npm install -g @angular/cli@8.3.8 && npm install
+    npm install -g @angular/cli@9.1.0 && npm install
 
 RUN cd /app/adminio-ui && npm run build
 
