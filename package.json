@@ -24,7 +24,7 @@
     "@angular/router": "^8.2.14",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@types/chart.js": "^2.9.16",
-    "angular-bootstrap-md": "^8.10.1",
+    "angular-bootstrap-md": "^9.0.0",
     "angular2-multiselect-dropdown": "^4.6.3",
     "animate.css": "^3.7.2",
     "bootstrap": "^4.4.1",
