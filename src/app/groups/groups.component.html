@@ -32,7 +32,7 @@
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{groups[i].status}}</td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{commaToBr(groups[i].members)}}</td>
 	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-	  	  	<a mdbTooltip="Edit Group" placement="top" (click)="resetForm();getGroupDescription(groups[i].name);addGroupModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-3" aria-hidden="true"></mdb-icon></a>
+	  	  	<a mdbTooltip="Edit Group" placement="top" (click)="resetForm();getGroupDescription(groups[i].name);addGroupModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>
