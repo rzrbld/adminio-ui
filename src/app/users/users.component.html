@@ -30,7 +30,7 @@
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><span *ngIf="objectValues(users[key])[0].policyName">{{objectValues(users[key])[0].policyName}}</span></td>
 				<td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 					<div class="custom-control custom-switch">
-					  <input type="checkbox" class="custom-control-input" id="customSwitch{{objectKeys(users[key])}}" [attr.checked]="objectValues(users[key])[0].status == 'enabled' ? '' : null" (click)="setStatusUser(objectKeys(users[key]),objectValues(users[key])[0].status)">
+						<input type="checkbox" class="custom-control-input" id="customSwitch{{objectKeys(users[key])}}" [ngModel]="usersRaw[objectKeys(users[key])].status == 'enabled' ? true : null" (click)="setStatusUser(objectKeys(users[key]),usersRaw[objectKeys(users[key])].status)">
 					  <label mdbTooltip="Enable or Disable User" placement="top" class="custom-control-label" for="customSwitch{{objectKeys(users[key])}}">&nbsp;{{objectValues(users[key])[0].status}}</label>
 					</div>
 				</td>
