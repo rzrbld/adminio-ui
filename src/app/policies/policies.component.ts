@@ -360,7 +360,7 @@ export class PoliciesComponent implements OnInit {
       this.apiService.validateAuthInResponse(data)
       console.log(data);
       this.policiesRaw = data;
-      const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: this.b64unpack(e[1]) } ));
+      const arrayOfPolicies = Object.entries(data).map((e) => ( { [e[0]]: e[1] } ));
       this.policies = arrayOfPolicies;
       this.mdbTable.setDataSource(arrayOfPolicies);
       console.log(arrayOfPolicies)
@@ -386,11 +386,6 @@ export class PoliciesComponent implements OnInit {
     console.log("theJSON>>>>>>>>>>>",theJSON);
     var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
     this.downloadJsonHref = uri;
-  }
-
-  public b64unpack(str){
-    // console.log(JSON.parse(atob(str)))
-  	return JSON.parse(atob(str));
   }
 
   private rawPrepare(obj){
@@ -568,7 +563,7 @@ export class PoliciesComponent implements OnInit {
     this.resetPloicyForm(false)
     this.newPolicy.name = policy;
 
-    var oldPolicy = this.b64unpack(this.policiesRaw[policy])
+    var oldPolicy = this.policiesRaw[policy]
     this.newPolicyRaw.Statement = oldPolicy.Statement;
   }
 
