@@ -3,6 +3,8 @@ This is a Web UI for [minio](https://min.io) s3 server.
 Web UI works on top of REST API - [adminio-API](https://github.com/rzrbld/adminio-api)
 Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.com)
 
+![Docker hub stats](https://img.shields.io/docker/pulls/rzrbld/adminio-ui?style=flat-square) ![GitHub License](https://img.shields.io/github/license/rzrbld/adminio-ui?style=flat-square)
+
 ![screenshot1](https://raw.githubusercontent.com/rzrbld/adminio-ui/master/images/image.gif)
 
 ### Web UI abilities:
@@ -11,7 +13,7 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 | Bucket |  V  | V | add/remove events, change lifecycle | V |
 | User | V | V | update password, change policy | V |
 | Policy |  V | V | V | V |
-| Group |  V | V | add users to group, remove users, change ploicy | X |
+| Group |  V | V | add users to group, remove users, change ploicy | only if group is empty (has no members) |
 
 
 ### Extra features:

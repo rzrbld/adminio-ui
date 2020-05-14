@@ -60,12 +60,39 @@
 
 <!-- Footer -->
 <footer class="page-footer font-small transparent fixed-bottom">
+  <div class="row">
 
-  <!-- Copyright -->
-  <div class="text-right py-3 transparent">
-    <a href="https://github.com/rzrbld/adminio-ui">adminio sources</a> | v:0.96 &nbsp;&nbsp;
+    <!-- Grid column -->
+    <div class="col-md-4 mt-md-0 mt-3">
+      {{apiService.getBackendsUrls()}}
+      <!-- Content -->
+      <div *ngIf="apiService.getMultiBackendStatus()">
+        <select class="browser-default custom-select" (change)=apiService.overrideBackend() title="Select backend">
+          <option value="" disabled selected>Select backend</option>
+          <option [value]="bakend" *ngFor="let backend of apiService.getBackendsUrls()">{{backend.name}} ({{backend.url}})</option>
+        </select>
+      </div>
+
+    </div>
+    <!-- Grid column -->
+
+    <hr class="clearfix w-100 d-md-none pb-3">
+    <!-- Grid column -->
+    <div class="col-md-8 mb-md-0 mb-3">
+      <!-- Content -->
+      <div class="text-right py-3 transparent">
+        <a href="https://github.com/rzrbld/adminio-ui">adminio sources</a> | v:0.96 &nbsp;&nbsp;
+      </div>
+    </div>
+    <!-- Grid column -->
+
   </div>
-  <!-- Copyright -->
+  <!-- <div class="md-form mb-4">
+    <select class="browser-default custom-select" [formControl]="newUserPolicy" title="select policy">
+      <option value="" disabled selected>Select policy</option>
+      <option [value]="policy" *ngFor="let policy of policies">{{policy}}</option>
+    </select>
+  </div> -->
 
 </footer>
 <!-- Footer -->

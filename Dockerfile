@@ -7,6 +7,8 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 ENV API_BASE_URL http://localhost:8080
 ENV ADMINIO_PROD false
+ENV ADMINIO_MULTI_BACKEND false
+ENV ADMINIO_BACKENDS {"myminio":"http://localhost:8080","not-myminio":"http://minio.example.com:8080"}
 
 RUN \
     git clone https://github.com/rzrbld/adminio-ui && \

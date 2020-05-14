@@ -10,6 +10,20 @@ export class ApiService {
   constructor(private httpClient: HttpClient) { }
 
   baseUrl = environment.apiBaseUrl;
+  multiBackend = environment.apiMultiBackend;
+  backendsUrls = environment.apiBackends;
+
+  public overrideBackend(newBackend){
+    this.baseUrl = environment.apiBaseUrl;
+  }
+
+  public getMultiBackendStatus(){
+    return this.multiBackend;
+  }
+
+  public getBackendsUrls(){
+    return this.backendsUrls;
+  }
 
   public validateAuthInResponse(data){
     if(data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true){
