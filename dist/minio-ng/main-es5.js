@@ -53,7 +53,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n<!-- <div class=\"content hidden\" role=\"main\" [routerLink]=\"['/']\" routerLinkActive=\"visible\" [routerLinkActiveOptions]=\"{exact: true}\">\n</div> -->\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.94 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
+    __webpack_exports__["default"] = "<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.96 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
     /***/
   },
 
@@ -93,7 +93,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Groups</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addGroup\" mdbWavesEffect (click)=\"isEditMode(false);resetForm();addGroupModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add group</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableGroups=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Policy</th>\n\t      <th>Status</th>\n\t      <th>Members</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"groups\">\n\t    <tr mdbTableCol *ngFor=\"let g of objectKeys(groups); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{groups[i].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><a *ngIf=\"groups[i].policy\" (click)=\"rawPrepare(groups[i].policy); rawViewModal.show()\"  mdbTooltip=\"View Raw JSON\" placement=\"top\">{{groups[i].policy}}</a></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{groups[i].status}}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{commaToBr(groups[i].members)}}</td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Edit Group\" placement=\"top\" (click)=\"resetForm();getGroupDescription(groups[i].name);addGroupModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"5\">\n            <mdb-table-pagination [tableEl]=\"tableGroups\" [searchDataSource]=\"groups\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- create modal -->\n\n<div mdbModal #addGroupModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addGroupModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">{{modalCreateEditTitle}}</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Group Name\" [(ngModel)]=\"newGroupName\" name=\"newGroupName\"  aria-label=\"groupName\" aria-describedby=\"basic-addon1\" autofocus>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t<angular2-multiselect [data]=\"dropdownList\" [(ngModel)]=\"selectedItems\"\n\t\t\t\t    [settings]=\"dropdownSettings\"\n\t\t\t\t    (onSelect)=\"onItemSelect($event)\"\n\t\t\t\t    (onDeSelect)=\"OnItemDeSelect($event)\"\n\t\t\t\t    (onSelectAll)=\"onSelectAll($event)\"\n\t\t\t\t    (onDeSelectAll)=\"onDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"md-form mb-4\">\n\t\t\t\t  <select class=\"browser-default custom-select\" [(ngModel)]=\"newGroupPolicy\" title=\"select policy\">\n\t\t\t\t\t\t<option value=\"\" disabled selected>Select policy</option>\n\t\t\t\t\t\t<option [value]=\"policy\" *ngFor=\"let policy of policies\">{{policy}}</option>\n\t\t\t\t  </select>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"md-form mb-4\">\n\t\t\t\t  <select class=\"browser-default custom-select\" [(ngModel)]=\"newGroupStatus\" title=\"select status\">\n\t\t\t\t\t\t<option value=\"\" disabled selected>Select status</option>\n\t\t\t\t\t\t<option [value]=\"updateStatusVal\" *ngFor=\"let updateStatusVal of updateStatusValues\">{{updateStatusVal}}</option>\n\t\t\t\t  </select>\n\t\t\t\t</div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createGroup(); addGroupModal.hide()\">{{modalCreateEditButtonText}}</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<div mdbModal #rawViewModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"rawViewModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Raw Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<ngx-json-viewer [json]=\"rawView\"></ngx-json-viewer>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\" mdbWavesEffect>Close</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
+    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Groups</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addGroup\" mdbWavesEffect (click)=\"isEditMode(false);resetForm();addGroupModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add group</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableGroups=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Policy</th>\n\t      <th>Status</th>\n\t      <th>Members</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"groups\">\n\t    <tr mdbTableCol *ngFor=\"let g of objectKeys(groups); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{groups[i].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><a *ngIf=\"groups[i].policy\" (click)=\"rawPrepare(groups[i].policy); rawViewModal.show()\"  mdbTooltip=\"View Raw JSON\" placement=\"top\">{{groups[i].policy}}</a></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{groups[i].status}}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <ul class=\"type-none\">\n            <li class=\"type-none\" *ngFor=\"let member of groups[i].members\">{{member}}</li>\n          </ul>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Edit Group\" placement=\"top\" (click)=\"resetForm();getGroupDescription(groups[i].name);addGroupModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"red-text pr-2\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  \t<a *ngIf=\"groups[i].members.length < 1\" mdbTooltip=\"Delete Group\" placement=\"top\" (click)=\"resetForm();markGroupToDelete(groups[i].name);deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-2\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  \t<a *ngIf=\"groups[i].members.length > 0\" mdbTooltip=\"You can delete only groups whit no memebers\" placement=\"top\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"gray-text pr-2\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"5\">\n            <mdb-table-pagination [tableEl]=\"tableGroups\" [searchDataSource]=\"groups\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- create modal -->\n\n<div mdbModal #addGroupModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addGroupModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">{{modalCreateEditTitle}}</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Group Name\" [(ngModel)]=\"newGroupName\" name=\"newGroupName\"  aria-label=\"groupName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n        \t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n        \t\t\t\t\t<angular2-multiselect [data]=\"dropdownList\" [(ngModel)]=\"selectedItems\"\n        \t\t\t\t    [settings]=\"dropdownSettings\"\n        \t\t\t\t    (onSelect)=\"onItemSelect($event)\"\n        \t\t\t\t    (onDeSelect)=\"OnItemDeSelect($event)\"\n        \t\t\t\t    (onSelectAll)=\"onSelectAll($event)\"\n        \t\t\t\t    (onDeSelectAll)=\"onDeSelectAll($event)\"></angular2-multiselect>\n        \t\t\t\t</div>\n        \t\t\t\t<div class=\"md-form mb-4\">\n        \t\t\t\t  <select class=\"browser-default custom-select\" [(ngModel)]=\"newGroupPolicy\" title=\"select policy\">\n        \t\t\t\t\t\t<option value=\"\" disabled selected>Select policy</option>\n        \t\t\t\t\t\t<option [value]=\"policy\" *ngFor=\"let policy of policies\">{{policy}}</option>\n        \t\t\t\t  </select>\n        \t\t\t\t</div>\n        \t\t\t\t<div class=\"md-form mb-4\">\n        \t\t\t\t  <select class=\"browser-default custom-select\" [(ngModel)]=\"newGroupStatus\" title=\"select status\">\n        \t\t\t\t\t\t<option value=\"\" disabled selected>Select status</option>\n        \t\t\t\t\t\t<option [value]=\"updateStatusVal\" *ngFor=\"let updateStatusVal of updateStatusValues\">{{updateStatusVal}}</option>\n        \t\t\t\t  </select>\n        \t\t\t\t</div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createGroup(); addGroupModal.hide()\">{{modalCreateEditButtonText}}</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Group</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button group <strong>{{groupToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteGroup(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- raw policy modal -->\n\n<div mdbModal #rawViewModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"rawViewModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Raw Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<ngx-json-viewer [json]=\"rawView\"></ngx-json-viewer>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\" mdbWavesEffect>Close</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
     /***/
   },
 
@@ -113,7 +113,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"progress-loader\" [hidden]=\"!loading\">\n\t<div class=\"loverlay\">\n\t    <br />\n\t</div>\n\n\t<div class=\"lpopup\">\n\t\t<div class=\"spinner-grow text-dark\" role=\"status\">\n\t\t  <span class=\"sr-only\">Loading...</span>\n\t\t</div>\n\t</div>\n</div>";
+    __webpack_exports__["default"] = "<div class=\"progress-loader\" [hidden]=\"!loading\">\n\t<div class=\"loverlay\">\n\t    <br />\n\t</div>\n\n\t<div class=\"lpopup\">\n\t\t<div class=\"spinner-grow text-dark\" role=\"status\">\n\t\t  <span class=\"sr-only\">Loading...</span>\n\t\t</div>\n\t</div>\n</div>\n\n<div class=\"progress-loader\" [hidden]=\"!error\">\n\t<div class=\"error-lpopup blue-gradient\">\n\t\t<mdb-icon fas icon=\"grin-beam-sweat\" size=\"4x\"  aria-hidden=\"true\"></mdb-icon>\n\t\t<br/>\n\t\t<br/>\n\t\tSeems backend unreachable\n\t</div>\n</div>\n";
     /***/
   },
 
@@ -178,599 +178,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   },
 
   /***/
-  "./node_modules/tslib/tslib.es6.js":
-  /*!*****************************************!*\
-    !*** ./node_modules/tslib/tslib.es6.js ***!
-    \*****************************************/
-
-  /*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault, __classPrivateFieldGet, __classPrivateFieldSet */
-
-  /***/
-  function node_modulesTslibTslibEs6Js(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-
-    __webpack_require__.r(__webpack_exports__);
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__extends", function () {
-      return __extends;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__assign", function () {
-      return _assign;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__rest", function () {
-      return __rest;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__decorate", function () {
-      return __decorate;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__param", function () {
-      return __param;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__metadata", function () {
-      return __metadata;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__awaiter", function () {
-      return __awaiter;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__generator", function () {
-      return __generator;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__exportStar", function () {
-      return __exportStar;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__values", function () {
-      return __values;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__read", function () {
-      return __read;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__spread", function () {
-      return __spread;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__spreadArrays", function () {
-      return __spreadArrays;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__await", function () {
-      return __await;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function () {
-      return __asyncGenerator;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function () {
-      return __asyncDelegator;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__asyncValues", function () {
-      return __asyncValues;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function () {
-      return __makeTemplateObject;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__importStar", function () {
-      return __importStar;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__importDefault", function () {
-      return __importDefault;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__classPrivateFieldGet", function () {
-      return __classPrivateFieldGet;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "__classPrivateFieldSet", function () {
-      return __classPrivateFieldSet;
-    });
-    /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
-    
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
-    
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
-    ***************************************************************************** */
-
-    /* global Reflect, Promise */
-
-
-    var _extendStatics = function extendStatics(d, b) {
-      _extendStatics = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-      } || function (d, b) {
-        for (var p in b) {
-          if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-      };
-
-      return _extendStatics(d, b);
-    };
-
-    function __extends(d, b) {
-      _extendStatics(d, b);
-
-      function __() {
-        this.constructor = d;
-      }
-
-      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    }
-
-    var _assign = function __assign() {
-      _assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-          s = arguments[i];
-
-          for (var p in s) {
-            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-          }
-        }
-
-        return t;
-      };
-
-      return _assign.apply(this, arguments);
-    };
-
-    function __rest(s, e) {
-      var t = {};
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-      }
-
-      if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-        if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-      }
-      return t;
-    }
-
-    function __decorate(decorators, target, key, desc) {
-      var c = arguments.length,
-          r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-          d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
-        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      }
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
-    }
-
-    function __param(paramIndex, decorator) {
-      return function (target, key) {
-        decorator(target, key, paramIndex);
-      };
-    }
-
-    function __metadata(metadataKey, metadataValue) {
-      if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-    }
-
-    function __awaiter(thisArg, _arguments, P, generator) {
-      function adopt(value) {
-        return value instanceof P ? value : new P(function (resolve) {
-          resolve(value);
-        });
-      }
-
-      return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) {
-          try {
-            step(generator.next(value));
-          } catch (e) {
-            reject(e);
-          }
-        }
-
-        function rejected(value) {
-          try {
-            step(generator["throw"](value));
-          } catch (e) {
-            reject(e);
-          }
-        }
-
-        function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-        }
-
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-      });
-    }
-
-    function __generator(thisArg, body) {
-      var _ = {
-        label: 0,
-        sent: function sent() {
-          if (t[0] & 1) throw t[1];
-          return t[1];
-        },
-        trys: [],
-        ops: []
-      },
-          f,
-          y,
-          t,
-          g;
-      return g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-      }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-        return this;
-      }), g;
-
-      function verb(n) {
-        return function (v) {
-          return step([n, v]);
-        };
-      }
-
-      function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-
-        while (_) {
-          try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-
-            switch (op[0]) {
-              case 0:
-              case 1:
-                t = op;
-                break;
-
-              case 4:
-                _.label++;
-                return {
-                  value: op[1],
-                  done: false
-                };
-
-              case 5:
-                _.label++;
-                y = op[1];
-                op = [0];
-                continue;
-
-              case 7:
-                op = _.ops.pop();
-
-                _.trys.pop();
-
-                continue;
-
-              default:
-                if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-                  _ = 0;
-                  continue;
-                }
-
-                if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-                  _.label = op[1];
-                  break;
-                }
-
-                if (op[0] === 6 && _.label < t[1]) {
-                  _.label = t[1];
-                  t = op;
-                  break;
-                }
-
-                if (t && _.label < t[2]) {
-                  _.label = t[2];
-
-                  _.ops.push(op);
-
-                  break;
-                }
-
-                if (t[2]) _.ops.pop();
-
-                _.trys.pop();
-
-                continue;
-            }
-
-            op = body.call(thisArg, _);
-          } catch (e) {
-            op = [6, e];
-            y = 0;
-          } finally {
-            f = t = 0;
-          }
-        }
-
-        if (op[0] & 5) throw op[1];
-        return {
-          value: op[0] ? op[1] : void 0,
-          done: true
-        };
-      }
-    }
-
-    function __exportStar(m, exports) {
-      for (var p in m) {
-        if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-      }
-    }
-
-    function __values(o) {
-      var s = typeof Symbol === "function" && Symbol.iterator,
-          m = s && o[s],
-          i = 0;
-      if (m) return m.call(o);
-      if (o && typeof o.length === "number") return {
-        next: function next() {
-          if (o && i >= o.length) o = void 0;
-          return {
-            value: o && o[i++],
-            done: !o
-          };
-        }
-      };
-      throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-    }
-
-    function __read(o, n) {
-      var m = typeof Symbol === "function" && o[Symbol.iterator];
-      if (!m) return o;
-      var i = m.call(o),
-          r,
-          ar = [],
-          e;
-
-      try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) {
-          ar.push(r.value);
-        }
-      } catch (error) {
-        e = {
-          error: error
-        };
-      } finally {
-        try {
-          if (r && !r.done && (m = i["return"])) m.call(i);
-        } finally {
-          if (e) throw e.error;
-        }
-      }
-
-      return ar;
-    }
-
-    function __spread() {
-      for (var ar = [], i = 0; i < arguments.length; i++) {
-        ar = ar.concat(__read(arguments[i]));
-      }
-
-      return ar;
-    }
-
-    function __spreadArrays() {
-      for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
-        s += arguments[i].length;
-      }
-
-      for (var r = Array(s), k = 0, i = 0; i < il; i++) {
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
-          r[k] = a[j];
-        }
-      }
-
-      return r;
-    }
-
-    ;
-
-    function __await(v) {
-      return this instanceof __await ? (this.v = v, this) : new __await(v);
-    }
-
-    function __asyncGenerator(thisArg, _arguments, generator) {
-      if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-      var g = generator.apply(thisArg, _arguments || []),
-          i,
-          q = [];
-      return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () {
-        return this;
-      }, i;
-
-      function verb(n) {
-        if (g[n]) i[n] = function (v) {
-          return new Promise(function (a, b) {
-            q.push([n, v, a, b]) > 1 || resume(n, v);
-          });
-        };
-      }
-
-      function resume(n, v) {
-        try {
-          step(g[n](v));
-        } catch (e) {
-          settle(q[0][3], e);
-        }
-      }
-
-      function step(r) {
-        r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
-      }
-
-      function fulfill(value) {
-        resume("next", value);
-      }
-
-      function reject(value) {
-        resume("throw", value);
-      }
-
-      function settle(f, v) {
-        if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
-      }
-    }
-
-    function __asyncDelegator(o) {
-      var i, p;
-      return i = {}, verb("next"), verb("throw", function (e) {
-        throw e;
-      }), verb("return"), i[Symbol.iterator] = function () {
-        return this;
-      }, i;
-
-      function verb(n, f) {
-        i[n] = o[n] ? function (v) {
-          return (p = !p) ? {
-            value: __await(o[n](v)),
-            done: n === "return"
-          } : f ? f(v) : v;
-        } : f;
-      }
-    }
-
-    function __asyncValues(o) {
-      if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-      var m = o[Symbol.asyncIterator],
-          i;
-      return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () {
-        return this;
-      }, i);
-
-      function verb(n) {
-        i[n] = o[n] && function (v) {
-          return new Promise(function (resolve, reject) {
-            v = o[n](v), settle(resolve, reject, v.done, v.value);
-          });
-        };
-      }
-
-      function settle(resolve, reject, d, v) {
-        Promise.resolve(v).then(function (v) {
-          resolve({
-            value: v,
-            done: d
-          });
-        }, reject);
-      }
-    }
-
-    function __makeTemplateObject(cooked, raw) {
-      if (Object.defineProperty) {
-        Object.defineProperty(cooked, "raw", {
-          value: raw
-        });
-      } else {
-        cooked.raw = raw;
-      }
-
-      return cooked;
-    }
-
-    ;
-
-    function __importStar(mod) {
-      if (mod && mod.__esModule) return mod;
-      var result = {};
-      if (mod != null) for (var k in mod) {
-        if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-      }
-      result["default"] = mod;
-      return result;
-    }
-
-    function __importDefault(mod) {
-      return mod && mod.__esModule ? mod : {
-        "default": mod
-      };
-    }
-
-    function __classPrivateFieldGet(receiver, privateMap) {
-      if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-      }
-
-      return privateMap.get(receiver);
-    }
-
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-      if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-      }
-
-      privateMap.set(receiver, value);
-      return value;
-    }
-    /***/
-
-  },
-
-  /***/
   "./src/app/api.service.ts":
   /*!********************************!*\
     !*** ./src/app/api.service.ts ***!
@@ -813,16 +220,69 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./../environments/environment */
     "./src/environments/environment.ts");
+    /* harmony import */
+
+
+    var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! @angular/router */
+    "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
 
     var ApiService = /*#__PURE__*/function () {
-      function ApiService(httpClient) {
+      function ApiService(httpClient, router) {
         _classCallCheck(this, ApiService);
 
         this.httpClient = httpClient;
-        this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBaseUrl;
+        this.router = router;
+        this.multiBackend = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiMultiBackend;
+        this.backendsUrls = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBackends;
+        this.baseUrl = this.getCurrentBackend();
       }
 
       _createClass(ApiService, [{
+        key: "getCurrentBackend",
+        value: function getCurrentBackend() {
+          var envDefaultBackend = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBaseUrl;
+
+          if (this.multiBackend && this.multiBackend == true) {
+            var savedBackend = localStorage.getItem('currentBackend');
+            var activeBackend = "";
+
+            if (savedBackend && savedBackend != "") {
+              activeBackend = savedBackend;
+            } else {
+              activeBackend = envDefaultBackend;
+            }
+
+            return activeBackend;
+          } else {
+            return envDefaultBackend;
+          }
+        }
+      }, {
+        key: "overrideBackend",
+        value: function overrideBackend(newBackend) {
+          localStorage.setItem('currentBackend', newBackend);
+          this.baseUrl = newBackend;
+          this.router.onSameUrlNavigation = 'reload';
+
+          this.router.routeReuseStrategy.shouldReuseRoute = function () {
+            return false;
+          };
+
+          this.router.navigate([this.router.url]);
+          this.router.onSameUrlNavigation = 'ignore';
+        }
+      }, {
+        key: "getMultiBackendStatus",
+        value: function getMultiBackendStatus() {
+          return this.multiBackend;
+        }
+      }, {
+        key: "getBackendsUrls",
+        value: function getBackendsUrls() {
+          return this.backendsUrls;
+        }
+      }, {
         key: "validateAuthInResponse",
         value: function validateAuthInResponse(data) {
           if (data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true) {
@@ -1022,6 +482,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     ApiService.ctorParameters = function () {
       return [{
         type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]
+      }, {
+        type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]
       }];
     };
 
@@ -2024,8 +1486,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.newGroupStatus = "";
         this.updateStatusValues = ['enabled', 'disabled'];
         this.modalEditMode = false;
-        this.rawView = '';
+        this.rawView = "";
         this.usersToRemove = [];
+        this.groupToDelete = "";
         this.dropdownList = [];
         this.selectedItems = [];
         this.dropdownSettings = {};
@@ -2090,7 +1553,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDeSelectAll",
         value: function onDeSelectAll(items) {
-          console.log(items);
+          for (var i = 0; i < this.selectedItems.length; i++) {
+            this.usersToRemove.push(this.selectedItems[i]["itemName"]);
+          }
+
           this.selectedItems = [];
         }
       }, {
@@ -2254,35 +1720,67 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.newGroupStatus = "";
         }
       }, {
-        key: "wipeGroupMembers",
-        value: function wipeGroupMembers() {
+        key: "markGroupToDelete",
+        value: function markGroupToDelete(group) {
+          console.log("GROUP TO DELETE", group);
+          this.groupToDelete = group;
+        }
+      }, {
+        key: "deleteGroup",
+        value: function deleteGroup() {
           var _this15 = this;
 
-          this.apiService.updateMembersGroup(this.newGroupName, this.usersToRemove, "true").subscribe(function (data) {
+          console.log("GROUP TO DELETE >>>", this.groupToDelete);
+          this.apiService.updateMembersGroup(this.groupToDelete, [], "true").subscribe(function (data) {
             _this15.apiService.validateAuthInResponse(data);
 
             if (data["Success"]) {
-              _this15.toastr.success('Group: ' + _this15.newGroupName + ' members has been removed', 'Success');
+              _this15.toastr.success('Group: ' + _this15.newGroupName + ' has been removed', 'Success');
 
               _this15.usersToRemove = [];
+
+              _this15.refreshList();
+
+              _this15.groupToDelete = "";
             } else {
-              _this15.toastr.error(JSON.stringify(data), 'Error while removing members from group');
+              _this15.toastr.error(JSON.stringify(data), 'Error while removing group');
+
+              _this15.refreshList();
+
+              _this15.groupToDelete = "";
+            }
+          });
+        }
+      }, {
+        key: "wipeGroupMembers",
+        value: function wipeGroupMembers() {
+          var _this16 = this;
+
+          this.apiService.updateMembersGroup(this.newGroupName, this.usersToRemove, "true").subscribe(function (data) {
+            _this16.apiService.validateAuthInResponse(data);
+
+            if (data["Success"]) {
+              _this16.toastr.success('Group: ' + _this16.newGroupName + ' members has been removed', 'Success');
+
+              _this16.usersToRemove = [];
+            } else {
+              _this16.toastr.error(JSON.stringify(data), 'Error while removing members from group');
             }
           });
         }
       }, {
         key: "updatePolicy",
         value: function updatePolicy() {
-          var _this16 = this;
+          var _this17 = this;
 
           if (this.newGroupPolicy !== null && this.newGroupPolicy != "") {
             this.apiService.setPolicy(this.newGroupPolicy, this.newGroupName, "true").subscribe(function (data) {
-              _this16.apiService.validateAuthInResponse(data);
+              _this17.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this16.toastr.success('Group: ' + _this16.newGroupName + ' policy has been set to ' + _this16.newGroupPolicy, 'Success');
+                _this17.toastr.success('Group: ' + _this17.newGroupName + ' policy has been set to ' + _this17.newGroupPolicy, 'Success');
               } else {
-                _this16.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
+                _this17.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
               }
             });
           }
@@ -2290,24 +1788,31 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "updateStatus",
         value: function updateStatus() {
-          var _this17 = this;
+          var _this18 = this;
 
           if (this.newGroupStatus !== null && this.newGroupStatus != "") {
             this.apiService.setStatusGroup(this.newGroupName, this.newGroupStatus).subscribe(function (data) {
-              _this17.apiService.validateAuthInResponse(data);
+              _this18.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this17.toastr.success('Group: ' + _this17.newGroupName + ' status has been set to ' + _this17.newGroupStatus, 'Success');
+                _this18.toastr.success('Group: ' + _this18.newGroupName + ' status has been set to ' + _this18.newGroupStatus, 'Success');
               } else {
-                _this17.toastr.error(JSON.stringify(data), 'Error while setting status to group');
+                _this18.toastr.error(JSON.stringify(data), 'Error while setting status to group');
               }
             });
           }
         }
       }, {
+        key: "refreshList",
+        value: function refreshList() {
+          this.updatePolicy();
+          this.updateStatus();
+          this.getGroups();
+        }
+      }, {
         key: "createGroup",
         value: function createGroup() {
-          var _this18 = this;
+          var _this19 = this;
 
           console.log("CREATE GROUP CALLED");
           var newMembers = [];
@@ -2316,6 +1821,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             newMembers.push(this.selectedItems[i].itemName);
           } //remove users from group
 
+
+          console.log("grouptoUpdate", this.groupToUpdate);
 
           if (this.groupToUpdate !== null && this.groupToUpdate != "" && this.groupToUpdate) {
             if (this.usersToRemove.length > 0) {
@@ -2326,24 +1833,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           if (newMembers.length > 0) {
             this.apiService.updateMembersGroup(this.newGroupName, newMembers, "false").subscribe(function (data) {
-              _this18.apiService.validateAuthInResponse(data);
+              _this19.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this18.toastr.success('Group: ' + _this18.newGroupName + ' has been created', 'Success');
+                _this19.toastr.success('Group: ' + _this19.newGroupName + ' has been created', 'Success');
               } else {
-                _this18.toastr.error(JSON.stringify(data), 'Error while creating group');
+                _this19.toastr.error(JSON.stringify(data), 'Error while creating group');
               }
 
-              _this18.updatePolicy();
-
-              _this18.updateStatus();
-
-              _this18.getGroups();
+              _this19.refreshList();
             });
           } else {
-            this.updatePolicy();
-            this.updateStatus();
-            this.getGroups();
+            this.refreshList();
           }
 
           this.isEditMode(false);
@@ -2456,34 +1957,35 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "intercept",
         value: function intercept(req, next) {
-          var _this19 = this;
+          var _this20 = this;
 
           req = req.clone({
             withCredentials: true
           });
           this.requests.push(req);
           this.loaderService.isLoading.next(true);
+          this.loaderService.isError = false;
           return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].create(function (observer) {
             var subscription = next.handle(req).subscribe(function (event) {
               if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]) {
-                _this19.removeRequest(req);
+                _this20.removeRequest(req);
 
                 observer.next(event);
               }
             }, function (err) {
-              alert('error returned');
+              _this20.loaderService.isError = true;
 
-              _this19.removeRequest(req);
+              _this20.removeRequest(req);
 
               observer.error(err);
             }, function () {
-              _this19.removeRequest(req);
+              _this20.removeRequest(req);
 
               observer.complete();
             }); // remove request from queue when cancelled
 
             return function () {
-              _this19.removeRequest(req);
+              _this20.removeRequest(req);
 
               subscription.unsubscribe();
             };
@@ -2546,6 +2048,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var LoaderService = function LoaderService() {
       _classCallCheck(this, LoaderService);
 
+      this.isError = false;
       this.isLoading = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](false);
     };
 
@@ -2616,13 +2119,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     var LoaderComponent = /*#__PURE__*/function () {
       function LoaderComponent(loaderService) {
-        var _this20 = this;
+        var _this21 = this;
 
         _classCallCheck(this, LoaderComponent);
 
         this.loaderService = loaderService;
         this.loaderService.isLoading.subscribe(function (v) {
-          _this20.loading = v;
+          _this21.loading = v;
+          _this21.error = _this21.loaderService.isError;
         });
       }
 
@@ -3339,40 +2843,40 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getPolicies",
         value: function getPolicies() {
-          var _this21 = this;
+          var _this22 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this21.apiService.validateAuthInResponse(data);
+            _this22.apiService.validateAuthInResponse(data);
 
             console.log(data);
-            _this21.policiesRaw = data;
+            _this22.policiesRaw = data;
             var arrayOfPolicies = Object.entries(data).map(function (e) {
-              return _defineProperty({}, e[0], _this21.b64unpack(e[1]));
+              return _defineProperty({}, e[0], e[1]);
             });
-            _this21.policies = arrayOfPolicies;
+            _this22.policies = arrayOfPolicies;
 
-            _this21.mdbTable.setDataSource(arrayOfPolicies);
+            _this22.mdbTable.setDataSource(arrayOfPolicies);
 
             console.log(arrayOfPolicies);
-            _this21.previous = _this21.mdbTable.getDataSource();
+            _this22.previous = _this22.mdbTable.getDataSource();
           });
         }
       }, {
         key: "deletePolicy",
         value: function deletePolicy() {
-          var _this22 = this;
+          var _this23 = this;
 
           this.apiService.deletePolicy(this.policyToDelete).subscribe(function (data) {
-            _this22.apiService.validateAuthInResponse(data);
+            _this23.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
-            _this22.getPolicies();
+            _this23.getPolicies();
 
             if (data["Success"]) {
-              _this22.toastr.success('Policy ' + _this22.policyToDelete + ' has been deleted', 'Success');
+              _this23.toastr.success('Policy ' + _this23.policyToDelete + ' has been deleted', 'Success');
             } else {
-              _this22.toastr.error(JSON.stringify(data), 'Error while deleting policy');
+              _this23.toastr.error(JSON.stringify(data), 'Error while deleting policy');
             }
           });
         }
@@ -3383,12 +2887,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           console.log("theJSON>>>>>>>>>>>", theJSON);
           var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
           this.downloadJsonHref = uri;
-        }
-      }, {
-        key: "b64unpack",
-        value: function b64unpack(str) {
-          // console.log(JSON.parse(atob(str)))
-          return JSON.parse(atob(str));
         }
       }, {
         key: "rawPrepare",
@@ -3519,7 +3017,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "uploadPolicy",
         value: function uploadPolicy() {
-          var _this23 = this;
+          var _this24 = this;
 
           var fileReader = new FileReader();
 
@@ -3527,18 +3025,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(fileReader.result);
             var policyFileString = fileReader.result.toString().replace(/\n/g, ' ').replace(/\r/g, ' ');
 
-            _this23.apiService.addPolicy(_this23.uploadPolicyName, policyFileString).subscribe(function (data) {
-              _this23.apiService.validateAuthInResponse(data);
+            _this24.apiService.addPolicy(_this24.uploadPolicyName, policyFileString).subscribe(function (data) {
+              _this24.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this23.toastr.success('Policy ' + _this23.newPolicy.name + ' has been created', 'Success');
+                _this24.toastr.success('Policy ' + _this24.newPolicy.name + ' has been created', 'Success');
               } else {
-                _this23.toastr.error(JSON.stringify(data), 'Error while creating policy');
+                _this24.toastr.error(JSON.stringify(data), 'Error while creating policy');
               }
 
-              _this23.getPolicies();
+              _this24.getPolicies();
             });
           };
 
@@ -3555,22 +3053,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "createPolicy",
         value: function createPolicy() {
-          var _this24 = this;
+          var _this25 = this;
 
           console.log(this.newPolicy, this.newPolicyRaw);
           var policyString = JSON.stringify(this.newPolicyRaw);
           this.apiService.addPolicy(this.newPolicy.name, policyString).subscribe(function (data) {
-            _this24.apiService.validateAuthInResponse(data);
+            _this25.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this24.toastr.success('Policy ' + _this24.newPolicy.name + ' has been created', 'Success');
+              _this25.toastr.success('Policy ' + _this25.newPolicy.name + ' has been created', 'Success');
             } else {
-              _this24.toastr.error(JSON.stringify(data), 'Error while creating policy');
+              _this25.toastr.error(JSON.stringify(data), 'Error while creating policy');
             }
 
-            _this24.getPolicies();
+            _this25.getPolicies();
           });
         }
       }, {
@@ -3599,7 +3097,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.prepareNewPolicyRaw();
           this.resetPloicyForm(false);
           this.newPolicy.name = policy;
-          var oldPolicy = this.b64unpack(this.policiesRaw[policy]);
+          var oldPolicy = this.policiesRaw[policy];
           this.newPolicyRaw.Statement = oldPolicy.Statement;
         }
       }]);
@@ -3768,45 +3266,45 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "serverInfo",
         value: function serverInfo() {
-          var _this25 = this;
+          var _this26 = this;
 
           this.apiService.serverInfo().subscribe(function (data) {
-            _this25.apiService.validateAuthInResponse(data);
+            _this26.apiService.validateAuthInResponse(data);
 
-            _this25.serviceInfo = data;
+            _this26.serviceInfo = data;
           });
         }
       }, {
         key: "diskInfo",
         value: function diskInfo() {
-          var _this26 = this;
+          var _this27 = this;
 
           this.apiService.diskInfo().subscribe(function (data) {
-            _this26.apiService.validateAuthInResponse(data);
+            _this27.apiService.validateAuthInResponse(data);
 
             console.log("Disk Usage >>>>>>>>>>>>", data);
-            _this26.diskUsageInfo = data;
+            _this27.diskUsageInfo = data;
 
             if (data.hasOwnProperty('objectsSizesHistogram')) {
-              var objectsSizesHistogram = _this26.diskUsageInfo.objectsSizesHistogram;
+              var objectsSizesHistogram = _this27.diskUsageInfo.objectsSizesHistogram;
               var histogramKeysRawArr = Object.keys(objectsSizesHistogram);
               var histogramValsRawArr = Object.values(objectsSizesHistogram);
-              _this26.hgChartDatasets[0].data = histogramValsRawArr;
-              _this26.hgChartLabels = [];
+              _this27.hgChartDatasets[0].data = histogramValsRawArr;
+              _this27.hgChartLabels = [];
 
               for (var i = 0; i < histogramKeysRawArr.length; i++) {
                 var histogramLabel = histogramKeysRawArr[i].split('_').join(' ');
 
-                _this26.hgChartLabels.push(histogramLabel);
+                _this27.hgChartLabels.push(histogramLabel);
               }
             }
 
-            if (data.hasOwnProperty('bucketsSizes') && _this26.diskUsageInfo.bucketsSizes != {}) {
-              var objectBucketSizes = _this26.diskUsageInfo.bucketsSizes;
+            if (data.hasOwnProperty('bucketsSizes') && _this27.diskUsageInfo.bucketsSizes != {}) {
+              var objectBucketSizes = _this27.diskUsageInfo.bucketsSizes;
               var bucketSizesKeysRawArr = Object.keys(objectBucketSizes);
               var bucketSizesValsRawArr = Object.values(objectBucketSizes);
-              _this26.szChartDatasets[0].data = bucketSizesValsRawArr;
-              _this26.szChartLabels = bucketSizesKeysRawArr;
+              _this27.szChartDatasets[0].data = bucketSizesValsRawArr;
+              _this27.szChartLabels = bucketSizesKeysRawArr;
             }
           });
         }
@@ -4006,39 +3504,39 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getListOfUsers",
         value: function getListOfUsers() {
-          var _this27 = this;
+          var _this28 = this;
 
           this.apiService.getUsers().subscribe(function (data) {
-            _this27.apiService.validateAuthInResponse(data);
+            _this28.apiService.validateAuthInResponse(data);
 
             console.log(data);
-            _this27.usersRaw = data;
+            _this28.usersRaw = data;
             var arrayOfUsers = Object.entries(data).map(function (e) {
               return _defineProperty({}, e[0], e[1]);
             });
-            _this27.users = arrayOfUsers;
+            _this28.users = arrayOfUsers;
 
-            _this27.mdbTable.setDataSource(arrayOfUsers);
+            _this28.mdbTable.setDataSource(arrayOfUsers);
 
             console.log(arrayOfUsers);
-            _this27.previous = _this27.mdbTable.getDataSource();
+            _this28.previous = _this28.mdbTable.getDataSource();
           });
         }
       }, {
         key: "getListOfPolicies",
         value: function getListOfPolicies() {
-          var _this28 = this;
+          var _this29 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this28.apiService.validateAuthInResponse(data);
+            _this29.apiService.validateAuthInResponse(data);
 
-            _this28.policies = Object.keys(data);
+            _this29.policies = Object.keys(data);
           });
         }
       }, {
         key: "createUser",
         value: function createUser() {
-          var _this29 = this;
+          var _this30 = this;
 
           var userAccess = this.newUserAccess.value;
           var userSecret = this.newUserSecret.value;
@@ -4047,30 +3545,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           if (userPolicy != '') {
             this.apiService.addUserExtended(userAccess, userSecret, userPolicy).subscribe(function (data) {
-              _this29.apiService.validateAuthInResponse(data);
+              _this30.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
-              _this29.getListOfUsers();
+              _this30.getListOfUsers();
 
               if (data["Success"]) {
-                _this29.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
+                _this30.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
               } else {
-                _this29.toastr.error(JSON.stringify(data), 'Error while creating user');
+                _this30.toastr.error(JSON.stringify(data), 'Error while creating user');
               }
             });
           } else {
             this.apiService.addUser(userAccess, userSecret).subscribe(function (data) {
-              _this29.apiService.validateAuthInResponse(data);
+              _this30.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
-              _this29.getListOfUsers();
+              _this30.getListOfUsers();
 
               if (data["Success"]) {
-                _this29.toastr.success('User: ' + userAccess + ' has been created', 'Success');
+                _this30.toastr.success('User: ' + userAccess + ' has been created', 'Success');
               } else {
-                _this29.toastr.error(JSON.stringify(data), 'Error while creating user');
+                _this30.toastr.error(JSON.stringify(data), 'Error while creating user');
               }
             });
           }
@@ -4078,7 +3576,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "setStatusUser",
         value: function setStatusUser(accessKey, status) {
-          var _this30 = this;
+          var _this31 = this;
 
           if (status == 'enabled') {
             status = 'disabled';
@@ -4087,17 +3585,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
 
           this.apiService.setStatusUser(accessKey, status).subscribe(function (data) {
-            _this30.apiService.validateAuthInResponse(data);
+            _this31.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this30.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
+              _this31.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
             } else {
-              _this30.toastr.error(JSON.stringify(data), 'Error while changing state for user');
+              _this31.toastr.error(JSON.stringify(data), 'Error while changing state for user');
             }
 
-            _this30.getListOfUsers();
+            _this31.getListOfUsers();
           });
         }
       }, {
@@ -4137,42 +3635,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "updateUserSave",
         value: function updateUserSave() {
-          var _this31 = this;
+          var _this32 = this;
 
           var updatedSecret = this.updateUser.value.secretKeyUpdate;
           var updatedPolicy = this.updateUser.value.policyUpdate;
           var updatedStatus = this.updateUser.value.statusUpdate;
           this.apiService.updateUser(this.userToUpdate, updatedSecret, updatedPolicy, updatedStatus).subscribe(function (data) {
-            _this31.apiService.validateAuthInResponse(data);
+            _this32.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
-            _this31.getListOfUsers();
+            _this32.getListOfUsers();
 
             if (data["Success"]) {
-              _this31.toastr.success('User: ' + _this31.userToUpdate + ' has been updated', 'Success');
+              _this32.toastr.success('User: ' + _this32.userToUpdate + ' has been updated', 'Success');
             } else {
-              _this31.toastr.error(JSON.stringify(data), 'Error while updating user');
+              _this32.toastr.error(JSON.stringify(data), 'Error while updating user');
             }
           });
         }
       }, {
         key: "deleteUser",
         value: function deleteUser() {
-          var _this32 = this;
+          var _this33 = this;
 
           this.apiService.deleteUser(this.userToDelete).subscribe(function (data) {
-            _this32.apiService.validateAuthInResponse(data);
+            _this33.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this32.toastr.success('User: ' + _this32.userToDelete + ' has been deleted', 'Success');
+              _this33.toastr.success('User: ' + _this33.userToDelete + ' has been deleted', 'Success');
             }
 
-            _this32.updateUserFrom();
+            _this33.updateUserFrom();
 
-            _this32.getListOfUsers();
+            _this33.getListOfUsers();
           });
         }
       }, {
@@ -4263,16 +3761,21 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     __webpack_require__.d(__webpack_exports__, "environment", function () {
       return environment;
     });
-    /* harmony import */
-
-
-    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-    /*! tslib */
-    "./node_modules/tslib/tslib.es6.js");
 
     var environment = {
       production: false,
-      apiBaseUrl: "http://localhost:8080"
+      apiBaseUrl: "http://localhost:8080",
+      apiMultiBackend: false,
+      apiBackends: [{
+        "name": "myminio",
+        "url": "http://localhost:8080"
+      }, {
+        "name": "localhost",
+        "url": "http://localhost:8081"
+      }, {
+        "name": "error",
+        "url": "http://localhost:8082"
+      }]
     };
     /***/
   },
@@ -4293,39 +3796,33 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony import */
 
 
-    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-    /*! tslib */
-    "./node_modules/tslib/tslib.es6.js");
-    /* harmony import */
-
-
-    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
     /*! @angular/core */
     "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
     /* harmony import */
 
 
-    var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! @angular/platform-browser-dynamic */
     "./node_modules/@angular/platform-browser-dynamic/__ivy_ngcc__/fesm2015/platform-browser-dynamic.js");
     /* harmony import */
 
 
-    var _app_app_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
     /*! ./app/app.module */
     "./src/app/app.module.ts");
     /* harmony import */
 
 
-    var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./environments/environment */
     "./src/environments/environment.ts");
 
-    if (_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].production) {
-      Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["enableProdMode"])();
+    if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
+      Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
     }
 
-    Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_3__["AppModule"])["catch"](function (err) {
+    Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])["catch"](function (err) {
       return console.error(err);
     });
     /***/
