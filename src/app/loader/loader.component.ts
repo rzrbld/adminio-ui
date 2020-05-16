@@ -10,6 +10,7 @@ styleUrls: ['./loader.component.scss']
 export class LoaderComponent implements OnInit {
 
 loading: boolean;
+error: boolean;
 constructor(private loaderService: LoaderService) {
   this.loaderService.isLoading.subscribe((v) => {
     this.loading = v;
