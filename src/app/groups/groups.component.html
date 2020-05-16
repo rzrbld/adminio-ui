@@ -38,6 +38,7 @@
 	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
 	  	  	<a mdbTooltip="Edit Group" placement="top" (click)="resetForm();getGroupDescription(groups[i].name);addGroupModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="red-text pr-2" aria-hidden="true"></mdb-icon></a>
 	  	  	<a *ngIf="groups[i].members.length < 1" mdbTooltip="Delete Group" placement="top" (click)="resetForm();markGroupToDelete(groups[i].name);deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-2" aria-hidden="true"></mdb-icon></a>
+	  	  	<a *ngIf="groups[i].members.length > 0" mdbTooltip="You can delete only groups whit no memebers" placement="top"><mdb-icon fas icon="trash-alt" size="1x" class="gray-text pr-2" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>

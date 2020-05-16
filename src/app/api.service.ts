@@ -1,20 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../environments/environment';
+import { Router } from "@angular/router"
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
-  baseUrl = environment.apiBaseUrl;
+  baseUrl = this.getCurrentBackend();
   multiBackend = environment.apiMultiBackend;
   backendsUrls = environment.apiBackends;
+  //
+  // public getDefaultBackend(){
+  //   return this.baseUrl;
+  // }
+
+  private getCurrentBackend(){
+    let savedBackend = localStorage.getItem('currentBackend');
+    let envDefaultBackend = environment.apiBaseUrl;
+    let activeBackend = "";
+
+    if(savedBackend && savedBackend != ""){
+      activeBackend = savedBackend;
+    }else{
+      activeBackend = envDefaultBackend;
+    }
+    return activeBackend;
+  }
 
   public overrideBackend(newBackend){
-    this.baseUrl = environment.apiBaseUrl;
+    console.log("current route", this.router.url);
+
+    console.log("THIS BACKEND", newBackend);
+    localStorage.setItem('currentBackend', newBackend);
+    this.baseUrl = newBackend;
+    console.log(localStorage.getItem('currentBackend'));
+
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+
+    this.router.navigate([this.router.url])
+    this.router.onSameUrlNavigation = 'ignore';
   }
 
   public getMultiBackendStatus(){
