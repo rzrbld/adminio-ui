@@ -13,7 +13,7 @@ ENV ADMINIO_BACKENDS '[{"name":"myminio","url":"http://localhost:8080"},{"name":
 RUN \
     git clone https://github.com/rzrbld/adminio-ui && \
     cd adminio-ui && \
-    npm install -g @angular/cli@9.1.0 && npm install
+    npm install -g @angular/cli@9.1.6 && npm install
 
 RUN cd /app/adminio-ui && npm run build
 
