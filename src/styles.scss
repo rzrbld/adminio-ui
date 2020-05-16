@@ -4,17 +4,98 @@
 @import '~ngx-toastr/toastr-bs4-alert';
 
 /* You can add global styles to this file, and also import other style files */
-.dropdownFix{
+/* select starting stylings ------------------------------*/
+.select {
+	position: relative;
+	width: 300px;
+}
+
+.select-text {
+	position: relative;
+	font-family: inherit;
+  font-weight: 300;
+  color: #fff;
+	background-color: transparent;
+	width: 300px;
+	padding: 10px 10px 5px 0px;
+	font-size: 1rem;
+	border-radius: 0;
+	border: none;
+	border-bottom: 1px solid rgba(255,2555,255, 0.2);
+}
+
+/* Remove focus */
+.select-text:focus {
+	outline: none;
+	border-bottom: 1px solid rgba(0,0,0, 0);
+}
+
+	/* Use custom arrow */
+.select .select-text {
+	appearance: none;
+	-webkit-appearance:none
+}
+
+.select:after {
+	position: absolute;
+	top: 18px;
+	right: 10px;
+	/* Styling the down arrow */
+	width: 0;
+	height: 0;
+	padding: 0;
+  margin-top: 2px;
+	content: "";
+  background: #fff;
+	border-left: 6px solid #263238;
+	border-right: 6px solid #263238;
+	border-top: 6px solid rgba(0, 0, 0, 0.12);
+	pointer-events: none;
+}
+
+/* BOTTOM BARS ================================= */
+.select-bar {
+	position: relative;
+	display: block;
+	width: 350px;
+}
+
+.select-bar:before, .select-bar:after {
+	content: '';
+	height: 2px;
+	width: 0;
+	bottom: 1px;
+	position: absolute;
+	background: #2F80ED;
+	transition: 0.2s ease all;
+}
+
+.select-bar:before {
+	left: 50%;
+}
+
+.select-bar:after {
+	right: 50%;
+}
+
+/* active state */
+.select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+	width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.select-highlight {
+	position: absolute;
+	height: 60%;
+	width: 100px;
+	top: 25%;
+	left: 0;
+	pointer-events: none;
+	opacity: 0.5;
 }
 
 .gray-text {
   color: #ccc;
-}
-
-.cluster-chooser {
-  color: #222;
- margin-top: 10px;
-  text-align: right;
 }
 
 .adminio-logo {

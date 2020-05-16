@@ -10,9 +10,9 @@ ENV ADMINIO_PROD false
 ENV ADMINIO_MULTI_BACKEND true
 ENV ADMINIO_BACKENDS '[{"name":"myminio","url":"http://localhost:8080"},{"name":"local","url":"http://localhost:8081"},{"name":"not-myminio","url":"http://minio.example.com:8080"}]'
 
-RUN \
-    git clone https://github.com/rzrbld/adminio-ui && \
-    cd adminio-ui && \
+RUN mkdir /app/adminio-ui
+ADD . /app/adminio-ui/
+RUN cd adminio-ui && \
     npm install -g @angular/cli@9.1.0 && npm install
 
 RUN cd /app/adminio-ui && npm run build

@@ -13,31 +13,31 @@ export class ApiService {
   baseUrl = this.getCurrentBackend();
   multiBackend = environment.apiMultiBackend;
   backendsUrls = environment.apiBackends;
-  //
-  // public getDefaultBackend(){
-  //   return this.baseUrl;
-  // }
 
   private getCurrentBackend(){
-    let savedBackend = localStorage.getItem('currentBackend');
-    let envDefaultBackend = environment.apiBaseUrl;
-    let activeBackend = "";
+    console.log("LIST URLS", environment.apiBackends);
+    console.log("FULL ENV", environment);
 
-    if(savedBackend && savedBackend != ""){
-      activeBackend = savedBackend;
-    }else{
-      activeBackend = envDefaultBackend;
+    let envDefaultBackend = environment.apiBaseUrl;
+    if(this.multiBackend && this.multiBackend == true) {
+      let savedBackend = localStorage.getItem('currentBackend');
+
+      let activeBackend = "";
+
+      if(savedBackend && savedBackend != ""){
+        activeBackend = savedBackend;
+      }else{
+        activeBackend = envDefaultBackend;
+      }
+      return activeBackend;
+    } else {
+      return envDefaultBackend;
     }
-    return activeBackend;
   }
 
   public overrideBackend(newBackend){
-    console.log("current route", this.router.url);
-
-    console.log("THIS BACKEND", newBackend);
     localStorage.setItem('currentBackend', newBackend);
     this.baseUrl = newBackend;
-    console.log(localStorage.getItem('currentBackend'));
 
     this.router.onSameUrlNavigation = 'reload';
     this.router.routeReuseStrategy.shouldReuseRoute = function () {

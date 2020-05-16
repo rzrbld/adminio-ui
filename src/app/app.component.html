@@ -47,62 +47,32 @@
             </li>
         </ul>
         <!-- Links -->
+        <!-- Search form -->
+        <form class="form-inline select" mdbWavesEffect *ngIf="apiService.getMultiBackendStatus()">
+          <select class="select-text" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]="apiService.baseUrl" [ngModelOptions]="{standalone: true}" title="Select backend">
+            <option value="" disabled selected>Select backend</option>
+            <option [value]="backend.url" *ngFor="let backend of apiService.getBackendsUrls()">{{backend.name}} ({{backend.url}})</option>
+          </select>
+          <span class="select-highlight"></span>
+					<span class="select-bar"></span>
+        </form>
     </links>
     <!-- Collapsible content -->
 
 </mdb-navbar>
 <!--/.Navbar-->
 <app-loading></app-loading>
-<!-- <div class="content hidden" role="main" [routerLink]="['/']" routerLinkActive="visible" [routerLinkActiveOptions]="{exact: true}">
-</div> -->
 
 <router-outlet></router-outlet>
 
 <!-- Footer -->
 <footer class="page-footer font-small transparent fixed-bottom">
-  <div class="row">
 
-    <!-- Grid column -->
-    <div class="col-md-4 mt-md-0 mt-3">
-      <!-- Content -->
-      &nbsp;
-
-    </div>
-    <!-- Grid column -->
-
-    <hr class="clearfix w-100 d-md-none pb-3">
-    <!-- Grid column -->
-    <div class="col-md-8 mb-md-0 mb-3">
-      <!-- Content -->
-      <div class="row" *ngIf="apiService.getMultiBackendStatus()">
-        <div class="col-md-5">
-          <div class="text-right py-3 transparent">
-            <a href="https://github.com/rzrbld/adminio-ui">adminio sources</a> | v:0.96 &nbsp;&nbsp;
-          </div>
-        </div>
-        <div class="col-md-3">
-            <div class="text-right py-3 transparent">
-              select instance
-            </div>
-        </div>
-        <div class="col-md-4 py-2 pr-5">
-          <select class="browser-default custom-select" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]="apiService.baseUrl" title="Select backend">
-            <option value="" disabled selected>Select backend</option>
-            <option [value]="backend.url" *ngFor="let backend of apiService.getBackendsUrls()">{{backend.name}} ({{backend.url}})</option>
-          </select>
-        </div>
-      </div>
-
-    </div>
-    <!-- Grid column -->
-
+  <!-- Copyright -->
+  <div class="text-right py-3 transparent">
+    <a href="https://github.com/rzrbld/adminio-ui">adminio sources</a> | v:0.96 &nbsp;&nbsp;
   </div>
-  <!-- <div class="md-form mb-4">
-    <select class="browser-default custom-select" [formControl]="newUserPolicy" title="select policy">
-      <option value="" disabled selected>Select policy</option>
-      <option [value]="policy" *ngFor="let policy of policies">{{policy}}</option>
-    </select>
-  </div> -->
+  <!-- Copyright -->
 
 </footer>
 <!-- Footer -->
