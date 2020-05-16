@@ -13,6 +13,7 @@ loading: boolean;
 constructor(private loaderService: LoaderService) {
   this.loaderService.isLoading.subscribe((v) => {
     this.loading = v;
+    this.error = this.loaderService.isError;
   });
 }
 ngOnInit() {

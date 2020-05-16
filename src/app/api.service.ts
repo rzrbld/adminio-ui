@@ -10,14 +10,12 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
-  baseUrl = this.getCurrentBackend();
+
   multiBackend = environment.apiMultiBackend;
   backendsUrls = environment.apiBackends;
+  baseUrl = this.getCurrentBackend();
 
   private getCurrentBackend(){
-    console.log("LIST URLS", environment.apiBackends);
-    console.log("FULL ENV", environment);
-
     let envDefaultBackend = environment.apiBaseUrl;
     if(this.multiBackend && this.multiBackend == true) {
       let savedBackend = localStorage.getItem('currentBackend');
