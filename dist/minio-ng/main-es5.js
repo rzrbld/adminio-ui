@@ -73,7 +73,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{buckets[b].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"diskUsageInfo?.bucketsSizes\" mdbTooltip=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes\" placement=\"top\">\n            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a *ngIf=\"serviceInfo?.sqsARN\" mdbTooltip=\"Update Bucket Events\" placement=\"top\" (click)=\"updateBucketPrepare(buckets[b].name); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Remove Bucket\" placement=\"top\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Bucket Lifecycyle\" placement=\"top\" (click)=\"bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()\"><mdb-icon fas icon=\"recycle\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" mdbTooltip=\"Remove Bucket Events\" placement=\"top\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- lifecycyle modal -->\n\n<div mdbModal #lifecycyleModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"lifecycyleModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Bucket Lifecycyle</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div class=\"row\">\n                <div class=\"col-md-12 col-12 mx-auto\">\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 1\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on \"dowload icon\" >\n                    <a mdbTooltip=\"Download Lifecycle\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{lifecycleBucketName}}-lifecycle.xml\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n                    <br/>\n                    Or override it by upload a new lifecycle policy.\n                  </div>\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 0\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio\n                    <a href=\"https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle\" target=\"_blank\">documentation</a>. Or use an AWS S3 documentation\n                    <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html\" target=\"_blank\">Object Lifecycle Management</a>\n                  </div>\n                  <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".lifecycle,.xml\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadLifecycleFile name=\"uploadLifecycleFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadLifecycleFileName == \"\" ? \"Choose .lifecycle or .xml file\" : uploadLifecycleFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                </div>\n              </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadLifecycle();lifecycyleModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
+    __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th>Quota</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{buckets[b].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"diskUsageInfo?.bucketsSizes\" mdbTooltip=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes\" placement=\"top\">\n            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n          </span>\n        </td>\n        <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"buckets[b].quota?.quotatype\">\n            <span class=\"badge badge-success\" *ngIf=\"buckets[b].quota?.quotatype == 'hard'\">{{buckets[b].quota?.quotatype}}</span>\n            <span class=\"badge badge-secondary\" *ngIf=\"buckets[b].quota?.quotatype == 'fifo'\">{{buckets[b].quota?.quotatype}}</span>\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota > 0\" mdbTooltip=\"{{buckets[b].quota?.quota}} bytes\" placement=\"top\">\n            {{(math.round(buckets[b].quota?.quota/1024/1024)+'').length > 3 ? math.round(buckets[b].quota?.quota/1024/1024/1024)+' Gb' : isNaN(math.round(buckets[b].quota?.quota/1024/1024)) ? '&ndash;' : math.round(buckets[b].quota?.quota/1024/1024) +' Mb'}}\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota < 1\" mdbTooltip=\"No quota limits\" placement=\"top\">\n            &infin;\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Update Bucket Events\" placement=\"top\" (click)=\"updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Remove Bucket\" placement=\"top\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Bucket Lifecycyle\" placement=\"top\" (click)=\"bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()\"><mdb-icon fas icon=\"recycle\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" mdbTooltip=\"Remove Bucket Events\" placement=\"top\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\" *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\">&nbsp;</span>\n          <a *ngIf=\"buckets[b].quota?.quota\" mdbTooltip=\"Remove Bucket Quota\" placement=\"top\" (click)=\"deleteBucketQuotaPrepare(buckets[b].name); removeQuotaApproveModal.show()\"><mdb-icon fas icon=\"expand\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- lifecycyle modal -->\n\n<div mdbModal #lifecycyleModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"lifecycyleModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Bucket Lifecycyle</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div class=\"row\">\n                <div class=\"col-md-12 col-12 mx-auto\">\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 1\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on \"dowload icon\" >\n                    <a mdbTooltip=\"Download Lifecycle\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{lifecycleBucketName}}-lifecycle.xml\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n                    <br/>\n                    Or override it by upload a new lifecycle policy.\n                  </div>\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 0\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio\n                    <a href=\"https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle\" target=\"_blank\">documentation</a>. Or use an AWS S3 documentation\n                    <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html\" target=\"_blank\">Object Lifecycle Management</a>\n                  </div>\n                  <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".lifecycle,.xml\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadLifecycleFile name=\"uploadLifecycleFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadLifecycleFileName == \"\" ? \"Choose .lifecycle or .xml file\" : uploadLifecycleFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                </div>\n              </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadLifecycle();lifecycyleModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove quotas approve modal -->\n\n<div mdbModal #removeQuotaApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Quota Limits</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button quota for bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketQuota(); removeQuotaApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"separator\" (click)=\"toggleShowQuota()\">Quota section<mdb-icon fas icon=\"angle-down\" class=\"pl-1\" *ngIf=\"!uiShowQuota\"></mdb-icon><mdb-icon fas icon=\"angle-up\" class=\"pl-1\" *ngIf=\"uiShowQuota\"></mdb-icon></div>\n                <span *ngIf=\"uiShowQuota\">\n\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketQuotaType\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Quota in bytes\" [(ngModel)]=\"newBucketQuota\" name=\"newBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                      <div class=\"input-group-append\">\n                        <div class=\"input-group-text\">Bytes</div>\n                      </div>\n                    </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"separator\">Quota section</div>\n                <span>\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" (change)=\"updateQuotaType()\" [(ngModel)]=\"updateBucketQuotaObj.quotatype\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" (change)=\"updateQuota()\" placeholder=\"Quota in bytes\" [(ngModel)]=\"updateBucketQuotaObj.quota\" name=\"updateBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                    <div class=\"input-group-append\">\n                      <div class=\"input-group-text\">Bytes</div>\n                    </div>\n                  </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(updateBucketQuotaObj.quotatype,updateBucketQuotaObj.quota); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
     /***/
   },
 
@@ -473,6 +473,29 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         key: "checkAuthStatus",
         value: function checkAuthStatus() {
           return this.httpClient.get(this.baseUrl + '/auth/check');
+        }
+      }, {
+        key: "getBucketQuota",
+        value: function getBucketQuota(bucketName) {
+          var form = new FormData();
+          form.append('bucketName', bucketName);
+          return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-quota', form);
+        }
+      }, {
+        key: "setBucketQuota",
+        value: function setBucketQuota(bucketName, quotaType, quotaValue) {
+          var form = new FormData();
+          form.append('bucketName', bucketName);
+          form.append('quotaType', quotaType);
+          form.append('quotaValue', quotaValue);
+          return this.httpClient.post(this.baseUrl + '/api/v2/bucket/set-quota', form);
+        }
+      }, {
+        key: "removeBucketQuota",
+        value: function removeBucketQuota(bucketName) {
+          var form = new FormData();
+          form.append('bucketName', bucketName);
+          return this.httpClient.post(this.baseUrl + '/api/v2/bucket/remove-quota', form);
         }
       }]);
 
@@ -952,10 +975,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.isNaN = Number.isNaN;
         this.buckets = {};
         this.newBucketName = "";
+        this.uiShowQuota = false;
+        this.newBucketQuotaType = "";
+        this.newBucketQuota = "";
+        this.quotaTypes = ["fifo", "hard"];
         this.newBucketEventARN = "";
         this.updateBucketEventARN = "";
         this.updateBucketEventFilterPrefix = "";
         this.updateBucketEventFilterSuffix = "";
+        this.updateBucketQuotaObj = {};
+        this.updateQuotaTypeChanged = false;
+        this.updateQuotaChanged = false;
         this.dropdownEventTypesList = [];
         this.selectedEventTypes = [];
         this.dropdownEventTypesSettings = {};
@@ -1020,6 +1050,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onEventTypesDeSelectAll(items) {
           console.log(items);
         }
+      }, {
+        key: "toggleShowQuota",
+        value: function toggleShowQuota() {
+          this.uiShowQuota ? this.uiShowQuota = false : this.uiShowQuota = true;
+        } // private toggleUpdateShowQuota(){
+        //   (this.updateUiShowQuota) ? this.updateUiShowQuota = false : this.updateUiShowQuota = true;
+        // }
+
       }, {
         key: "getServerInfo",
         value: function getServerInfo() {
@@ -1098,26 +1136,49 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         }
       }, {
         key: "updateBucketPrepare",
-        value: function updateBucketPrepare(bucketName) {
+        value: function updateBucketPrepare(bucketName, currentQuota, currentQtype) {
+          var _this5 = this;
+
           this.editBucketName = bucketName;
+          this.apiService.getBucketQuota(bucketName).subscribe(function (data) {
+            _this5.apiService.validateAuthInResponse(data);
+
+            console.log(data);
+            _this5.updateBucketQuotaObj = data;
+          });
+        }
+      }, {
+        key: "deleteBucketQuotaPrepare",
+        value: function deleteBucketQuotaPrepare(bucketName) {
+          this.bucketToRemoveQuota = bucketName;
+        }
+      }, {
+        key: "updateQuotaType",
+        value: function updateQuotaType() {
+          this.updateQuotaTypeChanged = true;
+        }
+      }, {
+        key: "updateQuota",
+        value: function updateQuota() {
+          this.updateQuotaChanged = true;
         }
       }, {
         key: "deleteBucket",
         value: function deleteBucket() {
-          var _this5 = this;
+          var _this6 = this;
 
           this.apiService.deleteBucket(this.bucketToDelete).subscribe(function (data) {
-            _this5.apiService.validateAuthInResponse(data);
+            _this6.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this5.toastr.success('Bucket has been deleted', 'Success');
+              _this6.toastr.success('Bucket has been deleted', 'Success');
             } else {
-              _this5.toastr.error(JSON.stringify(data), 'Error while deleting bucket');
+              _this6.toastr.error(JSON.stringify(data), 'Error while deleting bucket');
             }
 
-            _this5.getBuckets();
+            _this6.getBuckets();
           });
         }
       }, {
@@ -1128,6 +1189,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.newBucketEventFilterPrefix = "";
           this.newBucketEventFilterSuffix = "";
           this.selectedEventTypes = [];
+          this.newBucketQuotaType = "";
+          this.newBucketQuota = "";
         }
       }, {
         key: "resetUpdateForm",
@@ -1136,6 +1199,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.selectedEventTypes = [];
           this.updateBucketEventFilterPrefix = "";
           this.updateBucketEventFilterSuffix = "";
+          this.updateBucketQuotaObj = {};
+          this.updateQuotaTypeChanged = false;
+          this.updateQuotaChanged = false;
         }
       }, {
         key: "createBucket",
@@ -1145,11 +1211,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
             for (var i = 0; i < bucketsArr.length; i++) {
               if (bucketsArr[i] != '') {
-                this.createBucketSimple(bucketsArr[i], this.newBucketEventARN);
+                this.createBucketSimple(bucketsArr[i], this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, bucketsArr.length, i + 1);
               }
             }
           } else {
-            this.createBucketSimple(this.newBucketName, this.newBucketEventARN);
+            this.createBucketSimple(this.newBucketName, this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, 1, 1);
           }
         }
       }, {
@@ -1159,13 +1225,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         }
       }, {
         key: "updateBucket",
-        value: function updateBucket() {
-          this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true);
+        value: function updateBucket(quotaType, quotaVal) {
+          if (this.updateBucketEventARN != "") {
+            this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true);
+          }
+
+          if (this.updateQuotaTypeChanged || this.updateQuotaChanged) {
+            this.setQuotaForBucket(this.editBucketName, quotaType, quotaVal, true);
+          }
         }
       }, {
         key: "enableNotificationForBucket",
         value: function enableNotificationForBucket(bucket, stsARN, eventTypes, filterPrefix, filterSuffix, updateListAfter) {
-          var _this6 = this;
+          var _this7 = this;
 
           var eventTypesArr = [];
 
@@ -1174,60 +1246,105 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
 
           this.apiService.enableNotificationForBucket(bucket, stsARN, eventTypesArr.join(','), filterPrefix, filterSuffix).subscribe(function (data) {
-            _this6.apiService.validateAuthInResponse(data);
+            _this7.apiService.validateAuthInResponse(data);
 
             if (data["Success"]) {
-              _this6.toastr.success('Events for bucket: ' + bucket + ' has been enabled', 'Success');
+              _this7.toastr.success('Events for bucket: ' + bucket + ' has been enabled', 'Success');
 
               if (updateListAfter) {
-                _this6.getBuckets();
+                _this7.getBuckets();
               }
             } else {
-              _this6.toastr.error(JSON.stringify(data), 'Error while enabling events for bucket' + bucket);
+              _this7.toastr.error(JSON.stringify(data), 'Error while enabling events for bucket' + bucket);
+            }
+          });
+        }
+      }, {
+        key: "setQuotaForBucket",
+        value: function setQuotaForBucket(bucket, quotaType, quotaVal, reloadBucketList) {
+          var _this8 = this;
+
+          this.apiService.setBucketQuota(bucket, quotaType, quotaVal).subscribe(function (data) {
+            _this8.apiService.validateAuthInResponse(data);
+
+            if (data["Success"]) {
+              _this8.toastr.success('Quota for bucket ' + bucket + ' has been set', 'Success');
+            } else {
+              _this8.toastr.error(JSON.stringify(data), 'Error while set quota for bucket');
+            }
+
+            if (reloadBucketList) {
+              _this8.getBuckets();
             }
           });
         }
       }, {
         key: "removeBucketEvents",
         value: function removeBucketEvents() {
-          var _this7 = this;
+          var _this9 = this;
 
           var bucket = this.bucketToRemoveNotifications;
           this.apiService.removeBucketEvents(bucket).subscribe(function (data) {
-            _this7.apiService.validateAuthInResponse(data);
+            _this9.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this7.toastr.success('Events for bucket ' + bucket + ' has been removed', 'Success');
+              _this9.toastr.success('Events for bucket ' + bucket + ' has been removed', 'Success');
             } else {
-              _this7.toastr.error(JSON.stringify(data), 'Error while removing bucket events');
+              _this9.toastr.error(JSON.stringify(data), 'Error while removing bucket events');
             }
 
-            _this7.getBuckets();
+            _this9.getBuckets();
+          });
+        }
+      }, {
+        key: "removeBucketQuota",
+        value: function removeBucketQuota() {
+          var _this10 = this;
+
+          var bucket = this.bucketToRemoveQuota;
+          this.apiService.removeBucketQuota(bucket).subscribe(function (data) {
+            _this10.apiService.validateAuthInResponse(data);
+
+            console.log(data);
+
+            if (data["Success"]) {
+              _this10.toastr.success('Quota for bucket ' + bucket + ' has been removed', 'Success');
+            } else {
+              _this10.toastr.error(JSON.stringify(data), 'Error while removing bucket quota');
+            }
+
+            _this10.getBuckets();
           });
         }
       }, {
         key: "createBucketSimple",
-        value: function createBucketSimple(bucket, eventARN) {
-          var _this8 = this;
+        value: function createBucketSimple(bucket, eventARN, quotaType, quotaVal, numberOfBuckets, currentBucketNumber) {
+          var _this11 = this;
 
           this.apiService.createBucket(bucket).subscribe(function (data) {
-            _this8.apiService.validateAuthInResponse(data);
+            _this11.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this8.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
+              _this11.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
 
               if (eventARN != "") {
-                _this8.enableNotificationForBucket(bucket, eventARN, _this8.selectedEventTypes, _this8.newBucketEventFilterPrefix, _this8.newBucketEventFilterSuffix, false);
+                _this11.enableNotificationForBucket(bucket, eventARN, _this11.selectedEventTypes, _this11.newBucketEventFilterPrefix, _this11.newBucketEventFilterSuffix, false);
+              }
+
+              if (quotaType != "" && quotaVal != "" && quotaVal >= 0) {
+                _this11.setQuotaForBucket(bucket, quotaType, quotaVal, false);
               }
             } else {
-              _this8.toastr.error(JSON.stringify(data), 'Error while creating bucket');
+              _this11.toastr.error(JSON.stringify(data), 'Error while creating bucket');
             }
 
-            _this8.getBuckets();
+            if (numberOfBuckets == currentBucketNumber) {
+              _this11.getBuckets();
+            }
           });
         }
       }, {
@@ -1249,22 +1366,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "downloadLifecycle",
         value: function downloadLifecycle(bucket) {
-          var _this9 = this;
+          var _this12 = this;
 
           this.apiService.getLifecycle(bucket).subscribe(function (data) {
-            _this9.apiService.validateAuthInResponse(data); // console.log(bucket, data);
+            _this12.apiService.validateAuthInResponse(data); // console.log(bucket, data);
 
 
             if (data["error"]) {
-              _this9.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
+              _this12.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
             } else {
               if (data == "") {// this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');
               } else {
-                _this9.downloadLifecycleAvailable = 1;
+                _this12.downloadLifecycleAvailable = 1;
 
-                var uri = _this9.sanitizer.bypassSecurityTrustUrl("data:text/xml;charset=UTF-8," + encodeURIComponent(data.toString()));
+                var uri = _this12.sanitizer.bypassSecurityTrustUrl("data:text/xml;charset=UTF-8," + encodeURIComponent(data.toString()));
 
-                _this9.downloadJsonHref = uri;
+                _this12.downloadJsonHref = uri;
               }
             }
           });
@@ -1272,22 +1389,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "uploadLifecycle",
         value: function uploadLifecycle() {
-          var _this10 = this;
+          var _this13 = this;
 
           var fileReader = new FileReader();
 
           fileReader.onload = function (e) {
             var lifecycleFileString = fileReader.result.toString().replace(/\n/g, ' ').replace(/\r/g, ' ');
 
-            _this10.apiService.setLifecycle(_this10.lifecycleBucketName, lifecycleFileString).subscribe(function (data) {
-              _this10.apiService.validateAuthInResponse(data);
+            _this13.apiService.setLifecycle(_this13.lifecycleBucketName, lifecycleFileString).subscribe(function (data) {
+              _this13.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this10.toastr.success('Lifecycyle has been uploaded for bucket: ' + _this10.lifecycleBucketName + '', 'Success');
+                _this13.toastr.success('Lifecycyle has been uploaded for bucket: ' + _this13.lifecycleBucketName + '', 'Success');
               } else {
-                _this10.toastr.error(JSON.stringify(data), 'Error while uploading lifecycyle');
+                _this13.toastr.error(JSON.stringify(data), 'Error while uploading lifecycyle');
               }
             });
           };
@@ -1623,48 +1740,48 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getGroups",
         value: function getGroups() {
-          var _this11 = this;
+          var _this14 = this;
 
           this.groups = {};
           this.groupsWithMembers = [];
           this.previous = "";
           this.apiService.getGroups().subscribe(function (data) {
-            _this11.apiService.validateAuthInResponse(data);
+            _this14.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data !== null) {
-              _this11.groups = data;
+              _this14.groups = data;
 
-              for (var i = 0; i < _this11.objectKeys(data).length; i++) {
+              for (var i = 0; i < _this14.objectKeys(data).length; i++) {
                 var tempGroupName = data[i];
 
-                _this11.apiService.getGroupDescription(tempGroupName).subscribe(function (data) {
+                _this14.apiService.getGroupDescription(tempGroupName).subscribe(function (data) {
                   if (data !== null) {
-                    _this11.groupsWithMembers.push(data);
+                    _this14.groupsWithMembers.push(data);
 
-                    _this11.mdbTable.setDataSource(_this11.groupsWithMembers);
+                    _this14.mdbTable.setDataSource(_this14.groupsWithMembers);
 
-                    _this11.previous = _this11.mdbTable.getDataSource();
+                    _this14.previous = _this14.mdbTable.getDataSource();
                   }
                 });
               }
 
-              console.log(_this11.groupsWithMembers);
-              _this11.groups = _this11.groupsWithMembers;
+              console.log(_this14.groupsWithMembers);
+              _this14.groups = _this14.groupsWithMembers;
             }
           });
         }
       }, {
         key: "getListOfUsers",
         value: function getListOfUsers() {
-          var _this12 = this;
+          var _this15 = this;
 
           this.apiService.getUsers().subscribe(function (data) {
-            _this12.apiService.validateAuthInResponse(data);
+            _this15.apiService.validateAuthInResponse(data);
 
             if (data !== null) {
-              _this12.dropdownList = Object.entries(data).map(function (e) {
+              _this15.dropdownList = Object.entries(data).map(function (e) {
                 return {
                   "id": e[0],
                   "itemName": e[0]
@@ -1676,22 +1793,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getGroupDescription",
         value: function getGroupDescription(group) {
-          var _this13 = this;
+          var _this16 = this;
 
           this.isEditMode(true);
           console.log(group);
           this.apiService.getGroupDescription(group).subscribe(function (data) {
             if (data !== null) {
               console.log(data);
-              _this13.groupToUpdate = data;
-              _this13.newGroupName = data["name"];
-              _this13.newGroupPolicy = data["policy"];
-              _this13.newGroupStatus = data["status"];
+              _this16.groupToUpdate = data;
+              _this16.newGroupName = data["name"];
+              _this16.newGroupPolicy = data["policy"];
+              _this16.newGroupStatus = data["status"];
 
               for (var i = 0; i < data["members"].length; i++) {
                 var tempMember = data["members"][i];
 
-                _this13.selectedItems.push({
+                _this16.selectedItems.push({
                   "id": tempMember,
                   "itemName": tempMember
                 });
@@ -1702,13 +1819,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getListOfPolicies",
         value: function getListOfPolicies() {
-          var _this14 = this;
+          var _this17 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this14.apiService.validateAuthInResponse(data);
+            _this17.apiService.validateAuthInResponse(data);
 
-            _this14.policies = Object.keys(data);
-            _this14.rawPolicies = data;
+            _this17.policies = Object.keys(data);
+            _this17.rawPolicies = data;
           });
         }
       }, {
@@ -1728,59 +1845,59 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "deleteGroup",
         value: function deleteGroup() {
-          var _this15 = this;
+          var _this18 = this;
 
           console.log("GROUP TO DELETE >>>", this.groupToDelete);
           this.apiService.updateMembersGroup(this.groupToDelete, [], "true").subscribe(function (data) {
-            _this15.apiService.validateAuthInResponse(data);
+            _this18.apiService.validateAuthInResponse(data);
 
             if (data["Success"]) {
-              _this15.toastr.success('Group: ' + _this15.newGroupName + ' has been removed', 'Success');
+              _this18.toastr.success('Group: ' + _this18.newGroupName + ' has been removed', 'Success');
 
-              _this15.usersToRemove = [];
+              _this18.usersToRemove = [];
 
-              _this15.refreshList();
+              _this18.refreshList();
 
-              _this15.groupToDelete = "";
+              _this18.groupToDelete = "";
             } else {
-              _this15.toastr.error(JSON.stringify(data), 'Error while removing group');
+              _this18.toastr.error(JSON.stringify(data), 'Error while removing group');
 
-              _this15.refreshList();
+              _this18.refreshList();
 
-              _this15.groupToDelete = "";
+              _this18.groupToDelete = "";
             }
           });
         }
       }, {
         key: "wipeGroupMembers",
         value: function wipeGroupMembers() {
-          var _this16 = this;
+          var _this19 = this;
 
           this.apiService.updateMembersGroup(this.newGroupName, this.usersToRemove, "true").subscribe(function (data) {
-            _this16.apiService.validateAuthInResponse(data);
+            _this19.apiService.validateAuthInResponse(data);
 
             if (data["Success"]) {
-              _this16.toastr.success('Group: ' + _this16.newGroupName + ' members has been removed', 'Success');
+              _this19.toastr.success('Group: ' + _this19.newGroupName + ' members has been removed', 'Success');
 
-              _this16.usersToRemove = [];
+              _this19.usersToRemove = [];
             } else {
-              _this16.toastr.error(JSON.stringify(data), 'Error while removing members from group');
+              _this19.toastr.error(JSON.stringify(data), 'Error while removing members from group');
             }
           });
         }
       }, {
         key: "updatePolicy",
         value: function updatePolicy() {
-          var _this17 = this;
+          var _this20 = this;
 
           if (this.newGroupPolicy !== null && this.newGroupPolicy != "") {
             this.apiService.setPolicy(this.newGroupPolicy, this.newGroupName, "true").subscribe(function (data) {
-              _this17.apiService.validateAuthInResponse(data);
+              _this20.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this17.toastr.success('Group: ' + _this17.newGroupName + ' policy has been set to ' + _this17.newGroupPolicy, 'Success');
+                _this20.toastr.success('Group: ' + _this20.newGroupName + ' policy has been set to ' + _this20.newGroupPolicy, 'Success');
               } else {
-                _this17.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
+                _this20.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
               }
             });
           }
@@ -1788,16 +1905,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "updateStatus",
         value: function updateStatus() {
-          var _this18 = this;
+          var _this21 = this;
 
           if (this.newGroupStatus !== null && this.newGroupStatus != "") {
             this.apiService.setStatusGroup(this.newGroupName, this.newGroupStatus).subscribe(function (data) {
-              _this18.apiService.validateAuthInResponse(data);
+              _this21.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this18.toastr.success('Group: ' + _this18.newGroupName + ' status has been set to ' + _this18.newGroupStatus, 'Success');
+                _this21.toastr.success('Group: ' + _this21.newGroupName + ' status has been set to ' + _this21.newGroupStatus, 'Success');
               } else {
-                _this18.toastr.error(JSON.stringify(data), 'Error while setting status to group');
+                _this21.toastr.error(JSON.stringify(data), 'Error while setting status to group');
               }
             });
           }
@@ -1812,7 +1929,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "createGroup",
         value: function createGroup() {
-          var _this19 = this;
+          var _this22 = this;
 
           console.log("CREATE GROUP CALLED");
           var newMembers = [];
@@ -1833,15 +1950,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           if (newMembers.length > 0) {
             this.apiService.updateMembersGroup(this.newGroupName, newMembers, "false").subscribe(function (data) {
-              _this19.apiService.validateAuthInResponse(data);
+              _this22.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this19.toastr.success('Group: ' + _this19.newGroupName + ' has been created', 'Success');
+                _this22.toastr.success('Group: ' + _this22.newGroupName + ' has been created', 'Success');
               } else {
-                _this19.toastr.error(JSON.stringify(data), 'Error while creating group');
+                _this22.toastr.error(JSON.stringify(data), 'Error while creating group');
               }
 
-              _this19.refreshList();
+              _this22.refreshList();
             });
           } else {
             this.refreshList();
@@ -1957,7 +2074,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "intercept",
         value: function intercept(req, next) {
-          var _this20 = this;
+          var _this23 = this;
 
           req = req.clone({
             withCredentials: true
@@ -1968,24 +2085,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].create(function (observer) {
             var subscription = next.handle(req).subscribe(function (event) {
               if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]) {
-                _this20.removeRequest(req);
+                _this23.removeRequest(req);
 
                 observer.next(event);
               }
             }, function (err) {
-              _this20.loaderService.isError = true;
+              _this23.loaderService.isError = true;
 
-              _this20.removeRequest(req);
+              _this23.removeRequest(req);
 
               observer.error(err);
             }, function () {
-              _this20.removeRequest(req);
+              _this23.removeRequest(req);
 
               observer.complete();
             }); // remove request from queue when cancelled
 
             return function () {
-              _this20.removeRequest(req);
+              _this23.removeRequest(req);
 
               subscription.unsubscribe();
             };
@@ -2119,14 +2236,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     var LoaderComponent = /*#__PURE__*/function () {
       function LoaderComponent(loaderService) {
-        var _this21 = this;
+        var _this24 = this;
 
         _classCallCheck(this, LoaderComponent);
 
         this.loaderService = loaderService;
         this.loaderService.isLoading.subscribe(function (v) {
-          _this21.loading = v;
-          _this21.error = _this21.loaderService.isError;
+          _this24.loading = v;
+          _this24.error = _this24.loaderService.isError;
         });
       }
 
@@ -2843,40 +2960,40 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getPolicies",
         value: function getPolicies() {
-          var _this22 = this;
+          var _this25 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this22.apiService.validateAuthInResponse(data);
+            _this25.apiService.validateAuthInResponse(data);
 
             console.log(data);
-            _this22.policiesRaw = data;
+            _this25.policiesRaw = data;
             var arrayOfPolicies = Object.entries(data).map(function (e) {
               return _defineProperty({}, e[0], e[1]);
             });
-            _this22.policies = arrayOfPolicies;
+            _this25.policies = arrayOfPolicies;
 
-            _this22.mdbTable.setDataSource(arrayOfPolicies);
+            _this25.mdbTable.setDataSource(arrayOfPolicies);
 
             console.log(arrayOfPolicies);
-            _this22.previous = _this22.mdbTable.getDataSource();
+            _this25.previous = _this25.mdbTable.getDataSource();
           });
         }
       }, {
         key: "deletePolicy",
         value: function deletePolicy() {
-          var _this23 = this;
+          var _this26 = this;
 
           this.apiService.deletePolicy(this.policyToDelete).subscribe(function (data) {
-            _this23.apiService.validateAuthInResponse(data);
+            _this26.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
-            _this23.getPolicies();
+            _this26.getPolicies();
 
             if (data["Success"]) {
-              _this23.toastr.success('Policy ' + _this23.policyToDelete + ' has been deleted', 'Success');
+              _this26.toastr.success('Policy ' + _this26.policyToDelete + ' has been deleted', 'Success');
             } else {
-              _this23.toastr.error(JSON.stringify(data), 'Error while deleting policy');
+              _this26.toastr.error(JSON.stringify(data), 'Error while deleting policy');
             }
           });
         }
@@ -3017,7 +3134,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "uploadPolicy",
         value: function uploadPolicy() {
-          var _this24 = this;
+          var _this27 = this;
 
           var fileReader = new FileReader();
 
@@ -3025,18 +3142,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(fileReader.result);
             var policyFileString = fileReader.result.toString().replace(/\n/g, ' ').replace(/\r/g, ' ');
 
-            _this24.apiService.addPolicy(_this24.uploadPolicyName, policyFileString).subscribe(function (data) {
-              _this24.apiService.validateAuthInResponse(data);
+            _this27.apiService.addPolicy(_this27.uploadPolicyName, policyFileString).subscribe(function (data) {
+              _this27.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this24.toastr.success('Policy ' + _this24.newPolicy.name + ' has been created', 'Success');
+                _this27.toastr.success('Policy ' + _this27.newPolicy.name + ' has been created', 'Success');
               } else {
-                _this24.toastr.error(JSON.stringify(data), 'Error while creating policy');
+                _this27.toastr.error(JSON.stringify(data), 'Error while creating policy');
               }
 
-              _this24.getPolicies();
+              _this27.getPolicies();
             });
           };
 
@@ -3053,22 +3170,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "createPolicy",
         value: function createPolicy() {
-          var _this25 = this;
+          var _this28 = this;
 
           console.log(this.newPolicy, this.newPolicyRaw);
           var policyString = JSON.stringify(this.newPolicyRaw);
           this.apiService.addPolicy(this.newPolicy.name, policyString).subscribe(function (data) {
-            _this25.apiService.validateAuthInResponse(data);
+            _this28.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this25.toastr.success('Policy ' + _this25.newPolicy.name + ' has been created', 'Success');
+              _this28.toastr.success('Policy ' + _this28.newPolicy.name + ' has been created', 'Success');
             } else {
-              _this25.toastr.error(JSON.stringify(data), 'Error while creating policy');
+              _this28.toastr.error(JSON.stringify(data), 'Error while creating policy');
             }
 
-            _this25.getPolicies();
+            _this28.getPolicies();
           });
         }
       }, {
@@ -3266,45 +3383,45 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "serverInfo",
         value: function serverInfo() {
-          var _this26 = this;
+          var _this29 = this;
 
           this.apiService.serverInfo().subscribe(function (data) {
-            _this26.apiService.validateAuthInResponse(data);
+            _this29.apiService.validateAuthInResponse(data);
 
-            _this26.serviceInfo = data;
+            _this29.serviceInfo = data;
           });
         }
       }, {
         key: "diskInfo",
         value: function diskInfo() {
-          var _this27 = this;
+          var _this30 = this;
 
           this.apiService.diskInfo().subscribe(function (data) {
-            _this27.apiService.validateAuthInResponse(data);
+            _this30.apiService.validateAuthInResponse(data);
 
             console.log("Disk Usage >>>>>>>>>>>>", data);
-            _this27.diskUsageInfo = data;
+            _this30.diskUsageInfo = data;
 
             if (data.hasOwnProperty('objectsSizesHistogram')) {
-              var objectsSizesHistogram = _this27.diskUsageInfo.objectsSizesHistogram;
+              var objectsSizesHistogram = _this30.diskUsageInfo.objectsSizesHistogram;
               var histogramKeysRawArr = Object.keys(objectsSizesHistogram);
               var histogramValsRawArr = Object.values(objectsSizesHistogram);
-              _this27.hgChartDatasets[0].data = histogramValsRawArr;
-              _this27.hgChartLabels = [];
+              _this30.hgChartDatasets[0].data = histogramValsRawArr;
+              _this30.hgChartLabels = [];
 
               for (var i = 0; i < histogramKeysRawArr.length; i++) {
                 var histogramLabel = histogramKeysRawArr[i].split('_').join(' ');
 
-                _this27.hgChartLabels.push(histogramLabel);
+                _this30.hgChartLabels.push(histogramLabel);
               }
             }
 
-            if (data.hasOwnProperty('bucketsSizes') && _this27.diskUsageInfo.bucketsSizes != {}) {
-              var objectBucketSizes = _this27.diskUsageInfo.bucketsSizes;
+            if (data.hasOwnProperty('bucketsSizes') && _this30.diskUsageInfo.bucketsSizes != {}) {
+              var objectBucketSizes = _this30.diskUsageInfo.bucketsSizes;
               var bucketSizesKeysRawArr = Object.keys(objectBucketSizes);
               var bucketSizesValsRawArr = Object.values(objectBucketSizes);
-              _this27.szChartDatasets[0].data = bucketSizesValsRawArr;
-              _this27.szChartLabels = bucketSizesKeysRawArr;
+              _this30.szChartDatasets[0].data = bucketSizesValsRawArr;
+              _this30.szChartLabels = bucketSizesKeysRawArr;
             }
           });
         }
@@ -3504,39 +3621,39 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getListOfUsers",
         value: function getListOfUsers() {
-          var _this28 = this;
+          var _this31 = this;
 
           this.apiService.getUsers().subscribe(function (data) {
-            _this28.apiService.validateAuthInResponse(data);
+            _this31.apiService.validateAuthInResponse(data);
 
             console.log(data);
-            _this28.usersRaw = data;
+            _this31.usersRaw = data;
             var arrayOfUsers = Object.entries(data).map(function (e) {
               return _defineProperty({}, e[0], e[1]);
             });
-            _this28.users = arrayOfUsers;
+            _this31.users = arrayOfUsers;
 
-            _this28.mdbTable.setDataSource(arrayOfUsers);
+            _this31.mdbTable.setDataSource(arrayOfUsers);
 
             console.log(arrayOfUsers);
-            _this28.previous = _this28.mdbTable.getDataSource();
+            _this31.previous = _this31.mdbTable.getDataSource();
           });
         }
       }, {
         key: "getListOfPolicies",
         value: function getListOfPolicies() {
-          var _this29 = this;
+          var _this32 = this;
 
           this.apiService.getPolicies().subscribe(function (data) {
-            _this29.apiService.validateAuthInResponse(data);
+            _this32.apiService.validateAuthInResponse(data);
 
-            _this29.policies = Object.keys(data);
+            _this32.policies = Object.keys(data);
           });
         }
       }, {
         key: "createUser",
         value: function createUser() {
-          var _this30 = this;
+          var _this33 = this;
 
           var userAccess = this.newUserAccess.value;
           var userSecret = this.newUserSecret.value;
@@ -3545,30 +3662,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           if (userPolicy != '') {
             this.apiService.addUserExtended(userAccess, userSecret, userPolicy).subscribe(function (data) {
-              _this30.apiService.validateAuthInResponse(data);
+              _this33.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
-              _this30.getListOfUsers();
+              _this33.getListOfUsers();
 
               if (data["Success"]) {
-                _this30.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
+                _this33.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
               } else {
-                _this30.toastr.error(JSON.stringify(data), 'Error while creating user');
+                _this33.toastr.error(JSON.stringify(data), 'Error while creating user');
               }
             });
           } else {
             this.apiService.addUser(userAccess, userSecret).subscribe(function (data) {
-              _this30.apiService.validateAuthInResponse(data);
+              _this33.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
-              _this30.getListOfUsers();
+              _this33.getListOfUsers();
 
               if (data["Success"]) {
-                _this30.toastr.success('User: ' + userAccess + ' has been created', 'Success');
+                _this33.toastr.success('User: ' + userAccess + ' has been created', 'Success');
               } else {
-                _this30.toastr.error(JSON.stringify(data), 'Error while creating user');
+                _this33.toastr.error(JSON.stringify(data), 'Error while creating user');
               }
             });
           }
@@ -3576,7 +3693,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "setStatusUser",
         value: function setStatusUser(accessKey, status) {
-          var _this31 = this;
+          var _this34 = this;
 
           if (status == 'enabled') {
             status = 'disabled';
@@ -3585,17 +3702,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
 
           this.apiService.setStatusUser(accessKey, status).subscribe(function (data) {
-            _this31.apiService.validateAuthInResponse(data);
+            _this34.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this31.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
+              _this34.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
             } else {
-              _this31.toastr.error(JSON.stringify(data), 'Error while changing state for user');
+              _this34.toastr.error(JSON.stringify(data), 'Error while changing state for user');
             }
 
-            _this31.getListOfUsers();
+            _this34.getListOfUsers();
           });
         }
       }, {
@@ -3635,42 +3752,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "updateUserSave",
         value: function updateUserSave() {
-          var _this32 = this;
+          var _this35 = this;
 
           var updatedSecret = this.updateUser.value.secretKeyUpdate;
           var updatedPolicy = this.updateUser.value.policyUpdate;
           var updatedStatus = this.updateUser.value.statusUpdate;
           this.apiService.updateUser(this.userToUpdate, updatedSecret, updatedPolicy, updatedStatus).subscribe(function (data) {
-            _this32.apiService.validateAuthInResponse(data);
+            _this35.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
-            _this32.getListOfUsers();
+            _this35.getListOfUsers();
 
             if (data["Success"]) {
-              _this32.toastr.success('User: ' + _this32.userToUpdate + ' has been updated', 'Success');
+              _this35.toastr.success('User: ' + _this35.userToUpdate + ' has been updated', 'Success');
             } else {
-              _this32.toastr.error(JSON.stringify(data), 'Error while updating user');
+              _this35.toastr.error(JSON.stringify(data), 'Error while updating user');
             }
           });
         }
       }, {
         key: "deleteUser",
         value: function deleteUser() {
-          var _this33 = this;
+          var _this36 = this;
 
           this.apiService.deleteUser(this.userToDelete).subscribe(function (data) {
-            _this33.apiService.validateAuthInResponse(data);
+            _this36.apiService.validateAuthInResponse(data);
 
             console.log(data);
 
             if (data["Success"]) {
-              _this33.toastr.success('User: ' + _this33.userToDelete + ' has been deleted', 'Success');
+              _this36.toastr.success('User: ' + _this36.userToDelete + ' has been deleted', 'Success');
             }
 
-            _this33.updateUserFrom();
+            _this36.updateUserFrom();
 
-            _this33.getListOfUsers();
+            _this36.getListOfUsers();
           });
         }
       }, {
@@ -3765,7 +3882,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var environment = {
       production: false,
       apiBaseUrl: "http://localhost:8080",
-      apiMultiBackend: false,
+      apiMultiBackend: true,
       apiBackends: [{
         "name": "myminio",
         "url": "http://localhost:8080"

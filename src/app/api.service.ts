@@ -255,4 +255,30 @@ export class ApiService {
     return this.httpClient.get(this.baseUrl+'/auth/check');
   }
 
+  public getBucketQuota(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-quota', form);
+  }
+
+  public setBucketQuota(bucketName, quotaType, quotaValue){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+    form.append('quotaType', quotaType);
+    form.append('quotaValue', quotaValue);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-quota', form);
+  }
+
+  public removeBucketQuota(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/remove-quota', form);
+  }
+
 }
