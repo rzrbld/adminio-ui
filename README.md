@@ -3,15 +3,17 @@ This is a Web UI for [minio](https://min.io) s3 server.
 Web UI works on top of REST API - [adminio-API](https://github.com/rzrbld/adminio-api)
 Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.com)
 
+![Docker hub stats](https://img.shields.io/docker/pulls/rzrbld/adminio-ui?style=flat-square) ![GitHub License](https://img.shields.io/github/license/rzrbld/adminio-ui?style=flat-square)
+
 ![screenshot1](https://raw.githubusercontent.com/rzrbld/adminio-ui/master/images/image.gif)
 
 ### Web UI abilities:
 | Kind   |      Create      |  List  | Update | Delete |
 |--------------|:-----------------------|:-----------:|:-----------:|:-----------:|
-| Bucket |  V  | V | add/remove events, change lifecycle | V |
+| Bucket |  V  | V | add/remove events, change lifecycle, manage quota | V |
 | User | V | V | update password, change policy | V |
 | Policy |  V | V | V | V |
-| Group |  V | V | add users to group, remove users, change ploicy | X |
+| Group |  V | V | add users to group, remove users, change ploicy | only if group is empty (has no members) |
 
 
 ### Extra features:
@@ -19,7 +21,7 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 - fully editable policy constructor
 - copy policies
 - upload and download bucket lifecycles and policies
-
+- bucket quota
 
 ### Run full stack demo
 
@@ -42,7 +44,16 @@ This example run only for test purposes, unless you running UI and API of admini
 
 ### Run in real environment
 #### Docker
-In real life cases you'll need to change two environment variables at `` Dockerfile `` - `` API_BASE_URL `` which points to [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint and `` ADMINIO_PROD `` which can be set to `` true `` or `` false ``. And then rebuild a docker image.
+| Environment | Description | Default |
+| --- | --- | --- |
+|  API_BASE_URL  | [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint | http://localhost:8080  |
+|  ADMINIO_PROD  |  production mode, can be ``true`` or ``false``  | ``false``  |
+|  ADMINIO_MULTI_BACKEND  | multibackend mode, can be ``true`` or ``false``  | ``false``  |
+|  ADMINIO_BACKENDS  |  json obj with names and urls of all you [adminio-api](https://github.com/rzrbld/adminio-api) instances  |  ``[{"name":"myminio","url":"http://localhost:8080"},{"name":"localhost","url":"http://localhost:8081"},{"name":"error","url":"http://localhost:8082"}]`` |
+
+In real life cases you'll need to change this environment variables at `` Dockerfile `` - `` API_BASE_URL `` which points to [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint and `` ADMINIO_PROD `` which can be set to `` true `` or `` false ``.
+
+If you run multiple instances of [adminio-api](https://github.com/rzrbld/adminio-api) you can set `` ADMINIO_MULTI_BACKEND `` to ``true`` and fill  `` ADMINIO_BACKENDS `` example with needed urls and names. Please note - in this case you still need points ``API_BASE_URL`` to one of this instances. And then build a docker image.
 
 #### npm build
 Method that described above also works if you build with `` npm run build ``.

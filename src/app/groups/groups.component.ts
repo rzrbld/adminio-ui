@@ -26,9 +26,9 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	modalCreateEditTitle;
 	modalCreateEditButtonText;
 	modalEditMode = false;
-	rawView = '';
+	rawView = "";
 	usersToRemove = [];
-
+	groupToDelete = "";
 
 
 
@@ -94,7 +94,11 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	    console.log(items);
 	}
 	onDeSelectAll(items: any){
-	    console.log(items);
+
+			for (let i = 0; i < this.selectedItems.length; i++) {
+				this.usersToRemove.push(this.selectedItems[i]["itemName"])
+			}
+
 	    this.selectedItems = [];
 	}
 
@@ -221,6 +225,30 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 		this.newGroupStatus = "";
 	}
 
+	private markGroupToDelete(group){
+		console.log("GROUP TO DELETE", group);
+
+		this.groupToDelete = group
+	}
+
+	private deleteGroup(){
+		console.log("GROUP TO DELETE >>>", this.groupToDelete);
+
+		this.apiService.updateMembersGroup(this.groupToDelete,[],"true").subscribe((data)=>{
+			  this.apiService.validateAuthInResponse(data)
+	      if(data["Success"]){
+	        this.toastr.success('Group: '+this.newGroupName+' has been removed', 'Success');
+	        this.usersToRemove = [];
+					this.refreshList();
+					this.groupToDelete = "";
+	      }else{
+	        this.toastr.error(JSON.stringify(data), 'Error while removing group');
+					this.refreshList();
+					this.groupToDelete = "";
+	      }
+	    });
+	}
+
 	private wipeGroupMembers(){
 
 		this.apiService.updateMembersGroup(this.newGroupName,this.usersToRemove,"true").subscribe((data)=>{
@@ -260,6 +288,12 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 	    }
 	}
 
+	private refreshList(){
+		this.updatePolicy();
+		this.updateStatus();
+		this.getGroups();
+	}
+
 	private createGroup(){
 		console.log("CREATE GROUP CALLED")
 		let newMembers = []
@@ -268,6 +302,8 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 		}
 
 		//remove users from group
+		console.log("grouptoUpdate",this.groupToUpdate);
+
 		if(this.groupToUpdate!==null && this.groupToUpdate!="" && this.groupToUpdate){
 			if(this.usersToRemove.length > 0){
 				this.wipeGroupMembers()
@@ -283,14 +319,10 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 		      }else{
 		        this.toastr.error(JSON.stringify(data), 'Error while creating group');
 		      }
-		      this.updatePolicy();
-		      this.updateStatus();
-					this.getGroups();
+		      this.refreshList();
 		  });
 		}else{
-			this.updatePolicy();
-			this.updateStatus();
-			this.getGroups();
+			this.refreshList();
 		}
     this.isEditMode(false);
     this.groupToUpdate = {};

@@ -1,4 +1,6 @@
 export const environment = {
   production: ${ADMINIO_PROD},
-  apiBaseUrl: \"${API_BASE_URL}\"
+  apiBaseUrl: \"${API_BASE_URL}\",
+  apiMultiBackend: ${ADMINIO_MULTI_BACKEND},
+  apiBackends: ${ADMINIO_BACKENDS}
 };

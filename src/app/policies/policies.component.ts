@@ -468,7 +468,9 @@ export class PoliciesComponent implements OnInit {
     this.newStatement = this.newPolicyRaw.Statement[i]
     this.newPolicy.effect = this.newPolicyRaw.Statement[i].Effect
     if(this.newStatement.Action[0] == "s3:*"){
-        this.selectedActions = this.dropdownActionList
+        for (var g = 0; g < this.dropdownActionList.length; g++) {
+          this.selectedActions.push({"id":this.dropdownActionList[g].id,"itemName":this.dropdownActionList[g].itemName}) 
+        }
     }else{
       for (var g = 0; g < this.newStatement.Action.length; g++) {
         this.selectedActions.push({"id":g,"itemName":this.newStatement.Action[g]})

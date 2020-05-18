@@ -1,15 +1,58 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../environments/environment';
+import { Router } from "@angular/router"
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
-  baseUrl = environment.apiBaseUrl;
+
+  multiBackend = environment.apiMultiBackend;
+  backendsUrls = environment.apiBackends;
+  baseUrl = this.getCurrentBackend();
+
+  private getCurrentBackend(){
+    let envDefaultBackend = environment.apiBaseUrl;
+    if(this.multiBackend && this.multiBackend == true) {
+      let savedBackend = localStorage.getItem('currentBackend');
+
+      let activeBackend = "";
+
+      if(savedBackend && savedBackend != ""){
+        activeBackend = savedBackend;
+      }else{
+        activeBackend = envDefaultBackend;
+      }
+      return activeBackend;
+    } else {
+      return envDefaultBackend;
+    }
+  }
+
+  public overrideBackend(newBackend){
+    localStorage.setItem('currentBackend', newBackend);
+    this.baseUrl = newBackend;
+
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+
+    this.router.navigate([this.router.url])
+    this.router.onSameUrlNavigation = 'ignore';
+  }
+
+  public getMultiBackendStatus(){
+    return this.multiBackend;
+  }
+
+  public getBackendsUrls(){
+    return this.backendsUrls;
+  }
 
   public validateAuthInResponse(data){
     if(data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true){
@@ -210,6 +253,32 @@ export class ApiService {
 
   public checkAuthStatus(){
     return this.httpClient.get(this.baseUrl+'/auth/check');
+  }
+
+  public getBucketQuota(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-quota', form);
+  }
+
+  public setBucketQuota(bucketName, quotaType, quotaValue){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+    form.append('quotaType', quotaType);
+    form.append('quotaValue', quotaValue);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-quota', form);
+  }
+
+  public removeBucketQuota(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/remove-quota', form);
   }
 
 }

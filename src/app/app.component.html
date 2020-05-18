@@ -47,14 +47,21 @@
             </li>
         </ul>
         <!-- Links -->
+        <!-- Search form -->
+        <form class="form-inline select" mdbWavesEffect *ngIf="apiService.getMultiBackendStatus()">
+          <select class="select-text" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]="apiService.baseUrl" [ngModelOptions]="{standalone: true}" title="Select backend">
+            <option value="" disabled selected>Select backend</option>
+            <option [value]="backend.url" *ngFor="let backend of apiService.getBackendsUrls()">{{backend.name}} ({{backend.url}})</option>
+          </select>
+          <span class="select-highlight"></span>
+					<span class="select-bar"></span>
+        </form>
     </links>
     <!-- Collapsible content -->
 
 </mdb-navbar>
 <!--/.Navbar-->
 <app-loading></app-loading>
-<!-- <div class="content hidden" role="main" [routerLink]="['/']" routerLinkActive="visible" [routerLinkActiveOptions]="{exact: true}">
-</div> -->
 
 <router-outlet></router-outlet>
 
@@ -63,7 +70,7 @@
 
   <!-- Copyright -->
   <div class="text-right py-3 transparent">
-    <a href="https://github.com/rzrbld/adminio-ui">adminio sources</a> | v:0.96 &nbsp;&nbsp;
+    <a href="https://github.com/rzrbld/adminio-ui/issues">create issue or fork at github.com<mdb-icon fab icon="github-alt" size="1x" class="px-1" aria-hidden="true"></mdb-icon></a> | v:1.0 &nbsp;&nbsp;
   </div>
   <!-- Copyright -->
 

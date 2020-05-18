@@ -31,6 +31,7 @@ export class LoaderInterceptor implements HttpInterceptor {
         });
         this.requests.push(req);
         this.loaderService.isLoading.next(true);
+        this.loaderService.isError = false;
         return Observable.create(observer => {
             const subscription = next.handle(req)
                 .subscribe(
@@ -41,7 +42,7 @@ export class LoaderInterceptor implements HttpInterceptor {
                         }
                     },
                     err => {
-                        alert('error returned');
+                        this.loaderService.isError = true;
                         this.removeRequest(req);
                         observer.error(err);
                     },
