@@ -172,8 +172,19 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.editBucketName = bucketName;
     this.apiService.getBucketQuota(bucketName).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
+      console.log(Object.keys(data));
       console.log(data);
-      this.updateBucketQuotaObj = data;
+
+      var dataKeys = Object.keys(data);
+      console.log(dataKeys[0]);
+      if(dataKeys[0]!="error"){
+        this.updateBucketQuotaObj = data;
+      }else{
+        var emptyData = {
+          quotatype: ""
+        };
+        this.updateBucketQuotaObj = emptyData;
+      }
     });
   }
 

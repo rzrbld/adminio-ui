@@ -53,7 +53,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui\">adminio sources</a> | v:0.96 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
+    __webpack_exports__["default"] = "<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui/issues\">create issue or fork at github.com<mdb-icon fab icon=\"github-alt\" size=\"1x\" class=\"px-1\" aria-hidden=\"true\"></mdb-icon></a> | v:1.0 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
     /***/
   },
 
@@ -1143,8 +1143,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.apiService.getBucketQuota(bucketName).subscribe(function (data) {
             _this5.apiService.validateAuthInResponse(data);
 
+            console.log(Object.keys(data));
             console.log(data);
-            _this5.updateBucketQuotaObj = data;
+            var dataKeys = Object.keys(data);
+            console.log(dataKeys[0]);
+
+            if (dataKeys[0] != "error") {
+              _this5.updateBucketQuotaObj = data;
+            } else {
+              var emptyData = {
+                quotatype: ""
+              };
+              _this5.updateBucketQuotaObj = emptyData;
+            }
           });
         }
       }, {
@@ -3095,7 +3106,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.newPolicy.effect = this.newPolicyRaw.Statement[i].Effect;
 
           if (this.newStatement.Action[0] == "s3:*") {
-            this.selectedActions = this.dropdownActionList;
+            for (var g = 0; g < this.dropdownActionList.length; g++) {
+              this.selectedActions.push({
+                "id": this.dropdownActionList[g].id,
+                "itemName": this.dropdownActionList[g].itemName
+              });
+            }
           } else {
             for (var g = 0; g < this.newStatement.Action.length; g++) {
               this.selectedActions.push({
@@ -3882,7 +3898,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var environment = {
       production: false,
       apiBaseUrl: "http://localhost:8080",
-      apiMultiBackend: true,
+      apiMultiBackend: false,
       apiBackends: [{
         "name": "myminio",
         "url": "http://localhost:8080"
