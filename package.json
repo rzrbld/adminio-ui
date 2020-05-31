@@ -3,10 +3,7 @@
   "version": "0.6.3",
   "scripts": {
     "ng": "ng",
-    "prestart": "eval \"echo \\\"$(cat src/environments/environment.ts.template)\\\"\" > src/environments/environment.ts",
     "start": "ng serve -o --port 4201",
-    "prebuild": "eval \"echo \\\"$(cat src/environments/environment.ts.template)\\\"\" > src/environments/environment.ts",
-    "prebuild:prod": "eval \"echo \\\"$(cat src/environments/environment.ts.template)\\\"\" > src/environments/environment.prod.ts",
     "build": "ng build --output-path dist",
     "test": "ng test",
     "lint": "ng lint",

@@ -1,22 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from './../environments/environment';
-import { Router } from "@angular/router"
+import { Router } from "@angular/router";
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private httpClient: HttpClient, private router: Router) { }
+  constructor(private httpClient: HttpClient, private router: Router, private env: EnvService) {
+    if(env.apiBaseUrl) {
+      console.log('apiBaseUrl', env.apiBaseUrl);
+    }
+    if(env.apiMultiBackend) {
+      console.log('apiMultiBackend', env.apiMultiBackend);
+    }
+    if(env.apiBackends) {
+      console.log('apiBackends', env.apiBackends);
+    }
+
+   }
 
 
-  multiBackend = environment.apiMultiBackend;
-  backendsUrls = environment.apiBackends;
+  multiBackend = this.env.apiMultiBackend;
+  backendsUrls = this.env.apiBackends;
   baseUrl = this.getCurrentBackend();
 
   private getCurrentBackend(){
-    let envDefaultBackend = environment.apiBaseUrl;
+    let envDefaultBackend = this.env.apiBaseUrl;
     if(this.multiBackend && this.multiBackend == true) {
       let savedBackend = localStorage.getItem('currentBackend');
 
@@ -56,7 +67,7 @@ export class ApiService {
 
   public validateAuthInResponse(data){
     if(data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true){
-      window.location.href = environment.apiBaseUrl+'/auth/?state='+window.location.href;
+      window.location.href = this.env.apiBaseUrl+'/auth/?state='+window.location.href;
     }
   }
 
