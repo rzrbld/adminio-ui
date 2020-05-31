@@ -84,8 +84,12 @@ export class ServerComponent implements OnInit {
       this.diskUsageInfo = data;
       if(data.hasOwnProperty('objectsSizesHistogram')){
         var objectsSizesHistogram = this.diskUsageInfo.objectsSizesHistogram;
-        const histogramKeysRawArr = Object.keys(objectsSizesHistogram)
-        const histogramValsRawArr = Object.values(objectsSizesHistogram)
+        var histogramKeysRawArr = [];
+        var histogramValsRawArr = [];
+        if(objectsSizesHistogram){
+          histogramKeysRawArr = Object.keys(objectsSizesHistogram)
+          histogramValsRawArr = Object.values(objectsSizesHistogram)
+        }
         this.hgChartDatasets[0].data = histogramValsRawArr;
 
         this.hgChartLabels = [];
