@@ -10,7 +10,7 @@ RUN mkdir /app/adminio-ui
 ADD . /app/adminio-ui/
 RUN rm -rf adminio-ui/dist/*
 RUN cd adminio-ui && \
-    npm install -g @angular/cli@9.1.6 && npm install
+    npm install -g @angular/cli@9.1.7 && npm install
 
 RUN cd /app/adminio-ui && npm run build
 
