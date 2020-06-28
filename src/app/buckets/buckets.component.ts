@@ -40,6 +40,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   dropdownEventTypesSettings = {};
   newBucketEventFilterPrefix = "";
   newBucketEventFilterSuffix = "";
+  newBucketTagName = "";
+  newBucketTagValue = "";
+  newBucketTagsList = {};
 
   uploadLifecycleName;
   uploadLifecycleFile;
@@ -168,8 +171,21 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   	this.bucketToRemoveNotifications = bucketName;
   }
 
-  private updateBucketPrepare(bucketName, currentQuota, currentQtype){
+  private updateBucketPrepare(bucketName, currentQuota, currentQtype, currentTags){
     this.editBucketName = bucketName;
+
+    this.apiService.getBucketTag(bucketName).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      console.log(Object.keys(data));
+      console.log(data);
+
+      var dataKeys = Object.keys(data);
+      console.log(dataKeys[0]);
+      if(dataKeys[0]!="error"){
+        this.newBucketTagsList = data;
+      }
+    });
+
     this.apiService.getBucketQuota(bucketName).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
       console.log(Object.keys(data));
@@ -221,6 +237,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.selectedEventTypes = [];
     this.newBucketQuotaType = "";
     this.newBucketQuota = "";
+    this.newBucketTagName = "";
+    this.newBucketTagValue = "";
+    this.newBucketTagsList = {};
   }
 
   private resetUpdateForm() {
@@ -250,12 +269,25 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.lifecycleBucketName = bucket;
   }
 
+  private createFormAddTag() {
+    if(this.newBucketTagName != "" && this.newBucketTagValue != ""){
+      this.newBucketTagsList[this.newBucketTagName] = this.newBucketTagValue;
+      this.newBucketTagName = "";
+      this.newBucketTagValue = "";
+    }
+  }
+
+  private createFormRemoveTag(tagName) {
+    delete this.newBucketTagsList[tagName];
+  }
+
   private updateBucket(quotaType, quotaVal) {
     if(this.updateBucketEventARN != ""){
       this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true)
     }
-    if(this.updateQuotaTypeChanged || this.updateQuotaChanged){
 
+    this.setTagsForBucket(this.editBucketName,true)
+    if(this.updateQuotaTypeChanged || this.updateQuotaChanged){
       this.setQuotaForBucket(this.editBucketName, quotaType, quotaVal, true)
     }
   }
@@ -332,6 +364,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
         if(quotaType != "" && quotaVal != "" && quotaVal >= 0){
           this.setQuotaForBucket(bucket, quotaType, quotaVal, false);
         }
+        if(Object.keys(this.newBucketTagsList).length > 0){
+          this.setTagsForBucket(bucket, false)
+        }
       }else{
         this.toastr.error(JSON.stringify(data), 'Error while creating bucket');
       }
@@ -389,6 +424,29 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       });
     }
     fileReader.readAsText(this.uploadLifecycleFile);
+  }
+
+  private setTagsForBucket(bucket,reloadBucketList){
+    var tagsObj = this.newBucketTagsList;
+    var tagsKeys = this.objectKeys(tagsObj);
+    var tagArr = [];
+    for (let i = 0; i < tagsKeys.length; i++) {
+      var tagString = tagsKeys[i]+"="+tagsObj[tagsKeys[i]]
+      tagArr.push(tagString)
+    }
+    var tagString = tagArr.join("&");
+    console.log("TAG STRING >>>>", tagString)
+    this.apiService.setBucketTag(bucket, tagString).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      if(data["Success"]){
+        this.toastr.success('Tags for bucket '+bucket+' has been set', 'Success');
+      }else{
+        this.toastr.error(JSON.stringify(data), 'Error while set tags for bucket');
+      }
+      if(reloadBucketList){
+        this.getBuckets();
+      }
+    });
   }
 
 }

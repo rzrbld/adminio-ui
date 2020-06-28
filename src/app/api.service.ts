@@ -292,4 +292,21 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl+'/api/v2/bucket/remove-quota', form);
   }
 
+  public setBucketTag(bucketName,tagsString){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+    form.append('bucketTags', tagsString);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-tags', form);
+  }
+
+  public getBucketTag(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-tags', form);
+  }
+
 }
