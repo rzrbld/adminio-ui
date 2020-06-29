@@ -309,4 +309,22 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-tags', form);
   }
 
+  public setBucketPolicy(bucketName,policyString){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+    form.append('bucketPolicy', policyString);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-policy', form);
+  }
+
+
+  public getBucketPolicy(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-policy', form);
+  }
+
 }

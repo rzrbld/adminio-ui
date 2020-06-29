@@ -29,7 +29,7 @@
 	  </thead>
 	  <tbody *ngIf="buckets">
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
-	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}{{buckets[b].policy}}</strong><span class="ml-2 badge badge-primary" *ngIf="buckets[b].policy!='none'">{{buckets[b].policy}}</span></td>
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong><span class="ml-2 badge badge-primary" *ngIf="buckets[b].policy!='none'">{{buckets[b].policy}}</span></td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
           <span *ngIf="objectKeys(buckets[b].tags)?.length > 0">
             <ul class="type-none">
@@ -242,6 +242,18 @@
                 <div class="alert alert-info" role="alert">
                   <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>  You can pass multiple names with "," delimiter
                 </div>
+                <div class="separator pointer">Policy</div>
+                <div class="d-flex justify-content-around p-1 text-center">
+                  <select class="browser-default custom-select" (change)="updatePolicyType()" [(ngModel)]="newBucketPolicy" title="Select policy type">
+                    <option [value]="pType" *ngFor="let pType of policyTypes">{{pType}}</option>
+                  </select>
+                </div>
+                <div class="d-flex justify-content-around p-1 mb-3 text-center" *ngIf="newBucketPolicy=='custom'">
+                  <div class="custom-file">
+                    <input type="file" accept=".policy,.json" class="custom-file-input" (change)="filePolicyChanged($event)" #uploadPolicyFile name="uploadPolicyFile">
+                    <label class="custom-file-label" for="customFileLang">{{uploadPolicyFileName == "" ? "Choose .policy or .json file" : uploadPolicyFileName}}</label>
+                  </div>
+                </div>
                 <div class="separator pointer">Tags</div>
                 <div class="d-flex justify-content-around mb-3 text-center">
                   <div class="form-row">
@@ -328,6 +340,18 @@
                 <div class="d-flex justify-content-around mb-3 text-center">
         					<input type="text" class="form-control" placeholder="Bucket Name" [(ngModel)]="editBucketName" name="editBucketName"  aria-label="bucketName" aria-describedby="basic-addon1" disabled>
         				</div>
+                <div class="separator pointer">Policy</div>
+                <div class="d-flex justify-content-around p-1 text-center">
+                  <select class="browser-default custom-select" (change)="updatePolicyType()" [(ngModel)]="newBucketPolicy" title="Select policy type">
+                    <option [value]="pType" *ngFor="let pType of policyTypes">{{pType}}</option>
+                  </select>
+                </div>
+                <div class="d-flex justify-content-around p-1 mb-3 text-center" *ngIf="newBucketPolicy=='custom'">
+                  <div class="custom-file">
+                    <input type="file" accept=".policy,.json" class="custom-file-input" (change)="filePolicyChanged($event)" #uploadPolicyFile name="uploadPolicyFile">
+                    <label class="custom-file-label" for="customFileLang">{{uploadPolicyFileName == "" ? "Choose .policy or .json file" : uploadPolicyFileName}}</label>
+                  </div>
+                </div>
                 <div class="separator pointer">Tags</div>
                 <div class="d-flex justify-content-around mb-3 text-center">
                   <div class="form-row">
