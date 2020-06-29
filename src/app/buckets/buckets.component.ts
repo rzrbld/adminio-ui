@@ -52,6 +52,8 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   newBucketTagValue = "";
   newBucketTagsList = {};
 
+  tagListChanged = false;
+
   uploadLifecycleName;
   uploadLifecycleFile;
   uploadLifecycleFileName;
@@ -261,6 +263,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.newBucketTagValue = "";
     this.newBucketTagsList = {};
     this.updatePolicyTypeChanged = false;
+    this.tagListChanged = false;
     this.resetUploadForm();
   }
 
@@ -272,7 +275,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.updateBucketQuotaObj = {};
     this.updateQuotaTypeChanged = false;
     this.updateQuotaChanged = false;
-    // this.updateBucketPolicy = "none";
+    this.tagListChanged = false;
     this.updatePolicyTypeChanged = false;
     this.resetUploadForm();
   }
@@ -353,11 +356,13 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       this.newBucketTagsList[this.newBucketTagName] = this.newBucketTagValue;
       this.newBucketTagName = "";
       this.newBucketTagValue = "";
+      this.tagListChanged = true;
     }
   }
 
   private createFormRemoveTag(tagName) {
     delete this.newBucketTagsList[tagName];
+    this.tagListChanged = true;
   }
 
   private updateBucket(quotaType, quotaVal) {
@@ -365,7 +370,10 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true)
     }
 
-    this.setTagsForBucket(this.editBucketName,true)
+    if(this.tagListChanged){
+      this.setTagsForBucket(this.editBucketName,true)
+    }
+
     if(this.updateQuotaTypeChanged || this.updateQuotaChanged){
       this.setQuotaForBucket(this.editBucketName, quotaType, quotaVal, true)
     }
