@@ -99,7 +99,7 @@ export class ServerComponent implements OnInit {
         }
       }
 
-      if(data.hasOwnProperty('bucketsSizes') && this.diskUsageInfo.bucketsSizes != {}){
+      if(data.hasOwnProperty('bucketsSizes') && this.diskUsageInfo.bucketsSizes != {} && this.diskUsageInfo.bucketsSizes != null ){
         var objectBucketSizes = this.diskUsageInfo.bucketsSizes;
         const bucketSizesKeysRawArr = Object.keys(objectBucketSizes)
         const bucketSizesValsRawArr = Object.values(objectBucketSizes)
