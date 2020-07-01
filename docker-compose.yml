@@ -10,6 +10,11 @@ services:
     command: server /data0 /data1 /data2 /data3
   adminio-ui:
     image: rzrbld/adminio-ui:release-1.1
+    environment:
+      API_BASE_URL: "http://localhost:8080"
+      ADMINIO_MULTI_BACKEND: "false"
+      ADMINIO_BACKENDS: '[{"name":"myminio","url":"http://localhost:8080"},{"name":"localhost","url":"http://localhost:8081"},{"name":"error","url":"http://localhost:8082"}]'
+      NGX_ROOT_PATH: "/"
     ports:
       - "80:80"
   adminio-api:
