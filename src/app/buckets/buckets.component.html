@@ -29,7 +29,10 @@
 	  </thead>
 	  <tbody *ngIf="buckets">
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
-	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><strong>{{buckets[b].name}}</strong><span class="ml-2 badge badge-primary" *ngIf="buckets[b].policy!='none'">{{buckets[b].policy}}</span></td>
+	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+          <strong>{{buckets[b].name}}</strong>
+          <span mdbTooltip="Policy. Click to download" (click)="downloadPolicy(buckets[b].name, 'policy_'+buckets[b].name+'_'+buckets[b].policy+'.json')" class="ml-2 badge badge-primary pointer" *ngIf="buckets[b].policy!='none'">{{buckets[b].policy}}</span>
+        </td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
           <span *ngIf="objectKeys(buckets[b].tags)?.length > 0">
             <ul class="type-none">
@@ -126,7 +129,7 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-12 col-12 mx-auto">
-                  <div class="alert alert-info" role="alert" *ngIf="downloadLifecycleAvailable == 1" >
+                  <div class="alert alert-success" role="alert" *ngIf="downloadLifecycleAvailable == 1" >
                     <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on "dowload icon" >
                     <a mdbTooltip="Download Lifecycle" placement="top" [href]="downloadJsonHref" download="{{lifecycleBucketName}}-lifecycle.xml"><mdb-icon fas icon="download" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
                     <br/>

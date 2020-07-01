@@ -542,4 +542,25 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     });
   }
 
+  private downloadPolicy(bucket,fileName) {
+    this.apiService.getBucketPolicy(bucket).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      console.log("download policy >>> ", bucket, data);
+      if(data["error"]){
+        this.toastr.error(JSON.stringify(data), 'Error while getting policy');
+      }else{
+        if(data==""){
+          this.toastr.error("Bucket has no policy", 'Error while getting policy');
+        }else{
+          var link = document.createElement('a');
+          link.href = "data:text/json;charset=UTF-8," + encodeURIComponent(data["policy"].toString());
+          link.download = fileName
+          link.click();
+        }
+      }
+    });
+  }
+
+
+
 }
