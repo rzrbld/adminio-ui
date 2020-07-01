@@ -84,8 +84,12 @@ export class ServerComponent implements OnInit {
       this.diskUsageInfo = data;
       if(data.hasOwnProperty('objectsSizesHistogram')){
         var objectsSizesHistogram = this.diskUsageInfo.objectsSizesHistogram;
-        const histogramKeysRawArr = Object.keys(objectsSizesHistogram)
-        const histogramValsRawArr = Object.values(objectsSizesHistogram)
+        var histogramKeysRawArr = [];
+        var histogramValsRawArr = [];
+        if(objectsSizesHistogram){
+          histogramKeysRawArr = Object.keys(objectsSizesHistogram)
+          histogramValsRawArr = Object.values(objectsSizesHistogram)
+        }
         this.hgChartDatasets[0].data = histogramValsRawArr;
 
         this.hgChartLabels = [];
@@ -95,7 +99,7 @@ export class ServerComponent implements OnInit {
         }
       }
 
-      if(data.hasOwnProperty('bucketsSizes') && this.diskUsageInfo.bucketsSizes != {}){
+      if(data.hasOwnProperty('bucketsSizes') && this.diskUsageInfo.bucketsSizes != {} && this.diskUsageInfo.bucketsSizes != null ){
         var objectBucketSizes = this.diskUsageInfo.bucketsSizes;
         const bucketSizesKeysRawArr = Object.keys(objectBucketSizes)
         const bucketSizesValsRawArr = Object.values(objectBucketSizes)

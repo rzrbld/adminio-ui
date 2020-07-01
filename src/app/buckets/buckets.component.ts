@@ -24,7 +24,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   uiShowQuota = false;
   newBucketQuotaType = "";
   newBucketQuota = "";
-  quotaTypes = ["fifo","hard"]
+  quotaTypes = ["fifo", "hard"]
   serviceInfo;
   diskUsageInfo;
   newBucketEventARN = "";
@@ -35,11 +35,24 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   updateQuotaTypeChanged = false;
   updateQuotaChanged = false;
 
+  newBucketPolicy = "none";
+  // updateBucketPolicy = "none"
+  policyTypes = ["none", "upload", "download", "public", "custom"]
+  updatePolicyTypeChanged = false;
+  uploadPolicyName;
+  uploadPolicyFile;
+  uploadPolicyFileName;
+
   dropdownEventTypesList = [];
   selectedEventTypes = [];
   dropdownEventTypesSettings = {};
   newBucketEventFilterPrefix = "";
   newBucketEventFilterSuffix = "";
+  newBucketTagName = "";
+  newBucketTagValue = "";
+  newBucketTagsList = {};
+
+  tagListChanged = false;
 
   uploadLifecycleName;
   uploadLifecycleFile;
@@ -168,8 +181,21 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   	this.bucketToRemoveNotifications = bucketName;
   }
 
-  private updateBucketPrepare(bucketName, currentQuota, currentQtype){
+  private updateBucketPrepare(bucketName, currentQuota, currentQtype, currentTags){
     this.editBucketName = bucketName;
+
+    this.apiService.getBucketTag(bucketName).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      console.log(Object.keys(data));
+      console.log(data);
+
+      var dataKeys = Object.keys(data);
+      console.log(dataKeys[0]);
+      if(dataKeys[0]!="error"){
+        this.newBucketTagsList = data;
+      }
+    });
+
     this.apiService.getBucketQuota(bucketName).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
       console.log(Object.keys(data));
@@ -186,6 +212,13 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
         this.updateBucketQuotaObj = emptyData;
       }
     });
+
+    this.apiService.getBucketPolicy(bucketName).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      console.log(Object.keys(data));
+      console.log(data);
+      this.newBucketPolicy = data["name"];
+    });
   }
 
   private deleteBucketQuotaPrepare(bucketName){
@@ -194,6 +227,10 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private updateQuotaType(){
     this.updateQuotaTypeChanged = true;
+  }
+
+  private updatePolicyType(){
+    this.updatePolicyTypeChanged = true;
   }
 
   private updateQuota(){
@@ -220,7 +257,14 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.newBucketEventFilterSuffix = "";
     this.selectedEventTypes = [];
     this.newBucketQuotaType = "";
+    this.newBucketPolicy = "none";
     this.newBucketQuota = "";
+    this.newBucketTagName = "";
+    this.newBucketTagValue = "";
+    this.newBucketTagsList = {};
+    this.updatePolicyTypeChanged = false;
+    this.tagListChanged = false;
+    this.resetUploadForm();
   }
 
   private resetUpdateForm() {
@@ -231,18 +275,75 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.updateBucketQuotaObj = {};
     this.updateQuotaTypeChanged = false;
     this.updateQuotaChanged = false;
+    this.tagListChanged = false;
+    this.updatePolicyTypeChanged = false;
+    this.resetUploadForm();
   }
+
+  private filePolicyChanged(e) {
+    console.log("file event");
+
+    this.uploadPolicyFile = e.target.files[0];
+    this.uploadPolicyFileName = e.target.files[0].name;
+  }
+
+  private resetUploadForm(){
+    this.uploadFileInput.nativeElement.value = "";
+    this.uploadPolicyFile;
+    this.uploadPolicyName = "";
+    this.uploadPolicyFileName = "";
+  }
+
+  private setPolicy(bucketName, updateListAfter){
+    if(this.newBucketPolicy!="custom"){
+      this.apiService.setBucketPolicy(bucketName, this.newBucketPolicy).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
+        console.log(data);
+        if(data["Success"]){
+          this.toastr.success('Policy '+this.newBucketPolicy+' has been append to '+bucketName, 'Success');
+          if(updateListAfter){
+            this.getBuckets();
+          }
+        }else{
+          this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+        }
+      });
+    } else {
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        console.log("Policy>>>>",fileReader.result);
+
+        let policyFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ')
+        console.log("Policy2>>>>",policyFileString);
+        this.apiService.setBucketPolicy(bucketName, policyFileString).subscribe((data)=>{
+          this.apiService.validateAuthInResponse(data)
+          console.log(data);
+          if(data["Success"]){
+            this.toastr.success('Policy custom has been append to '+bucketName, 'Success');
+            if(updateListAfter){
+              this.getBuckets();
+            }
+          }else{
+            this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+          }
+        });
+
+      }
+      fileReader.readAsText(this.uploadPolicyFile);
+    }
+  }
+
 
   private createBucket(){
   	if(this.newBucketName.indexOf(',')>-1){
   		var bucketsArr = this.newBucketName.split(',')
   		for (var i = 0; i < bucketsArr.length; i++) {
   			if(bucketsArr[i]!=''){
-  				this.createBucketSimple(bucketsArr[i],this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,bucketsArr.length,i+1)
+  				this.createBucketSimple(bucketsArr[i],this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,this.newBucketPolicy,bucketsArr.length,i+1)
   			}
   		}
   	}else{
-  		this.createBucketSimple(this.newBucketName,this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,1,1)
+  		this.createBucketSimple(this.newBucketName,this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,this.newBucketPolicy,1,1)
   	}
   }
 
@@ -250,13 +351,34 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.lifecycleBucketName = bucket;
   }
 
+  private createFormAddTag() {
+    if(this.newBucketTagName != "" && this.newBucketTagValue != ""){
+      this.newBucketTagsList[this.newBucketTagName] = this.newBucketTagValue;
+      this.newBucketTagName = "";
+      this.newBucketTagValue = "";
+      this.tagListChanged = true;
+    }
+  }
+
+  private createFormRemoveTag(tagName) {
+    delete this.newBucketTagsList[tagName];
+    this.tagListChanged = true;
+  }
+
   private updateBucket(quotaType, quotaVal) {
     if(this.updateBucketEventARN != ""){
       this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true)
     }
-    if(this.updateQuotaTypeChanged || this.updateQuotaChanged){
 
+    if(this.tagListChanged){
+      this.setTagsForBucket(this.editBucketName,true)
+    }
+
+    if(this.updateQuotaTypeChanged || this.updateQuotaChanged){
       this.setQuotaForBucket(this.editBucketName, quotaType, quotaVal, true)
+    }
+    if(this.updatePolicyTypeChanged){
+      this.setPolicy(this.editBucketName, true)
     }
   }
 
@@ -320,7 +442,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       });
   }
 
-  private createBucketSimple(bucket, eventARN, quotaType, quotaVal, numberOfBuckets, currentBucketNumber){
+  private createBucketSimple(bucket, eventARN, quotaType, quotaVal, policy, numberOfBuckets, currentBucketNumber){
   	this.apiService.createBucket(bucket).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
       console.log(data);
@@ -332,11 +454,19 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
         if(quotaType != "" && quotaVal != "" && quotaVal >= 0){
           this.setQuotaForBucket(bucket, quotaType, quotaVal, false);
         }
+        if(Object.keys(this.newBucketTagsList).length > 0){
+          this.setTagsForBucket(bucket, false)
+        }
+        if(this.updatePolicyTypeChanged){
+          this.setPolicy(bucket, false)
+        }
       }else{
         this.toastr.error(JSON.stringify(data), 'Error while creating bucket');
       }
       if(numberOfBuckets == currentBucketNumber){
-        this.getBuckets();
+        setTimeout(()=>{
+            this.getBuckets();
+        }, 500);
       }
     });
   }
@@ -390,5 +520,49 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     }
     fileReader.readAsText(this.uploadLifecycleFile);
   }
+
+  private setTagsForBucket(bucket,reloadBucketList){
+    var tagsObj = this.newBucketTagsList;
+    var tagsKeys = this.objectKeys(tagsObj);
+    var tagArr = [];
+    for (let i = 0; i < tagsKeys.length; i++) {
+      var tagString = tagsKeys[i]+"="+tagsObj[tagsKeys[i]]
+      tagArr.push(tagString)
+    }
+    var tagString = tagArr.join("&");
+    console.log("TAG STRING >>>>", tagString)
+    this.apiService.setBucketTag(bucket, tagString).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      if(data["Success"]){
+        this.toastr.success('Tags for bucket '+bucket+' has been set', 'Success');
+      }else{
+        this.toastr.error(JSON.stringify(data), 'Error while set tags for bucket');
+      }
+      if(reloadBucketList){
+        this.getBuckets();
+      }
+    });
+  }
+
+  private downloadPolicy(bucket,fileName) {
+    this.apiService.getBucketPolicy(bucket).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      console.log("download policy >>> ", bucket, data);
+      if(data["error"]){
+        this.toastr.error(JSON.stringify(data), 'Error while getting policy');
+      }else{
+        if(data==""){
+          this.toastr.error("Bucket has no policy", 'Error while getting policy');
+        }else{
+          var link = document.createElement('a');
+          link.href = "data:text/json;charset=UTF-8," + encodeURIComponent(data["policy"].toString());
+          link.download = fileName
+          link.click();
+        }
+      }
+    });
+  }
+
+
 
 }

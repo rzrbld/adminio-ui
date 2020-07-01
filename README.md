@@ -10,10 +10,10 @@ Build with [Angular](https://angular.io) and [mdbootstrap](https://mdbootstrap.c
 ### Web UI abilities:
 | Kind   |      Create      |  List  | Update | Delete |
 |--------------|:-----------------------|:-----------:|:-----------:|:-----------:|
-| Bucket |  V  | V | add/remove events, change lifecycle, manage quota | V |
+| Bucket |  V  | V | add/remove events, change lifecycle, manage quota, tags, policy | V |
 | User | V | V | update password, change policy | V |
 | Policy |  V | V | V | V |
-| Group |  V | V | add users to group, remove users, change ploicy | only if group is empty (has no members) |
+| Group |  V | V | add users to group, remove users, change policy | only if group is empty (has no members) |
 
 
 ### Extra features:
@@ -50,6 +50,7 @@ This example run only for test purposes, unless you running UI and API of admini
 |  ADMINIO_PROD  |  production mode, can be ``true`` or ``false``  | ``false``  |
 |  ADMINIO_MULTI_BACKEND  | multibackend mode, can be ``true`` or ``false``  | ``false``  |
 |  ADMINIO_BACKENDS  |  json obj with names and urls of all you [adminio-api](https://github.com/rzrbld/adminio-api) instances  |  ``[{"name":"myminio","url":"http://localhost:8080"},{"name":"localhost","url":"http://localhost:8081"},{"name":"error","url":"http://localhost:8082"}]`` |
+|  NGX_ROOT_PATH | nginx location variable | `/` |
 
 In real life cases you'll need to change this environment variables at `` Dockerfile `` - `` API_BASE_URL `` which points to [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint and `` ADMINIO_PROD `` which can be set to `` true `` or `` false ``.
 
@@ -70,23 +71,3 @@ in this case example command will be look like this - ``$ export API_BASE_URL=ht
 
 #### ng serve
 you will need to set [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint at `` apiBaseUrl `` variable in file `` src/environments/environment.ts `` or `` src/environments/environment.prod.ts `` then run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Default angular README
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.8.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

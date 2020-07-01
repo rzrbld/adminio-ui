@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui/issues\">create issue or fork at github.com<mdb-icon fab icon=\"github-alt\" size=\"1x\" class=\"px-1\" aria-hidden=\"true\"></mdb-icon></a> | v:1.0 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui/issues\">create issue or fork at github.com<mdb-icon fab icon=\"github-alt\" size=\"1x\" class=\"px-1\" aria-hidden=\"true\"></mdb-icon></a> | v:1.1 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n");
 
 /***/ }),
 
@@ -45,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th>Quota</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{buckets[b].name}}</strong></td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"diskUsageInfo?.bucketsSizes\" mdbTooltip=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes\" placement=\"top\">\n            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n          </span>\n        </td>\n        <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"buckets[b].quota?.quotatype\">\n            <span class=\"badge badge-success\" *ngIf=\"buckets[b].quota?.quotatype == 'hard'\">{{buckets[b].quota?.quotatype}}</span>\n            <span class=\"badge badge-secondary\" *ngIf=\"buckets[b].quota?.quotatype == 'fifo'\">{{buckets[b].quota?.quotatype}}</span>\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota > 0\" mdbTooltip=\"{{buckets[b].quota?.quota}} bytes\" placement=\"top\">\n            {{(math.round(buckets[b].quota?.quota/1024/1024)+'').length > 3 ? math.round(buckets[b].quota?.quota/1024/1024/1024)+' Gb' : isNaN(math.round(buckets[b].quota?.quota/1024/1024)) ? '&ndash;' : math.round(buckets[b].quota?.quota/1024/1024) +' Mb'}}\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota < 1\" mdbTooltip=\"No quota limits\" placement=\"top\">\n            &infin;\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Update Bucket Events\" placement=\"top\" (click)=\"updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Remove Bucket\" placement=\"top\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Bucket Lifecycyle\" placement=\"top\" (click)=\"bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()\"><mdb-icon fas icon=\"recycle\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" mdbTooltip=\"Remove Bucket Events\" placement=\"top\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\" *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\">&nbsp;</span>\n          <a *ngIf=\"buckets[b].quota?.quota\" mdbTooltip=\"Remove Bucket Quota\" placement=\"top\" (click)=\"deleteBucketQuotaPrepare(buckets[b].name); removeQuotaApproveModal.show()\"><mdb-icon fas icon=\"expand\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- lifecycyle modal -->\n\n<div mdbModal #lifecycyleModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"lifecycyleModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Bucket Lifecycyle</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div class=\"row\">\n                <div class=\"col-md-12 col-12 mx-auto\">\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 1\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on \"dowload icon\" >\n                    <a mdbTooltip=\"Download Lifecycle\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{lifecycleBucketName}}-lifecycle.xml\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n                    <br/>\n                    Or override it by upload a new lifecycle policy.\n                  </div>\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 0\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio\n                    <a href=\"https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle\" target=\"_blank\">documentation</a>. Or use an AWS S3 documentation\n                    <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html\" target=\"_blank\">Object Lifecycle Management</a>\n                  </div>\n                  <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".lifecycle,.xml\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadLifecycleFile name=\"uploadLifecycleFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadLifecycleFileName == \"\" ? \"Choose .lifecycle or .xml file\" : uploadLifecycleFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                </div>\n              </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadLifecycle();lifecycyleModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove quotas approve modal -->\n\n<div mdbModal #removeQuotaApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Quota Limits</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button quota for bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketQuota(); removeQuotaApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"separator\" (click)=\"toggleShowQuota()\">Quota section<mdb-icon fas icon=\"angle-down\" class=\"pl-1\" *ngIf=\"!uiShowQuota\"></mdb-icon><mdb-icon fas icon=\"angle-up\" class=\"pl-1\" *ngIf=\"uiShowQuota\"></mdb-icon></div>\n                <span *ngIf=\"uiShowQuota\">\n\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketQuotaType\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Quota in bytes\" [(ngModel)]=\"newBucketQuota\" name=\"newBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                      <div class=\"input-group-append\">\n                        <div class=\"input-group-text\">Bytes</div>\n                      </div>\n                    </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"separator\">Quota section</div>\n                <span>\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" (change)=\"updateQuotaType()\" [(ngModel)]=\"updateBucketQuotaObj.quotatype\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" (change)=\"updateQuota()\" placeholder=\"Quota in bytes\" [(ngModel)]=\"updateBucketQuotaObj.quota\" name=\"updateBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                    <div class=\"input-group-append\">\n                      <div class=\"input-group-text\">Bytes</div>\n                    </div>\n                  </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(updateBucketQuotaObj.quotatype,updateBucketQuotaObj.quota); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Tags</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th>Quota</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <strong>{{buckets[b].name}}</strong>\n          <span mdbTooltip=\"Policy. Click to download\" (click)=\"downloadPolicy(buckets[b].name, 'policy_'+buckets[b].name+'_'+buckets[b].policy+'.json')\" class=\"ml-2 badge badge-primary pointer\" *ngIf=\"buckets[b].policy!='none'\">{{buckets[b].policy}}</span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <span *ngIf=\"objectKeys(buckets[b].tags)?.length > 0\">\n            <ul class=\"type-none\">\n              <li *ngFor=\"let tag of objectKeys(buckets[b].tags)\" class=\"type-none\">{{tag}}: {{buckets[b].tags[tag]}}</li>\n            </ul>\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"diskUsageInfo?.bucketsSizes\" mdbTooltip=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes\" placement=\"top\">\n            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n          </span>\n        </td>\n        <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"buckets[b].quota?.quotatype\">\n            <span class=\"badge badge-success\" *ngIf=\"buckets[b].quota?.quotatype == 'hard'\">{{buckets[b].quota?.quotatype}}</span>\n            <span class=\"badge badge-secondary\" *ngIf=\"buckets[b].quota?.quotatype == 'fifo'\">{{buckets[b].quota?.quotatype}}</span>\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota > 0\" mdbTooltip=\"{{buckets[b].quota?.quota}} bytes\" placement=\"top\">\n            {{(math.round(buckets[b].quota?.quota/1024/1024)+'').length > 3 ? math.round(buckets[b].quota?.quota/1024/1024/1024)+' Gb' : isNaN(math.round(buckets[b].quota?.quota/1024/1024)) ? '&ndash;' : math.round(buckets[b].quota?.quota/1024/1024) +' Mb'}}\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota < 1\" mdbTooltip=\"No quota limits\" placement=\"top\">\n            &infin;\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Update Bucket Events\" placement=\"top\" (click)=\"updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype,buckets[b].tags); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Remove Bucket\" placement=\"top\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Bucket Lifecycyle\" placement=\"top\" (click)=\"bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()\"><mdb-icon fas icon=\"recycle\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" mdbTooltip=\"Remove Bucket Events\" placement=\"top\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\" *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\">&nbsp;</span>\n          <a *ngIf=\"buckets[b].quota?.quota\" mdbTooltip=\"Remove Bucket Quota\" placement=\"top\" (click)=\"deleteBucketQuotaPrepare(buckets[b].name); removeQuotaApproveModal.show()\"><mdb-icon fas icon=\"expand\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- lifecycyle modal -->\n\n<div mdbModal #lifecycyleModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"lifecycyleModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Bucket Lifecycyle</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div class=\"row\">\n                <div class=\"col-md-12 col-12 mx-auto\">\n                  <div class=\"alert alert-success\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 1\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on \"dowload icon\" >\n                    <a mdbTooltip=\"Download Lifecycle\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{lifecycleBucketName}}-lifecycle.xml\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n                    <br/>\n                    Or override it by upload a new lifecycle policy.\n                  </div>\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 0\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio\n                    <a href=\"https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle\" target=\"_blank\">documentation</a>. Or use an AWS S3 documentation\n                    <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html\" target=\"_blank\">Object Lifecycle Management</a>\n                  </div>\n                  <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".lifecycle,.xml\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadLifecycleFile name=\"uploadLifecycleFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadLifecycleFileName == \"\" ? \"Choose .lifecycle or .xml file\" : uploadLifecycleFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                </div>\n              </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadLifecycle();lifecycyleModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove quotas approve modal -->\n\n<div mdbModal #removeQuotaApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Quota Limits</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button quota for bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketQuota(); removeQuotaApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"separator pointer\">Policy</div>\n                <div class=\"d-flex justify-content-around p-1 text-center\">\n                  <select class=\"browser-default custom-select\" (change)=\"updatePolicyType()\" [(ngModel)]=\"newBucketPolicy\" title=\"Select policy type\">\n                    <option [value]=\"pType\" *ngFor=\"let pType of policyTypes\">{{pType}}</option>\n                  </select>\n                </div>\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"newBucketPolicy=='custom'\">\n                  <div class=\"custom-file\">\n                    <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"filePolicyChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n                    <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n                  </div>\n                </div>\n                <div class=\"separator pointer\">Tags</div>\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n                  <div class=\"form-row\">\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"newBucketTagName\" [(ngModel)]=\"newBucketTagName\" class=\"form-control\" placeholder=\"Tag name\">\n                      </div>\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"newBucketTagValue\" [(ngModel)]=\"newBucketTagValue\" class=\"form-control\" placeholder=\"Tag value\">\n                      </div>\n                      <div class=\"col-2\">\n                          <button class=\"btn btn-sm blue-gradient button-fix\" title=\"add more tags\" (click)=\"createFormAddTag()\"><i class=\"fas fa-plus\"></i></button>\n                      </div>\n                  </div>\n        \t\t\t\t</div>\n                <section id=\"listTags\" *ngIf=\"newBucketTagsList\">\n                  <span class=\"badge badge-primary ml-2\"  mdbTooltip=\"click to delete\" *ngFor=\"let tag of objectKeys(newBucketTagsList)\" (click)=\"createFormRemoveTag(tag)\">{{tag}}: {{newBucketTagsList[tag]}}</span>\n                </section>\n                <div class=\"separator pointer\" (click)=\"toggleShowQuota()\">Quota<mdb-icon fas icon=\"angle-down\" class=\"pl-1\" *ngIf=\"!uiShowQuota\"></mdb-icon><mdb-icon fas icon=\"angle-up\" class=\"pl-1\" *ngIf=\"uiShowQuota\"></mdb-icon></div>\n                <span *ngIf=\"uiShowQuota\">\n\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketQuotaType\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Quota in bytes\" [(ngModel)]=\"newBucketQuota\" name=\"newBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                      <div class=\"input-group-append\">\n                        <div class=\"input-group-text\">Bytes</div>\n                      </div>\n                    </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"separator pointer\">Policy</div>\n                <div class=\"d-flex justify-content-around p-1 text-center\">\n                  <select class=\"browser-default custom-select\" (change)=\"updatePolicyType()\" [(ngModel)]=\"newBucketPolicy\" title=\"Select policy type\">\n                    <option [value]=\"pType\" *ngFor=\"let pType of policyTypes\">{{pType}}</option>\n                  </select>\n                </div>\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"newBucketPolicy=='custom'\">\n                  <div class=\"custom-file\">\n                    <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"filePolicyChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n                    <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n                  </div>\n                </div>\n                <div class=\"separator pointer\">Tags</div>\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n                  <div class=\"form-row\">\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"updateBucketTagName\" [(ngModel)]=\"newBucketTagName\" class=\"form-control\" placeholder=\"Tag name\">\n                      </div>\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"updateBucketTagValue\" [(ngModel)]=\"newBucketTagValue\" class=\"form-control\" placeholder=\"Tag value\">\n                      </div>\n                      <div class=\"col-2\">\n                          <button class=\"btn btn-sm blue-gradient button-fix\" title=\"add more tags\" (click)=\"createFormAddTag()\"><i class=\"fas fa-plus\"></i></button>\n                      </div>\n                  </div>\n        \t\t\t\t</div>\n                <section id=\"listTags\" *ngIf=\"newBucketTagsList\">\n                  <span class=\"badge badge-primary ml-2\"  mdbTooltip=\"click to delete\" *ngFor=\"let tag of objectKeys(newBucketTagsList)\" (click)=\"createFormRemoveTag(tag)\">{{tag}}: {{newBucketTagsList[tag]}}</span>\n                </section>\n                <br/>\n                <div class=\"separator\">Quota section</div>\n                <span>\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" (change)=\"updateQuotaType()\" [(ngModel)]=\"updateBucketQuotaObj.quotatype\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" (change)=\"updateQuota()\" placeholder=\"Quota in bytes\" [(ngModel)]=\"updateBucketQuotaObj.quota\" name=\"updateBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                    <div class=\"input-group-append\">\n                      <div class=\"input-group-text\">Bytes</div>\n                    </div>\n                  </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(updateBucketQuotaObj.quotatype,updateBucketQuotaObj.quota); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n");
 
 /***/ }),
 
@@ -127,23 +127,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony import */ var _env_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./env.service */ "./src/app/env.service.ts");
 
 
 
 
 
 let ApiService = class ApiService {
-    constructor(httpClient, router) {
+    constructor(httpClient, router, env) {
         this.httpClient = httpClient;
         this.router = router;
-        this.multiBackend = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiMultiBackend;
-        this.backendsUrls = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBackends;
+        this.env = env;
+        this.multiBackend = this.env.apiMultiBackend;
+        this.backendsUrls = this.env.apiBackends;
         this.baseUrl = this.getCurrentBackend();
+        if (env.apiBaseUrl) {
+            console.log('apiBaseUrl', env.apiBaseUrl);
+        }
+        if (env.apiMultiBackend) {
+            console.log('apiMultiBackend', env.apiMultiBackend);
+        }
+        if (env.apiBackends) {
+            console.log('apiBackends', env.apiBackends);
+        }
     }
     getCurrentBackend() {
-        let envDefaultBackend = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBaseUrl;
+        let envDefaultBackend = this.env.apiBaseUrl;
         if (this.multiBackend && this.multiBackend == true) {
             let savedBackend = localStorage.getItem('currentBackend');
             let activeBackend = "";
@@ -177,7 +187,7 @@ let ApiService = class ApiService {
     }
     validateAuthInResponse(data) {
         if (data != null && typeof data.oauth != "undefined" && typeof data.auth != "undefined" && data.oauth != false && data.auth != true) {
-            window.location.href = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiBaseUrl + '/auth/?state=' + window.location.href;
+            window.location.href = this.env.apiBaseUrl + '/auth/?state=' + window.location.href;
         }
     }
     serverInfo() {
@@ -330,10 +340,33 @@ let ApiService = class ApiService {
         form.append('bucketName', bucketName);
         return this.httpClient.post(this.baseUrl + '/api/v2/bucket/remove-quota', form);
     }
+    setBucketTag(bucketName, tagsString) {
+        let form = new FormData();
+        form.append('bucketName', bucketName);
+        form.append('bucketTags', tagsString);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/set-tags', form);
+    }
+    getBucketTag(bucketName) {
+        let form = new FormData();
+        form.append('bucketName', bucketName);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-tags', form);
+    }
+    setBucketPolicy(bucketName, policyString) {
+        let form = new FormData();
+        form.append('bucketName', bucketName);
+        form.append('bucketPolicy', policyString);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/set-policy', form);
+    }
+    getBucketPolicy(bucketName) {
+        let form = new FormData();
+        form.append('bucketName', bucketName);
+        return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-policy', form);
+    }
 };
 ApiService.ctorParameters = () => [
     { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] },
+    { type: _env_service__WEBPACK_IMPORTED_MODULE_4__["EnvService"] }
 ];
 ApiService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -482,6 +515,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/animations.js");
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/__ivy_ngcc__/fesm2015/ngx-toastr.js");
 /* harmony import */ var _groups_groups_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./groups/groups.component */ "./src/app/groups/groups.component.ts");
+/* harmony import */ var _env_service_provider__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./env.service.provider */ "./src/app/env.service.provider.ts");
+
 
 
 
@@ -532,6 +567,7 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             ngx_toastr__WEBPACK_IMPORTED_MODULE_20__["ToastrModule"].forRoot()
         ],
         providers: [
+            _env_service_provider__WEBPACK_IMPORTED_MODULE_22__["EnvServiceProvider"],
             _loader_service__WEBPACK_IMPORTED_MODULE_14__["LoaderService"],
             { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_15__["HTTP_INTERCEPTORS"], useClass: _loader_interceptor__WEBPACK_IMPORTED_MODULE_16__["LoaderInterceptor"], multi: true }
         ],
@@ -600,11 +636,19 @@ let BucketsComponent = class BucketsComponent {
         this.updateBucketQuotaObj = {};
         this.updateQuotaTypeChanged = false;
         this.updateQuotaChanged = false;
+        this.newBucketPolicy = "none";
+        // updateBucketPolicy = "none"
+        this.policyTypes = ["none", "upload", "download", "public", "custom"];
+        this.updatePolicyTypeChanged = false;
         this.dropdownEventTypesList = [];
         this.selectedEventTypes = [];
         this.dropdownEventTypesSettings = {};
         this.newBucketEventFilterPrefix = "";
         this.newBucketEventFilterSuffix = "";
+        this.newBucketTagName = "";
+        this.newBucketTagValue = "";
+        this.newBucketTagsList = {};
+        this.tagListChanged = false;
         this.downloadLifecycleAvailable = 0;
         this.searchText = '';
     }
@@ -701,8 +745,18 @@ let BucketsComponent = class BucketsComponent {
     removeBucketNotificationPrepare(bucketName) {
         this.bucketToRemoveNotifications = bucketName;
     }
-    updateBucketPrepare(bucketName, currentQuota, currentQtype) {
+    updateBucketPrepare(bucketName, currentQuota, currentQtype, currentTags) {
         this.editBucketName = bucketName;
+        this.apiService.getBucketTag(bucketName).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
+            console.log(Object.keys(data));
+            console.log(data);
+            var dataKeys = Object.keys(data);
+            console.log(dataKeys[0]);
+            if (dataKeys[0] != "error") {
+                this.newBucketTagsList = data;
+            }
+        });
         this.apiService.getBucketQuota(bucketName).subscribe((data) => {
             this.apiService.validateAuthInResponse(data);
             console.log(Object.keys(data));
@@ -719,12 +773,21 @@ let BucketsComponent = class BucketsComponent {
                 this.updateBucketQuotaObj = emptyData;
             }
         });
+        this.apiService.getBucketPolicy(bucketName).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
+            console.log(Object.keys(data));
+            console.log(data);
+            this.newBucketPolicy = data["name"];
+        });
     }
     deleteBucketQuotaPrepare(bucketName) {
         this.bucketToRemoveQuota = bucketName;
     }
     updateQuotaType() {
         this.updateQuotaTypeChanged = true;
+    }
+    updatePolicyType() {
+        this.updatePolicyTypeChanged = true;
     }
     updateQuota() {
         this.updateQuotaChanged = true;
@@ -749,7 +812,14 @@ let BucketsComponent = class BucketsComponent {
         this.newBucketEventFilterSuffix = "";
         this.selectedEventTypes = [];
         this.newBucketQuotaType = "";
+        this.newBucketPolicy = "none";
         this.newBucketQuota = "";
+        this.newBucketTagName = "";
+        this.newBucketTagValue = "";
+        this.newBucketTagsList = {};
+        this.updatePolicyTypeChanged = false;
+        this.tagListChanged = false;
+        this.resetUploadForm();
     }
     resetUpdateForm() {
         this.updateBucketEventARN = "";
@@ -759,29 +829,100 @@ let BucketsComponent = class BucketsComponent {
         this.updateBucketQuotaObj = {};
         this.updateQuotaTypeChanged = false;
         this.updateQuotaChanged = false;
+        this.tagListChanged = false;
+        this.updatePolicyTypeChanged = false;
+        this.resetUploadForm();
+    }
+    filePolicyChanged(e) {
+        console.log("file event");
+        this.uploadPolicyFile = e.target.files[0];
+        this.uploadPolicyFileName = e.target.files[0].name;
+    }
+    resetUploadForm() {
+        this.uploadFileInput.nativeElement.value = "";
+        this.uploadPolicyFile;
+        this.uploadPolicyName = "";
+        this.uploadPolicyFileName = "";
+    }
+    setPolicy(bucketName, updateListAfter) {
+        if (this.newBucketPolicy != "custom") {
+            this.apiService.setBucketPolicy(bucketName, this.newBucketPolicy).subscribe((data) => {
+                this.apiService.validateAuthInResponse(data);
+                console.log(data);
+                if (data["Success"]) {
+                    this.toastr.success('Policy ' + this.newBucketPolicy + ' has been append to ' + bucketName, 'Success');
+                    if (updateListAfter) {
+                        this.getBuckets();
+                    }
+                }
+                else {
+                    this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+                }
+            });
+        }
+        else {
+            let fileReader = new FileReader();
+            fileReader.onload = (e) => {
+                console.log("Policy>>>>", fileReader.result);
+                let policyFileString = ((fileReader.result).toString()).replace(/\n/g, ' ').replace(/\r/g, ' ');
+                console.log("Policy2>>>>", policyFileString);
+                this.apiService.setBucketPolicy(bucketName, policyFileString).subscribe((data) => {
+                    this.apiService.validateAuthInResponse(data);
+                    console.log(data);
+                    if (data["Success"]) {
+                        this.toastr.success('Policy custom has been append to ' + bucketName, 'Success');
+                        if (updateListAfter) {
+                            this.getBuckets();
+                        }
+                    }
+                    else {
+                        this.toastr.error(JSON.stringify(data), 'Error while creating policy');
+                    }
+                });
+            };
+            fileReader.readAsText(this.uploadPolicyFile);
+        }
     }
     createBucket() {
         if (this.newBucketName.indexOf(',') > -1) {
             var bucketsArr = this.newBucketName.split(',');
             for (var i = 0; i < bucketsArr.length; i++) {
                 if (bucketsArr[i] != '') {
-                    this.createBucketSimple(bucketsArr[i], this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, bucketsArr.length, i + 1);
+                    this.createBucketSimple(bucketsArr[i], this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, this.newBucketPolicy, bucketsArr.length, i + 1);
                 }
             }
         }
         else {
-            this.createBucketSimple(this.newBucketName, this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, 1, 1);
+            this.createBucketSimple(this.newBucketName, this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, this.newBucketPolicy, 1, 1);
         }
     }
     bucketLifecycle(bucket) {
         this.lifecycleBucketName = bucket;
     }
+    createFormAddTag() {
+        if (this.newBucketTagName != "" && this.newBucketTagValue != "") {
+            this.newBucketTagsList[this.newBucketTagName] = this.newBucketTagValue;
+            this.newBucketTagName = "";
+            this.newBucketTagValue = "";
+            this.tagListChanged = true;
+        }
+    }
+    createFormRemoveTag(tagName) {
+        delete this.newBucketTagsList[tagName];
+        this.tagListChanged = true;
+    }
     updateBucket(quotaType, quotaVal) {
         if (this.updateBucketEventARN != "") {
             this.enableNotificationForBucket(this.editBucketName, this.updateBucketEventARN, this.selectedEventTypes, this.updateBucketEventFilterPrefix, this.updateBucketEventFilterSuffix, true);
         }
+        if (this.tagListChanged) {
+            this.setTagsForBucket(this.editBucketName, true);
+        }
         if (this.updateQuotaTypeChanged || this.updateQuotaChanged) {
             this.setQuotaForBucket(this.editBucketName, quotaType, quotaVal, true);
+        }
+        if (this.updatePolicyTypeChanged) {
+            this.setPolicy(this.editBucketName, true);
         }
     }
     enableNotificationForBucket(bucket, stsARN, eventTypes, filterPrefix, filterSuffix, updateListAfter) {
@@ -844,7 +985,7 @@ let BucketsComponent = class BucketsComponent {
             this.getBuckets();
         });
     }
-    createBucketSimple(bucket, eventARN, quotaType, quotaVal, numberOfBuckets, currentBucketNumber) {
+    createBucketSimple(bucket, eventARN, quotaType, quotaVal, policy, numberOfBuckets, currentBucketNumber) {
         this.apiService.createBucket(bucket).subscribe((data) => {
             this.apiService.validateAuthInResponse(data);
             console.log(data);
@@ -856,12 +997,20 @@ let BucketsComponent = class BucketsComponent {
                 if (quotaType != "" && quotaVal != "" && quotaVal >= 0) {
                     this.setQuotaForBucket(bucket, quotaType, quotaVal, false);
                 }
+                if (Object.keys(this.newBucketTagsList).length > 0) {
+                    this.setTagsForBucket(bucket, false);
+                }
+                if (this.updatePolicyTypeChanged) {
+                    this.setPolicy(bucket, false);
+                }
             }
             else {
                 this.toastr.error(JSON.stringify(data), 'Error while creating bucket');
             }
             if (numberOfBuckets == currentBucketNumber) {
-                this.getBuckets();
+                setTimeout(() => {
+                    this.getBuckets();
+                }, 500);
             }
         });
     }
@@ -913,6 +1062,49 @@ let BucketsComponent = class BucketsComponent {
         };
         fileReader.readAsText(this.uploadLifecycleFile);
     }
+    setTagsForBucket(bucket, reloadBucketList) {
+        var tagsObj = this.newBucketTagsList;
+        var tagsKeys = this.objectKeys(tagsObj);
+        var tagArr = [];
+        for (let i = 0; i < tagsKeys.length; i++) {
+            var tagString = tagsKeys[i] + "=" + tagsObj[tagsKeys[i]];
+            tagArr.push(tagString);
+        }
+        var tagString = tagArr.join("&");
+        console.log("TAG STRING >>>>", tagString);
+        this.apiService.setBucketTag(bucket, tagString).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
+            if (data["Success"]) {
+                this.toastr.success('Tags for bucket ' + bucket + ' has been set', 'Success');
+            }
+            else {
+                this.toastr.error(JSON.stringify(data), 'Error while set tags for bucket');
+            }
+            if (reloadBucketList) {
+                this.getBuckets();
+            }
+        });
+    }
+    downloadPolicy(bucket, fileName) {
+        this.apiService.getBucketPolicy(bucket).subscribe((data) => {
+            this.apiService.validateAuthInResponse(data);
+            console.log("download policy >>> ", bucket, data);
+            if (data["error"]) {
+                this.toastr.error(JSON.stringify(data), 'Error while getting policy');
+            }
+            else {
+                if (data == "") {
+                    this.toastr.error("Bucket has no policy", 'Error while getting policy');
+                }
+                else {
+                    var link = document.createElement('a');
+                    link.href = "data:text/json;charset=UTF-8," + encodeURIComponent(data["policy"].toString());
+                    link.download = fileName;
+                    link.click();
+                }
+            }
+        });
+    }
 };
 BucketsComponent.ctorParameters = () => [
     { type: _api_service__WEBPACK_IMPORTED_MODULE_3__["ApiService"] },
@@ -939,6 +1131,78 @@ BucketsComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         styles: [Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(/*! ./buckets.component.scss */ "./src/app/buckets/buckets.component.scss")).default]
     })
 ], BucketsComponent);
+
+
+
+/***/ }),
+
+/***/ "./src/app/env.service.provider.ts":
+/*!*****************************************!*\
+  !*** ./src/app/env.service.provider.ts ***!
+  \*****************************************/
+/*! exports provided: EnvServiceFactory, EnvServiceProvider */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnvServiceFactory", function() { return EnvServiceFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnvServiceProvider", function() { return EnvServiceProvider; });
+/* harmony import */ var _env_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./env.service */ "./src/app/env.service.ts");
+
+const EnvServiceFactory = () => {
+    // Create env
+    const env = new _env_service__WEBPACK_IMPORTED_MODULE_0__["EnvService"]();
+    // Read environment variables from browser window
+    const browserWindow = window || {};
+    const browserWindowEnv = browserWindow['__env'] || {};
+    // Assign environment variables from browser window to env
+    // In the current implementation, properties from env.js overwrite defaults from the EnvService.
+    // If needed, a deep merge can be performed here to merge properties instead of overwriting them.
+    for (const key in browserWindowEnv) {
+        if (browserWindowEnv.hasOwnProperty(key)) {
+            env[key] = window['__env'][key];
+        }
+    }
+    return env;
+};
+const EnvServiceProvider = {
+    provide: _env_service__WEBPACK_IMPORTED_MODULE_0__["EnvService"],
+    useFactory: EnvServiceFactory,
+    deps: [],
+};
+
+
+/***/ }),
+
+/***/ "./src/app/env.service.ts":
+/*!********************************!*\
+  !*** ./src/app/env.service.ts ***!
+  \********************************/
+/*! exports provided: EnvService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnvService", function() { return EnvService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+
+
+let EnvService = class EnvService {
+    constructor() {
+        // The values that are defined here are the default values that can
+        // be overridden by env.js
+        // API url
+        this.apiBaseUrl = '';
+        this.apiMultiBackend = false;
+        this.apiBackends = '';
+    }
+};
+EnvService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    })
+], EnvService);
 
 
 
@@ -2142,8 +2406,12 @@ let ServerComponent = class ServerComponent {
             this.diskUsageInfo = data;
             if (data.hasOwnProperty('objectsSizesHistogram')) {
                 var objectsSizesHistogram = this.diskUsageInfo.objectsSizesHistogram;
-                const histogramKeysRawArr = Object.keys(objectsSizesHistogram);
-                const histogramValsRawArr = Object.values(objectsSizesHistogram);
+                var histogramKeysRawArr = [];
+                var histogramValsRawArr = [];
+                if (objectsSizesHistogram) {
+                    histogramKeysRawArr = Object.keys(objectsSizesHistogram);
+                    histogramValsRawArr = Object.values(objectsSizesHistogram);
+                }
                 this.hgChartDatasets[0].data = histogramValsRawArr;
                 this.hgChartLabels = [];
                 for (let i = 0; i < histogramKeysRawArr.length; i++) {
@@ -2151,7 +2419,7 @@ let ServerComponent = class ServerComponent {
                     this.hgChartLabels.push(histogramLabel);
                 }
             }
-            if (data.hasOwnProperty('bucketsSizes') && this.diskUsageInfo.bucketsSizes != {}) {
+            if (data.hasOwnProperty('bucketsSizes') && this.diskUsageInfo.bucketsSizes != {} && this.diskUsageInfo.bucketsSizes != null) {
                 var objectBucketSizes = this.diskUsageInfo.bucketsSizes;
                 const bucketSizesKeysRawArr = Object.keys(objectBucketSizes);
                 const bucketSizesValsRawArr = Object.values(objectBucketSizes);
@@ -2451,10 +2719,7 @@ UsersComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
 const environment = {
-    production: false,
-    apiBaseUrl: "http://localhost:8080",
-    apiMultiBackend: false,
-    apiBackends: [{ "name": "myminio", "url": "http://localhost:8080" }, { "name": "localhost", "url": "http://localhost:8081" }, { "name": "error", "url": "http://localhost:8082" }]
+    production: false
 };
 
 

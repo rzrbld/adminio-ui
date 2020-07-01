@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { GroupsComponent } from './groups/groups.component';
+import { EnvServiceProvider } from './env.service.provider';
 
 
 
@@ -47,6 +48,7 @@ import { GroupsComponent } from './groups/groups.component';
     ToastrModule.forRoot()
   ],
   providers: [
+    EnvServiceProvider,
     LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
   ],
