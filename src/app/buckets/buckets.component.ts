@@ -464,7 +464,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
         this.toastr.error(JSON.stringify(data), 'Error while creating bucket');
       }
       if(numberOfBuckets == currentBucketNumber){
-        this.getBuckets();
+        setTimeout(()=>{
+            this.getBuckets();
+        }, 500);
       }
     });
   }

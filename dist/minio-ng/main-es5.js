@@ -1543,7 +1543,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             }
 
             if (numberOfBuckets == currentBucketNumber) {
-              _this12.getBuckets();
+              setTimeout(function () {
+                _this12.getBuckets();
+              }, 500);
             }
           });
         }

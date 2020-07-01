@@ -15,7 +15,7 @@ RUN rm -rf adminio-ui/dist/*
 RUN cd /app/adminio-ui && npm run build
 
 
-FROM nginx:1.17-alpine
+FROM nginx:1.18-alpine
 
 ENV API_BASE_URL http://localhost:8080
 ENV ADMINIO_PROD false
