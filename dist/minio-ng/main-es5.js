@@ -1684,16 +1684,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }];
     };
 
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTablePaginationComponent"], {
-      "static": true
-    })], BucketsComponent.prototype, "mdbTablePagination", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTableDirective"], {
-      "static": true
-    })], BucketsComponent.prototype, "mdbTable", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('input')], BucketsComponent.prototype, "oninput", null);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('uploadLifecycleFile', {
-      "static": true
-    })], BucketsComponent.prototype, "uploadFileInput", void 0);
+    BucketsComponent.propDecorators = {
+      mdbTablePagination: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTablePaginationComponent"], {
+          "static": true
+        }]
+      }],
+      mdbTable: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTableDirective"], {
+          "static": true
+        }]
+      }],
+      oninput: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"],
+        args: ['input']
+      }],
+      uploadFileInput: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: ['uploadLifecycleFile', {
+          "static": true
+        }]
+      }]
+    };
     BucketsComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-buckets',
       template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(
@@ -1805,6 +1819,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       this.apiBaseUrl = '';
       this.apiMultiBackend = false;
       this.apiBackends = '';
+    };
+
+    EnvService.ctorParameters = function () {
+      return [];
     };
 
     EnvService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -2345,13 +2363,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }];
     };
 
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_3__["MdbTablePaginationComponent"], {
-      "static": true
-    })], GroupsComponent.prototype, "mdbTablePagination", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_3__["MdbTableDirective"], {
-      "static": true
-    })], GroupsComponent.prototype, "mdbTable", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('input')], GroupsComponent.prototype, "oninput", null);
+    GroupsComponent.propDecorators = {
+      mdbTablePagination: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_3__["MdbTablePaginationComponent"], {
+          "static": true
+        }]
+      }],
+      mdbTable: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_3__["MdbTableDirective"], {
+          "static": true
+        }]
+      }],
+      oninput: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"],
+        args: ['input']
+      }]
+    };
     GroupsComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-groups',
       template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(
@@ -2532,6 +2561,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       this.isLoading = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](false);
     };
 
+    LoaderService.ctorParameters = function () {
+      return [];
+    };
+
     LoaderService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
       providedIn: 'root'
     })], LoaderService);
@@ -2554,7 +2587,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "dialog {\n  width: 300px;\n}\n\ndialog::-webkit-backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9yenJibGQvcmVwb3MvYWRtaW5pby11aS9zcmMvYXBwL2xvYWRlci9sb2FkZXIuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2xvYWRlci9sb2FkZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0FDQ0o7O0FEQ0c7RUFDQyw4QkFBQTtBQ0VKOztBREhHO0VBQ0MsOEJBQUE7QUNFSiIsImZpbGUiOiJzcmMvYXBwL2xvYWRlci9sb2FkZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJkaWFsb2cge1xuICAgIHdpZHRoOiAzMDBweDtcbiAgIH1cbiAgIGRpYWxvZzo6YmFja2Ryb3Age1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwwLDAsMC43KTtcbiAgIH0iLCJkaWFsb2cge1xuICB3aWR0aDogMzAwcHg7XG59XG5cbmRpYWxvZzo6YmFja2Ryb3Age1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNyk7XG59Il19 */";
+    __webpack_exports__["default"] = "dialog {\n  width: 300px;\n}\n\ndialog::-webkit-backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.7);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvbG9hZGVyL2xvYWRlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFlBQUE7QUFDSjs7QUFDRztFQUNDLDhCQUFBO0FBRUo7O0FBSEc7RUFDQyw4QkFBQTtBQUVKIiwiZmlsZSI6InNyYy9hcHAvbG9hZGVyL2xvYWRlci5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImRpYWxvZyB7XG4gICAgd2lkdGg6IDMwMHB4O1xuICAgfVxuICAgZGlhbG9nOjpiYWNrZHJvcCB7XG4gICAgYmFja2dyb3VuZDogcmdiYSgwLDAsMCwwLjcpO1xuICAgfSJdfQ== */";
     /***/
   },
 
@@ -3602,16 +3635,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }];
     };
 
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTablePaginationComponent"], {
-      "static": true
-    })], PoliciesComponent.prototype, "mdbTablePagination", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTableDirective"], {
-      "static": true
-    })], PoliciesComponent.prototype, "mdbTable", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('input')], PoliciesComponent.prototype, "oninput", null);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('uploadPolicyFile', {
-      "static": true
-    })], PoliciesComponent.prototype, "uploadFileInput", void 0);
+    PoliciesComponent.propDecorators = {
+      mdbTablePagination: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTablePaginationComponent"], {
+          "static": true
+        }]
+      }],
+      mdbTable: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTableDirective"], {
+          "static": true
+        }]
+      }],
+      oninput: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"],
+        args: ['input']
+      }],
+      uploadFileInput: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: ['uploadPolicyFile', {
+          "static": true
+        }]
+      }]
+    };
     PoliciesComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-policies',
       template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(
@@ -4214,13 +4261,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }];
     };
 
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTablePaginationComponent"], {
-      "static": true
-    })], UsersComponent.prototype, "mdbTablePagination", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTableDirective"], {
-      "static": true
-    })], UsersComponent.prototype, "mdbTable", void 0);
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('input')], UsersComponent.prototype, "oninput", null);
+    UsersComponent.propDecorators = {
+      mdbTablePagination: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTablePaginationComponent"], {
+          "static": true
+        }]
+      }],
+      mdbTable: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"],
+        args: [angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_4__["MdbTableDirective"], {
+          "static": true
+        }]
+      }],
+      oninput: [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"],
+        args: ['input']
+      }]
+    };
     UsersComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-users',
       template: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"])(__webpack_require__(
