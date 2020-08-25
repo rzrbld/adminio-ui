@@ -32,7 +32,7 @@
     "ngx-json-viewer": "^2.4.0",
     "ngx-toastr": "^13.0.0",
     "node-gyp": "^7.0.0",
-    "npm": "^6.14.6",
+    "npm": "^6.14.8",
     "rxjs": "^6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -59,7 +59,7 @@
     "replace": "^1.2.0",
     "ts-node": "^8.10.2",
     "tslint": "~6.1.0",
-    "typescript": "~3.9.6"
+    "typescript": "^3.9.6"
   },
   "resolutions": {
     "https-proxy-agent": "^3.0.0"
