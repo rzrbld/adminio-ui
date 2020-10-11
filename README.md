@@ -56,6 +56,8 @@ This example run only for test purposes, unless you running UI and API of admini
 In real life cases you'll need to change this environment variables at `` Dockerfile `` - `` API_BASE_URL `` which points to [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint and `` ADMINIO_PROD `` which can be set to `` true `` or `` false ``.
 
 If you run multiple instances of [adminio-api](https://github.com/rzrbld/adminio-api) you can set `` ADMINIO_MULTI_BACKEND `` to ``true`` and fill  `` ADMINIO_BACKENDS `` example with needed urls and names. Please note - in this case you still need points ``API_BASE_URL`` to one of this instances. And then build a docker image.
+#### Kubernetes/OpenShift/OKD/OCP
+go to [Helm carts](https://github.com/rzrbld/adminio-helm) repo
 
 #### npm build
 Method that described above also works if you build with `` npm run build ``.
