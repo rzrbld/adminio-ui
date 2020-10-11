@@ -51,6 +51,7 @@ This example run only for test purposes, unless you running UI and API of admini
 |  ADMINIO_MULTI_BACKEND  | multibackend mode, can be ``true`` or ``false``  | ``false``  |
 |  ADMINIO_BACKENDS  |  json obj with names and urls of all you [adminio-api](https://github.com/rzrbld/adminio-api) instances  |  ``[{"name":"myminio","url":"http://localhost:8080"},{"name":"localhost","url":"http://localhost:8081"},{"name":"error","url":"http://localhost:8082"}]`` |
 |  NGX_ROOT_PATH | nginx location variable | `/` |
+|  NGX_PORT | nginx port variable | `80` |
 
 In real life cases you'll need to change this environment variables at `` Dockerfile `` - `` API_BASE_URL `` which points to [adminio-api](https://github.com/rzrbld/adminio-api) REST endpoint and `` ADMINIO_PROD `` which can be set to `` true `` or `` false ``.
 

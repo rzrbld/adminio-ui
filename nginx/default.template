@@ -1,5 +1,5 @@
 server {
-    listen 80;
+    listen ${NGX_PORT};
 
     location ${NGX_ROOT_PATH} {
         root   /usr/share/nginx/html;
