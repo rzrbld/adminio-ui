@@ -197,7 +197,7 @@
                 <button type="button" class="close pull-right" aria-label="Close" (click)="addPolicyModal.hide()">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title w-100" id="myModalLabel">{{modalCreateEditTitle}}</h4>
+                <span><h4 class="modal-title w-100" id="myModalLabel">{{modalCreateEditTitle}}</h4>Switch to <button type="button" mdbBtn color="link" class="link-button" (click)="switchAdvanced()">{{advancedInterfaceLabel}}</button> interface </span>
             </div>
             <div class="modal-body">
             	<!-- <form class="text-center" name="newPolicy"  > -->
@@ -231,7 +231,7 @@
 								</div>
 							</div>
 
-							<div class="d-flex justify-content-around p-1 mb-3 text-center">
+							<div id="actionsStatement" class="d-flex justify-content-around p-1 mb-3 text-center" *ngIf="!selectedAdmins.length>0">
 								<angular2-multiselect [data]="dropdownActionList" [(ngModel)]="selectedActions"
 							    [settings]="dropdownActionSettings"
 							    (onSelect)="onActionItemSelect($event)"
@@ -240,7 +240,16 @@
 							    (onDeSelectAll)="onActionDeSelectAll($event)"></angular2-multiselect>
 							</div>
 
-							<div class="input-group mb-3">
+							<div id="adminsStatement" class="d-flex justify-content-around p-1 mb-3 text-center" *ngIf="!selectedActions.length>0">
+								<angular2-multiselect [data]="dropdownAdminList" [(ngModel)]="selectedAdmins"
+							    [settings]="dropdownAdminSettings"
+							    (onSelect)="onAdminItemSelect($event)"
+							    (onDeSelect)="onAdminItemDeSelect($event)"
+							    (onSelectAll)="onAdminSelectAll($event)"
+							    (onDeSelectAll)="onAdminDeSelectAll($event)"></angular2-multiselect>
+							</div>
+
+							<div class="input-group mb-3" *ngIf="advancedInterface">
 							  <div class="input-group-prepend">
 							    <span class="input-group-text" id="inputGroup-sizing-default">Principal</span>
 							  </div>
@@ -278,7 +287,7 @@
 								</div>
 							</fieldset>
 
-							<fieldset>
+							<fieldset *ngIf="advancedInterface">
 								<div class="separator">Conditions section</div>
 								<div id="conditionStatements" class="d-flex justify-content-around p-1 mb-3 text-center">
 									<angular2-multiselect [data]="dropdownConditionList" [(ngModel)]="selectedCondition"

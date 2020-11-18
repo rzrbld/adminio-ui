@@ -28,16 +28,22 @@ export class PoliciesComponent implements OnInit {
   modalCreateEditButtonText;
 
   dropdownActionList = [];
+  dropdownAdminList = [];
   dropdownConditionList = [];
   dropdownConditionKeyList = [];
 
   selectedActions = [];
+  selectedAdmins = [];
   selectedCondition = [];
   selectedConditionKey = [];
 
   dropdownActionSettings = {};
+  dropdownAdminSettings = {};
   dropdownConditionSettings = {};
   dropdownConditionKeySettings = {};
+
+  advancedInterface = false;
+  advancedInterfaceLabel = "advanced"
 
   newPolicy = {
   	name:"",
@@ -93,26 +99,56 @@ export class PoliciesComponent implements OnInit {
 
 
   	this.dropdownActionList = [
-	    {"id":1,"itemName":"s3:AbortMultipartUpload"},
-	    {"id":2,"itemName":"s3:CreateBucket"},
-	    {"id":3,"itemName":"s3:DeleteBucket"},
-	    {"id":4,"itemName":"s3:DeleteBucketPolicy"},
-	    {"id":5,"itemName":"s3:DeleteObject"},
-	    {"id":6,"itemName":"s3:GetBucketLocation"},
-	    {"id":7,"itemName":"s3:GetBucketNotification"},
-	    {"id":8,"itemName":"s3:GetBucketPolicy"},
-	    {"id":9,"itemName":"s3:GetObject"},
-	    {"id":10,"itemName":"s3:HeadBucket"},
-	    {"id":11,"itemName":"s3:ListAllMyBuckets"},
-	    {"id":12,"itemName":"s3:ListBucket"},
-	    {"id":13,"itemName":"s3:ListBucketMultipartUploads"},
-	    {"id":14,"itemName":"s3:ListenBucketNotification"},
-	    {"id":15,"itemName":"s3:ListMultipartUploadParts"},
-	    {"id":16,"itemName":"s3:PutBucketNotification"},
-	    {"id":17,"itemName":"s3:PutBucketPolicy"},
-	    {"id":18,"itemName":"s3:PutObject"},
-	    {"id":19,"itemName":"s3:PutBucketLifecycle"},
-	    {"id":20,"itemName":"s3:GetBucketLifecycle"}
+      {"id":1,"itemName":"s3:AbortMultipartUpload"},
+      {"id":2,"itemName":"s3:CreateBucket"},
+      {"id":3,"itemName":"s3:DeleteBucket"},
+      {"id":4,"itemName":"s3:ForceDeleteBucket"},
+      {"id":5,"itemName":"s3:DeleteBucketPolicy"},
+      {"id":6,"itemName":"s3:DeleteObject"},
+      {"id":7,"itemName":"s3:GetBucketLocation"},
+      {"id":8,"itemName":"s3:GetBucketNotification"},
+      {"id":9,"itemName":"s3:GetBucketPolicy"},
+      {"id":10,"itemName":"s3:GetObject"},
+      {"id":11,"itemName":"s3:HeadBucket"},
+      {"id":12,"itemName":"s3:ListAllMyBuckets"},
+      {"id":13,"itemName":"s3:ListBucket"},
+      {"id":14,"itemName":"s3:ListBucketVersions"},
+      {"id":15,"itemName":"s3:ListBucketMultipartUploads"},
+      {"id":16,"itemName":"s3:ListenNotification"},
+      {"id":17,"itemName":"s3:ListenBucketNotification"},
+      {"id":18,"itemName":"s3:ListMultipartUploadParts"},
+      {"id":19,"itemName":"s3:PutLifecycleConfiguration"},
+      {"id":20,"itemName":"s3:GetLifecycleConfiguration"},
+      {"id":21,"itemName":"s3:PutBucketNotification"},
+      {"id":22,"itemName":"s3:PutBucketPolicy"},
+      {"id":23,"itemName":"s3:PutObject"},
+      {"id":24,"itemName":"s3:DeleteObjectVersion"},
+      {"id":25,"itemName":"s3:DeleteObjectVersionTagging"},
+      {"id":26,"itemName":"s3:GetObjectVersion"},
+      {"id":27,"itemName":"s3:GetObjectVersionTagging"},
+      {"id":28,"itemName":"s3:PutObjectVersionTagging"},
+      {"id":29,"itemName":"s3:BypassGovernanceRetention"},
+      {"id":30,"itemName":"s3:PutObjectRetention"},
+      {"id":31,"itemName":"s3:GetObjectRetention"},
+      {"id":32,"itemName":"s3:GetObjectLegalHold"},
+      {"id":33,"itemName":"s3:PutObjectLegalHold"},
+      {"id":34,"itemName":"s3:GetBucketObjectLockConfiguration"},
+      {"id":35,"itemName":"s3:PutBucketObjectLockConfiguration"},
+      {"id":36,"itemName":"s3:GetBucketTagging"},
+      {"id":37,"itemName":"s3:PutBucketTagging"},
+      {"id":38,"itemName":"s3:GetObjectTagging"},
+      {"id":39,"itemName":"s3:PutObjectTagging"},
+      {"id":40,"itemName":"s3:DeleteObjectTagging"},
+      {"id":41,"itemName":"s3:PutEncryptionConfiguration"},
+      {"id":42,"itemName":"s3:GetEncryptionConfiguration"},
+      {"id":43,"itemName":"s3:PutBucketVersioning"},
+      {"id":44,"itemName":"s3:GetBucketVersioning"},
+      {"id":45,"itemName":"s3:GetReplicationConfiguration"},
+      {"id":46,"itemName":"s3:PutReplicationConfiguration"},
+      {"id":47,"itemName":"s3:ReplicateObject"},
+      {"id":48,"itemName":"s3:ReplicateDelete"},
+      {"id":49,"itemName":"s3:ReplicateTags"},
+      {"id":50,"itemName":"s3:GetObjectVersionForReplication"}
     ];
 
     this.dropdownActionSettings = {
@@ -122,6 +158,45 @@ export class PoliciesComponent implements OnInit {
   		unSelectAllText:'UnSelect All',
   		enableSearchFilter: true
 	  };
+
+    this.dropdownAdminList = [
+      {"id":1,"itemName":"admin:ConfigUpdate"},
+      {"id":2,"itemName":"admin:CreateUser"},
+      {"id":3,"itemName":"admin:DeleteUser"},
+      {"id":4,"itemName":"admin:ListUsers"},
+      {"id":5,"itemName":"admin:EnableUser"},
+      {"id":6,"itemName":"admin:DisableUser"},
+      {"id":7,"itemName":"admin:GetUser"},
+      {"id":8,"itemName":"admin:ServerInfo"},
+      {"id":9,"itemName":"admin:ServerUpdate"},
+      {"id":10,"itemName":"admin:StorageInfo"},
+      {"id":11,"itemName":"admin:DataUsageInfo"},
+      {"id":12,"itemName":"admin:TopLocks"},
+      {"id":13,"itemName":"admin:OBDInfo"},
+      {"id":14,"itemName":"admin:Profiling"},
+      {"id":15,"itemName":"admin:ServerTrace"},
+      {"id":16,"itemName":"admin:ConsoleLog"},
+      {"id":17,"itemName":"admin:KMSKeyStatus"},
+      {"id":18,"itemName":"admin:AddUserToGroup"},
+      {"id":19,"itemName":"admin:RemoveUserFromGroup"},
+      {"id":20,"itemName":"admin:GetGroup"},
+      {"id":21,"itemName":"admin:ListGroups"},
+      {"id":22,"itemName":"admin:EnableGroup"},
+      {"id":23,"itemName":"admin:DisableGroup"},
+      {"id":24,"itemName":"admin:CreatePolicy"},
+      {"id":25,"itemName":"admin:DeletePolicy"},
+      {"id":26,"itemName":"admin:GetPolicy"},
+      {"id":27,"itemName":"admin:AttachUserOrGroupPolicy"},
+      {"id":28,"itemName":"admin:ListUserPolicies"}
+    ];
+
+    this.dropdownAdminSettings = {
+      singleSelection: false,
+      text:"Select Admin actions for statement",
+      selectAllText:'Select All',
+      unSelectAllText:'UnSelect All',
+      enableSearchFilter: true
+    };
 
   	this.dropdownConditionList = [
       {"id":1,"itemName":"ArnEquals"},
@@ -261,6 +336,16 @@ export class PoliciesComponent implements OnInit {
 	  };
   }
 
+  switchAdvanced(){
+    if(this.advancedInterface){
+      this.advancedInterface = false;
+      this.advancedInterfaceLabel = "Advanced"
+    }else{
+      this.advancedInterface = true;
+      this.advancedInterfaceLabel = "Basic"
+    }
+  }
+
 	onActionItemSelect(item:any){
 	    console.log(item);
 	    console.log(this.selectedActions);
@@ -273,6 +358,21 @@ export class PoliciesComponent implements OnInit {
 	    console.log(items);
 	}
 	onActionDeSelectAll(items: any){
+	    console.log(items);
+	}
+
+	onAdminItemSelect(item:any){
+	    console.log(item);
+	    console.log(this.selectedAdmins);
+	}
+	onAdminItemDeSelect(item:any){
+	    console.log(item);
+	    console.log(this.selectedAdmins);
+	}
+	onAdminSelectAll(items: any){
+	    console.log(items);
+	}
+	onAdminDeSelectAll(items: any){
 	    console.log(items);
 	}
 
@@ -334,8 +434,9 @@ export class PoliciesComponent implements OnInit {
   }
 
   private resetPloicyForm(removeName){
-  	console.log(removeName)
-  	this.selectedActions = []
+  	console.log(removeName);
+  	this.selectedActions = [];
+  	this.selectedAdmins = []
   	if(!removeName){
   		this.newPolicy.effect = "Allow"
 		  this.newPolicy.bucket = ""
@@ -437,17 +538,28 @@ export class PoliciesComponent implements OnInit {
 
 
   private addStatement(){
+    console.log("called add statement");
 
-  	if(this.selectedActions.length == this.dropdownActionList.length){
-  		this.newStatement.Action.push("s3:*")
-  	}else{
-	  	for (var i = 0; i < this.selectedActions.length; i++) {
-	  		this.newStatement.Action.push(this.selectedActions[i].itemName)
-	  	}
-	  }
+    if(this.selectedActions.length>0){
+    	if(this.selectedActions.length == this.dropdownActionList.length){
+    		this.newStatement.Action.push("s3:*")
+    	}else{
+  	  	for (var i = 0; i < this.selectedActions.length; i++) {
+  	  		this.newStatement.Action.push(this.selectedActions[i].itemName)
+  	  	}
+  	  }
+    }else{
+      if(this.selectedAdmins.length == this.dropdownAdminList.length){
+    		this.newStatement.Action.push("admin:*")
+    	}else{
+  	  	for (var i = 0; i < this.selectedAdmins.length; i++) {
+  	  		this.newStatement.Action.push(this.selectedAdmins[i].itemName)
+  	  	}
+  	  }
+    }
   	this.newStatement.Effect = this.newPolicy.effect
-  	// this.newStatement.Resource = "arn:aws:s3:::"+this.newPolicy.bucket
-  	console.log(this.newStatement)
+
+   	console.log(this.newStatement)
     if(this.newStatement.Condition && Object.entries(this.newStatement.Condition).length === 0 && this.newStatement.Condition.constructor === Object){
       console.log("Condition removed cause empty")
       delete this.newStatement.Condition
@@ -465,17 +577,37 @@ export class PoliciesComponent implements OnInit {
   }
 
   private editStatement(i){
+    console.log("called Edit Statement");
+
     this.newStatement = this.newPolicyRaw.Statement[i]
     this.newPolicy.effect = this.newPolicyRaw.Statement[i].Effect
-    if(this.newStatement.Action[0] == "s3:*"){
-        for (var g = 0; g < this.dropdownActionList.length; g++) {
-          this.selectedActions.push({"id":this.dropdownActionList[g].id,"itemName":this.dropdownActionList[g].itemName}) 
+
+    switch ((this.newStatement.Action[0]).substring(0, 3)) {
+      case "s3:":
+        if(this.newStatement.Action[0] == "s3:*"){
+            for (var g = 0; g < this.dropdownActionList.length; g++) {
+              this.selectedActions.push({"id":this.dropdownActionList[g].id,"itemName":this.dropdownActionList[g].itemName})
+            }
+        }else{
+          for (var g = 0; g < this.newStatement.Action.length; g++) {
+            this.selectedActions.push({"id":g,"itemName":this.newStatement.Action[g]})
+          }
         }
-    }else{
-      for (var g = 0; g < this.newStatement.Action.length; g++) {
-        this.selectedActions.push({"id":g,"itemName":this.newStatement.Action[g]})
-      }
+        break;
+      case "adm":
+        if(this.newStatement.Action[0] == "admin:*"){
+            for (var g = 0; g < this.dropdownAdminList.length; g++) {
+              this.selectedAdmins.push({"id":this.dropdownAdminList[g].id,"itemName":this.dropdownAdminList[g].itemName})
+            }
+        }else{
+          for (var g = 0; g < this.newStatement.Action.length; g++) {
+            this.selectedAdmins.push({"id":g,"itemName":this.newStatement.Action[g]})
+          }
+        }
+        break;
     }
+
+
     this.newStatement.Action = []
     this.newPolicyRaw.Statement.splice(i,1)
   }
