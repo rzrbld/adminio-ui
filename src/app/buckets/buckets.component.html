@@ -31,6 +31,7 @@
 	    <tr mdbTableCol *ngFor="let b of objectKeys(buckets); let i = index">
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
           <strong>{{buckets[b].name}}</strong>
+          <span *ngIf="buckets[b].encryption?.Rules" mdbTooltip="Bucket encrypted">&nbsp;&nbsp;<mdb-icon fas icon="lock" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></span>
           <span mdbTooltip="Policy. Click to download" (click)="downloadPolicy(buckets[b].name, 'policy_'+buckets[b].name+'_'+buckets[b].policy+'.json')" class="ml-2 badge badge-primary pointer" *ngIf="buckets[b].policy!='none'">{{buckets[b].policy}}</span>
         </td>
 	      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
@@ -94,11 +95,12 @@
           </span>
         </td>
 	  	  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-	  	  	<a mdbTooltip="Update Bucket Events" placement="top" (click)="updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype,buckets[b].tags); editBucketModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
+	  	  	<a mdbTooltip="Update Bucket" placement="top" (click)="updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype,buckets[b].tags); editBucketModal.show()"><mdb-icon fas icon="pencil-alt" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
 	  	  	<a mdbTooltip="Remove Bucket" placement="top" (click)="deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()"><mdb-icon fas icon="trash-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
 	  	  	<a mdbTooltip="Bucket Lifecycyle" placement="top" (click)="bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()"><mdb-icon fas icon="recycle" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1">&nbsp;</span>
 	  	  	<a *ngIf="buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length" mdbTooltip="Remove Bucket Events" placement="top" (click)="removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()"><mdb-icon fas icon="bell-slash" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a><span class="pr-1" *ngIf="buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length">&nbsp;</span>
           <a *ngIf="buckets[b].quota?.quota" mdbTooltip="Remove Bucket Quota" placement="top" (click)="deleteBucketQuotaPrepare(buckets[b].name); removeQuotaApproveModal.show()"><mdb-icon fas icon="expand" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
+          <a *ngIf="buckets[b].encryption?.Rules" mdbTooltip="Remove Bucket Encryption" placement="top" (click)="deleteBucketEncryptionPrepare(buckets[b].name); removeEncryptionApproveModal.show()"><mdb-icon fas icon="unlock-alt" size="1x" class="red-text pr-1" aria-hidden="true"></mdb-icon></a>
 	  	  </td>
 	    </tr>
 	  </tbody>
@@ -130,8 +132,8 @@
               <div class="row">
                 <div class="col-md-12 col-12 mx-auto">
                   <div class="alert alert-success" role="alert" *ngIf="downloadLifecycleAvailable == 1" >
-                    <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on "dowload icon" >
-                    <a mdbTooltip="Download Lifecycle" placement="top" [href]="downloadJsonHref" download="{{lifecycleBucketName}}-lifecycle.xml"><mdb-icon fas icon="download" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
+                    <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>This bucket already have a lifecycyle policy, you can export it as JSON by clicking on "dowload icon" >
+                    <a mdbTooltip="Download Lifecycle" placement="top" [href]="downloadJsonHref" download="{{lifecycleBucketName}}-lifecycle.json"><mdb-icon fas icon="download" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
                     <br/>
                     Or override it by upload a new lifecycle policy.
                   </div>
@@ -192,7 +194,7 @@
                 <h4 class="modal-title w-100" id="myModalLabel">Remove Bucket Notifications</h4>
             </div>
             <div class="modal-body">
-                Are you shure? <br/> After you click on <strong>"remove"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.
+                Are you shure? <br/> After you click on <strong>"remove"</strong> button bucket <strong>{{bucketToRemoveNotifications}}</strong> notifications will be removed.
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="removeNotificationApproveModal.hide()" mdbWavesEffect>Cancel</button>
@@ -215,11 +217,34 @@
                 <h4 class="modal-title w-100" id="myModalLabel">Remove Bucket Quota Limits</h4>
             </div>
             <div class="modal-body">
-                Are you shure? <br/> After you click on <strong>"remove"</strong> button quota for bucket <strong>{{bucketToDelete}}</strong> will be removed.
+                Are you shure? <br/> After you click on <strong>"remove"</strong> button quota for bucket <strong>{{bucketToRemoveQuota}}</strong> will be removed.
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="removeQuotaApproveModal.hide()" mdbWavesEffect>Cancel</button>
                 <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="removeBucketQuota(); removeQuotaApproveModal.hide()">Remove</button>
+            </div>
+        </div>
+    </div >
+</div >
+
+<!-- remove encryption approve modal -->
+
+<div mdbModal #removeEncryptionApproveModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true" [config]='{backdrop: true, ignoreBackdropClick: true}'>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="removeEncryptionApproveModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Remove Encryption</h4>
+            </div>
+            <div class="modal-body">
+                Are you shure? <br/> After you click on <strong>"remove"</strong> button encryption for bucket <strong>{{bucketToRemoveEncryption}}</strong> will be removed.
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="removeEncryptionApproveModal.hide()" mdbWavesEffect>Cancel</button>
+                <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="removeBucketEncryption(); removeEncryptionApproveModal.hide()">Remove</button>
             </div>
         </div>
     </div >
@@ -256,6 +281,16 @@
                     <input type="file" accept=".policy,.json" class="custom-file-input" (change)="filePolicyChanged($event)" #uploadPolicyFile name="uploadPolicyFile">
                     <label class="custom-file-label" for="customFileLang">{{uploadPolicyFileName == "" ? "Choose .policy or .json file" : uploadPolicyFileName}}</label>
                   </div>
+                </div>
+                <div class="mb-3" *ngIf="serviceInfo?.services?.vault?.status != 'disabled'">
+                  <div class="separator pointer">Encryption</div>
+                  <select class="browser-default custom-select" [(ngModel)]="newBucketEncryption" title="Select encryption type">
+                    <option value="" disabled selected>Select encryption</option>
+                    <option [value]="encType" *ngFor="let encType of encryptionTypes">{{encType}}</option>
+                  </select><br/><br/>
+                  <div class="d-flex justify-content-around mb-3 text-center" *ngIf="newBucketEncryption == 'sse-kms'">
+          					<input type="text" class="form-control" placeholder="Master Key ID" [(ngModel)]="newBucketMasterKeyID" name="newBucketMasterKeyID"  aria-label="bucketName" aria-describedby="basic-addon1">
+          				</div>
                 </div>
                 <div class="separator pointer">Tags</div>
                 <div class="d-flex justify-content-around mb-3 text-center">
@@ -354,6 +389,17 @@
                     <input type="file" accept=".policy,.json" class="custom-file-input" (change)="filePolicyChanged($event)" #uploadPolicyFile name="uploadPolicyFile">
                     <label class="custom-file-label" for="customFileLang">{{uploadPolicyFileName == "" ? "Choose .policy or .json file" : uploadPolicyFileName}}</label>
                   </div>
+                </div>
+                <br/>
+                <div class="mb-3" *ngIf="serviceInfo?.services?.vault?.status != 'disabled'">
+                  <div class="separator pointer">Encryption</div>
+                  <select class="browser-default custom-select" [(ngModel)]="updateBucketEncryptionObj" title="Select encryption type" (change)="updateEncryptionType($event)">
+                    <option value="" disabled selected>Select encryption</option>
+                    <option [value]="encType" *ngFor="let encType of encryptionTypes">{{encType}}</option>
+                  </select><br/><br/>
+                  <div class="d-flex justify-content-around mb-3 text-center" *ngIf="updateBucketEncryptionObj == 'sse-kms'" (change)="updateEncryptionType($event)">
+          					<input type="text" class="form-control" placeholder="Master Key ID" [(ngModel)]="newBucketMasterKeyID" name="newBucketMasterKeyID"  aria-label="bucketName" aria-describedby="basic-addon1">
+          				</div>
                 </div>
                 <div class="separator pointer">Tags</div>
                 <div class="d-flex justify-content-around mb-3 text-center">

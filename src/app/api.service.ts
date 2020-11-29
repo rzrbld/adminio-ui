@@ -318,7 +318,6 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-policy', form);
   }
 
-
   public getBucketPolicy(bucketName){
     let form = new FormData();
 
@@ -326,5 +325,32 @@ export class ApiService {
 
     return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-policy', form);
   }
+
+  public getBucketEncryption(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/get-encryption', form);
+  }
+
+  public setBucketEncryption(bucketName, encType, encMasterKeyID){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+    form.append('bucketEncryptionType', encType);
+    form.append('kmsMasterKey', encMasterKeyID);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/set-encryption', form);
+  }
+
+  public removeBucketEncryption(bucketName){
+    let form = new FormData();
+
+    form.append('bucketName', bucketName);
+
+    return this.httpClient.post(this.baseUrl+'/api/v2/bucket/remove-encryption', form);
+  }
+
 
 }

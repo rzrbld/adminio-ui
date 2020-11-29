@@ -19,25 +19,31 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   bucketToDelete;
   bucketToRemoveNotifications;
   bucketToRemoveQuota;
+  bucketToRemoveEncryption;
+  updateEncryptionTypeChanged = false;
   editBucketName;
   newBucketName = "";
   uiShowQuota = false;
   newBucketQuotaType = "";
   newBucketQuota = "";
-  quotaTypes = ["fifo", "hard"]
+  quotaTypes = ["fifo", "hard"];
   serviceInfo;
   diskUsageInfo;
+  newBucketEncryption = "";
+  encryptionTypes = ["sse-s3", "sse-kms"];
+  newBucketMasterKeyID = "";
   newBucketEventARN = "";
   updateBucketEventARN = "";
   updateBucketEventFilterPrefix = "";
   updateBucketEventFilterSuffix = "";
   updateBucketQuotaObj = {};
+  updateBucketEncryptionObj = {};
   updateQuotaTypeChanged = false;
   updateQuotaChanged = false;
 
   newBucketPolicy = "none";
   // updateBucketPolicy = "none"
-  policyTypes = ["none", "upload", "download", "public", "custom"]
+  policyTypes = ["none", "upload", "download", "public", "custom"];
   updatePolicyTypeChanged = false;
   uploadPolicyName;
   uploadPolicyFile;
@@ -196,6 +202,27 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       }
     });
 
+    this.apiService.getBucketEncryption(bucketName).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      console.log(Object.keys(data));
+      console.log(data);
+
+      var dataKeys = Object.keys(data);
+      console.log("Bucket Encryption >>",dataKeys[1]);
+      if(dataKeys[1]=="Rules"){
+        this.updateBucketEncryptionObj = data;
+        var dataVals = Object.values(data);
+        console.log("Enc datavals", dataVals[1][0]['Apply']['KmsMasterKeyID'])
+        if(dataVals[1][0]['Apply']['KmsMasterKeyID'] == ""){
+          this.updateBucketEncryptionObj = "sse-s3"
+        }else{
+          this.updateBucketEncryptionObj = "sse-kms"
+        }
+      }else{
+        this.updateBucketEncryptionObj = "";
+      }
+    });
+
     this.apiService.getBucketQuota(bucketName).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
       console.log(Object.keys(data));
@@ -233,8 +260,16 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.updatePolicyTypeChanged = true;
   }
 
+  private updateEncryptionType(){
+    this.updateEncryptionTypeChanged = true;
+  }
+
   private updateQuota(){
     this.updateQuotaChanged = true;
+  }
+
+  private deleteBucketEncryptionPrepare(bucketName){
+    this.bucketToRemoveEncryption = bucketName;
   }
 
   private deleteBucket(){
@@ -253,6 +288,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   private resetForm(){
   	this.newBucketName = "";
     this.newBucketEventARN = "";
+    this.newBucketEncryption = "";
+    this.newBucketMasterKeyID = "";
+    this.updateEncryptionTypeChanged = false;
     this.newBucketEventFilterPrefix = "";
     this.newBucketEventFilterSuffix = "";
     this.selectedEventTypes = [];
@@ -269,10 +307,14 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private resetUpdateForm() {
     this.updateBucketEventARN = "";
+    this.newBucketEncryption = "";
+    this.newBucketMasterKeyID = "";
+    this.updateEncryptionTypeChanged = false;
     this.selectedEventTypes = [];
     this.updateBucketEventFilterPrefix = "";
     this.updateBucketEventFilterSuffix = "";
     this.updateBucketQuotaObj = {};
+    this.updateBucketEncryptionObj = "";
     this.updateQuotaTypeChanged = false;
     this.updateQuotaChanged = false;
     this.tagListChanged = false;
@@ -339,11 +381,11 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   		var bucketsArr = this.newBucketName.split(',')
   		for (var i = 0; i < bucketsArr.length; i++) {
   			if(bucketsArr[i]!=''){
-  				this.createBucketSimple(bucketsArr[i],this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,this.newBucketPolicy,bucketsArr.length,i+1)
+  				this.createBucketSimple(bucketsArr[i],this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,this.newBucketPolicy,this.newBucketEncryption,this.newBucketMasterKeyID, bucketsArr.length,i+1)
   			}
   		}
   	}else{
-  		this.createBucketSimple(this.newBucketName,this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,this.newBucketPolicy,1,1)
+  		this.createBucketSimple(this.newBucketName,this.newBucketEventARN,this.newBucketQuotaType,this.newBucketQuota,this.newBucketPolicy,this.newBucketEncryption,this.newBucketMasterKeyID,1,1)
   	}
   }
 
@@ -377,8 +419,13 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     if(this.updateQuotaTypeChanged || this.updateQuotaChanged){
       this.setQuotaForBucket(this.editBucketName, quotaType, quotaVal, true)
     }
+
     if(this.updatePolicyTypeChanged){
       this.setPolicy(this.editBucketName, true)
+    }
+
+    if(this.updateEncryptionTypeChanged){
+      this.setBucketEncryption(this.editBucketName, this.updateBucketEncryptionObj, this.newBucketMasterKeyID, true)
     }
   }
 
@@ -442,7 +489,38 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
       });
   }
 
-  private createBucketSimple(bucket, eventARN, quotaType, quotaVal, policy, numberOfBuckets, currentBucketNumber){
+  private removeBucketEncryption(){
+      var bucket = this.bucketToRemoveEncryption;
+      this.apiService.removeBucketEncryption(bucket).subscribe((data)=>{
+        this.apiService.validateAuthInResponse(data)
+        console.log(data);
+        if(data["Success"]){
+          this.toastr.success('Encryption for bucket '+bucket+' has been removed', 'Success');
+        }else{
+          this.toastr.error(JSON.stringify(data), 'Error while removing bucket encryption');
+        }
+        this.getBuckets();
+      });
+  }
+
+
+  private setBucketEncryption(bucket, encType, masterKeyID, reloadBucketList){
+    this.apiService.setBucketEncryption(bucket, encType, masterKeyID).subscribe((data)=>{
+      this.apiService.validateAuthInResponse(data)
+      if(data["Success"]){
+        this.toastr.success('Encryption for bucket '+bucket+' has been set', 'Success');
+      }else{
+        this.toastr.error(JSON.stringify(data), 'Error while set encryption for bucket');
+      }
+      if(reloadBucketList){
+        this.getBuckets();
+      }
+    });
+  }
+
+
+
+  private createBucketSimple(bucket, eventARN, quotaType, quotaVal, policy, encryption, masterKeyID, numberOfBuckets, currentBucketNumber){
   	this.apiService.createBucket(bucket).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
       console.log(data);
@@ -459,6 +537,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
         }
         if(this.updatePolicyTypeChanged){
           this.setPolicy(bucket, false)
+        }
+        if(encryption != ""){
+          this.setBucketEncryption(bucket, encryption, masterKeyID, false)
         }
       }else{
         this.toastr.error(JSON.stringify(data), 'Error while creating bucket');
@@ -497,7 +578,9 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
           // this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');
         }else{
           this.downloadLifecycleAvailable = 1;
-          var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/xml;charset=UTF-8," + encodeURIComponent(data.toString()));
+          console.log("Lifecycle>>>>",JSON.stringify(data));
+
+          var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(data)));
           this.downloadJsonHref = uri;
         }
       }
