@@ -368,16 +368,21 @@
           this.objectKeys = Object.keys;
           this.isNaN = Number.isNaN;
           this.buckets = {};
+          this.updateEncryptionTypeChanged = false;
           this.newBucketName = "";
           this.uiShowQuota = false;
           this.newBucketQuotaType = "";
           this.newBucketQuota = "";
           this.quotaTypes = ["fifo", "hard"];
+          this.newBucketEncryption = "";
+          this.encryptionTypes = ["sse-s3", "sse-kms"];
+          this.newBucketMasterKeyID = "";
           this.newBucketEventARN = "";
           this.updateBucketEventARN = "";
           this.updateBucketEventFilterPrefix = "";
           this.updateBucketEventFilterSuffix = "";
           this.updateBucketQuotaObj = {};
+          this.updateBucketEncryptionObj = {};
           this.updateQuotaTypeChanged = false;
           this.updateQuotaChanged = false;
           this.newBucketPolicy = "none"; // updateBucketPolicy = "none"
@@ -554,6 +559,28 @@
                 _this5.newBucketTagsList = data;
               }
             });
+            this.apiService.getBucketEncryption(bucketName).subscribe(function (data) {
+              _this5.apiService.validateAuthInResponse(data);
+
+              console.log(Object.keys(data));
+              console.log(data);
+              var dataKeys = Object.keys(data);
+              console.log("Bucket Encryption >>", dataKeys[1]);
+
+              if (dataKeys[1] == "Rules") {
+                _this5.updateBucketEncryptionObj = data;
+                var dataVals = Object.values(data);
+                console.log("Enc datavals", dataVals[1][0]['Apply']['KmsMasterKeyID']);
+
+                if (dataVals[1][0]['Apply']['KmsMasterKeyID'] == "") {
+                  _this5.updateBucketEncryptionObj = "sse-s3";
+                } else {
+                  _this5.updateBucketEncryptionObj = "sse-kms";
+                }
+              } else {
+                _this5.updateBucketEncryptionObj = "";
+              }
+            });
             this.apiService.getBucketQuota(bucketName).subscribe(function (data) {
               _this5.apiService.validateAuthInResponse(data);
 
@@ -595,9 +622,19 @@
             this.updatePolicyTypeChanged = true;
           }
         }, {
+          key: "updateEncryptionType",
+          value: function updateEncryptionType() {
+            this.updateEncryptionTypeChanged = true;
+          }
+        }, {
           key: "updateQuota",
           value: function updateQuota() {
             this.updateQuotaChanged = true;
+          }
+        }, {
+          key: "deleteBucketEncryptionPrepare",
+          value: function deleteBucketEncryptionPrepare(bucketName) {
+            this.bucketToRemoveEncryption = bucketName;
           }
         }, {
           key: "deleteBucket",
@@ -623,6 +660,9 @@
           value: function resetForm() {
             this.newBucketName = "";
             this.newBucketEventARN = "";
+            this.newBucketEncryption = "";
+            this.newBucketMasterKeyID = "";
+            this.updateEncryptionTypeChanged = false;
             this.newBucketEventFilterPrefix = "";
             this.newBucketEventFilterSuffix = "";
             this.selectedEventTypes = [];
@@ -640,10 +680,14 @@
           key: "resetUpdateForm",
           value: function resetUpdateForm() {
             this.updateBucketEventARN = "";
+            this.newBucketEncryption = "";
+            this.newBucketMasterKeyID = "";
+            this.updateEncryptionTypeChanged = false;
             this.selectedEventTypes = [];
             this.updateBucketEventFilterPrefix = "";
             this.updateBucketEventFilterSuffix = "";
             this.updateBucketQuotaObj = {};
+            this.updateBucketEncryptionObj = "";
             this.updateQuotaTypeChanged = false;
             this.updateQuotaChanged = false;
             this.tagListChanged = false;
@@ -722,11 +766,11 @@
 
               for (var i = 0; i < bucketsArr.length; i++) {
                 if (bucketsArr[i] != '') {
-                  this.createBucketSimple(bucketsArr[i], this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, this.newBucketPolicy, bucketsArr.length, i + 1);
+                  this.createBucketSimple(bucketsArr[i], this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, this.newBucketPolicy, this.newBucketEncryption, this.newBucketMasterKeyID, bucketsArr.length, i + 1);
                 }
               }
             } else {
-              this.createBucketSimple(this.newBucketName, this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, this.newBucketPolicy, 1, 1);
+              this.createBucketSimple(this.newBucketName, this.newBucketEventARN, this.newBucketQuotaType, this.newBucketQuota, this.newBucketPolicy, this.newBucketEncryption, this.newBucketMasterKeyID, 1, 1);
             }
           }
         }, {
@@ -767,6 +811,10 @@
 
             if (this.updatePolicyTypeChanged) {
               this.setPolicy(this.editBucketName, true);
+            }
+
+            if (this.updateEncryptionTypeChanged) {
+              this.setBucketEncryption(this.editBucketName, this.updateBucketEncryptionObj, this.newBucketMasterKeyID, true);
             }
           }
         }, {
@@ -854,40 +902,83 @@
             });
           }
         }, {
-          key: "createBucketSimple",
-          value: function createBucketSimple(bucket, eventARN, quotaType, quotaVal, policy, numberOfBuckets, currentBucketNumber) {
+          key: "removeBucketEncryption",
+          value: function removeBucketEncryption() {
             var _this12 = this;
 
-            this.apiService.createBucket(bucket).subscribe(function (data) {
+            var bucket = this.bucketToRemoveEncryption;
+            this.apiService.removeBucketEncryption(bucket).subscribe(function (data) {
               _this12.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this12.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
+                _this12.toastr.success('Encryption for bucket ' + bucket + ' has been removed', 'Success');
+              } else {
+                _this12.toastr.error(JSON.stringify(data), 'Error while removing bucket encryption');
+              }
+
+              _this12.getBuckets();
+            });
+          }
+        }, {
+          key: "setBucketEncryption",
+          value: function setBucketEncryption(bucket, encType, masterKeyID, reloadBucketList) {
+            var _this13 = this;
+
+            this.apiService.setBucketEncryption(bucket, encType, masterKeyID).subscribe(function (data) {
+              _this13.apiService.validateAuthInResponse(data);
+
+              if (data["Success"]) {
+                _this13.toastr.success('Encryption for bucket ' + bucket + ' has been set', 'Success');
+              } else {
+                _this13.toastr.error(JSON.stringify(data), 'Error while set encryption for bucket');
+              }
+
+              if (reloadBucketList) {
+                _this13.getBuckets();
+              }
+            });
+          }
+        }, {
+          key: "createBucketSimple",
+          value: function createBucketSimple(bucket, eventARN, quotaType, quotaVal, policy, encryption, masterKeyID, numberOfBuckets, currentBucketNumber) {
+            var _this14 = this;
+
+            this.apiService.createBucket(bucket).subscribe(function (data) {
+              _this14.apiService.validateAuthInResponse(data);
+
+              console.log(data);
+
+              if (data["Success"]) {
+                _this14.toastr.success('Bucket: ' + bucket + ' has been created', 'Success');
 
                 if (eventARN != "") {
-                  _this12.enableNotificationForBucket(bucket, eventARN, _this12.selectedEventTypes, _this12.newBucketEventFilterPrefix, _this12.newBucketEventFilterSuffix, false);
+                  _this14.enableNotificationForBucket(bucket, eventARN, _this14.selectedEventTypes, _this14.newBucketEventFilterPrefix, _this14.newBucketEventFilterSuffix, false);
                 }
 
                 if (quotaType != "" && quotaVal != "" && quotaVal >= 0) {
-                  _this12.setQuotaForBucket(bucket, quotaType, quotaVal, false);
+                  _this14.setQuotaForBucket(bucket, quotaType, quotaVal, false);
                 }
 
-                if (Object.keys(_this12.newBucketTagsList).length > 0) {
-                  _this12.setTagsForBucket(bucket, false);
+                if (Object.keys(_this14.newBucketTagsList).length > 0) {
+                  _this14.setTagsForBucket(bucket, false);
                 }
 
-                if (_this12.updatePolicyTypeChanged) {
-                  _this12.setPolicy(bucket, false);
+                if (_this14.updatePolicyTypeChanged) {
+                  _this14.setPolicy(bucket, false);
+                }
+
+                if (encryption != "") {
+                  _this14.setBucketEncryption(bucket, encryption, masterKeyID, false);
                 }
               } else {
-                _this12.toastr.error(JSON.stringify(data), 'Error while creating bucket');
+                _this14.toastr.error(JSON.stringify(data), 'Error while creating bucket');
               }
 
               if (numberOfBuckets == currentBucketNumber) {
                 setTimeout(function () {
-                  _this12.getBuckets();
+                  _this14.getBuckets();
                 }, 500);
               }
             });
@@ -911,22 +1002,23 @@
         }, {
           key: "downloadLifecycle",
           value: function downloadLifecycle(bucket) {
-            var _this13 = this;
+            var _this15 = this;
 
             this.apiService.getLifecycle(bucket).subscribe(function (data) {
-              _this13.apiService.validateAuthInResponse(data); // console.log(bucket, data);
+              _this15.apiService.validateAuthInResponse(data); // console.log(bucket, data);
 
 
               if (data["error"]) {
-                _this13.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
+                _this15.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
               } else {
                 if (data == "") {// this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');
                 } else {
-                  _this13.downloadLifecycleAvailable = 1;
+                  _this15.downloadLifecycleAvailable = 1;
+                  console.log("Lifecycle>>>>", JSON.stringify(data));
 
-                  var uri = _this13.sanitizer.bypassSecurityTrustUrl("data:text/xml;charset=UTF-8," + encodeURIComponent(data.toString()));
+                  var uri = _this15.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(data)));
 
-                  _this13.downloadJsonHref = uri;
+                  _this15.downloadJsonHref = uri;
                 }
               }
             });
@@ -934,22 +1026,22 @@
         }, {
           key: "uploadLifecycle",
           value: function uploadLifecycle() {
-            var _this14 = this;
+            var _this16 = this;
 
             var fileReader = new FileReader();
 
             fileReader.onload = function (e) {
               var lifecycleFileString = fileReader.result.toString().replace(/\n/g, ' ').replace(/\r/g, ' ');
 
-              _this14.apiService.setLifecycle(_this14.lifecycleBucketName, lifecycleFileString).subscribe(function (data) {
-                _this14.apiService.validateAuthInResponse(data);
+              _this16.apiService.setLifecycle(_this16.lifecycleBucketName, lifecycleFileString).subscribe(function (data) {
+                _this16.apiService.validateAuthInResponse(data);
 
                 console.log(data);
 
                 if (data["Success"]) {
-                  _this14.toastr.success('Lifecycyle has been uploaded for bucket: ' + _this14.lifecycleBucketName + '', 'Success');
+                  _this16.toastr.success('Lifecycyle has been uploaded for bucket: ' + _this16.lifecycleBucketName + '', 'Success');
                 } else {
-                  _this14.toastr.error(JSON.stringify(data), 'Error while uploading lifecycyle');
+                  _this16.toastr.error(JSON.stringify(data), 'Error while uploading lifecycyle');
                 }
               });
             };
@@ -959,7 +1051,7 @@
         }, {
           key: "setTagsForBucket",
           value: function setTagsForBucket(bucket, reloadBucketList) {
-            var _this15 = this;
+            var _this17 = this;
 
             var tagsObj = this.newBucketTagsList;
             var tagsKeys = this.objectKeys(tagsObj);
@@ -973,34 +1065,34 @@
             var tagString = tagArr.join("&");
             console.log("TAG STRING >>>>", tagString);
             this.apiService.setBucketTag(bucket, tagString).subscribe(function (data) {
-              _this15.apiService.validateAuthInResponse(data);
+              _this17.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this15.toastr.success('Tags for bucket ' + bucket + ' has been set', 'Success');
+                _this17.toastr.success('Tags for bucket ' + bucket + ' has been set', 'Success');
               } else {
-                _this15.toastr.error(JSON.stringify(data), 'Error while set tags for bucket');
+                _this17.toastr.error(JSON.stringify(data), 'Error while set tags for bucket');
               }
 
               if (reloadBucketList) {
-                _this15.getBuckets();
+                _this17.getBuckets();
               }
             });
           }
         }, {
           key: "downloadPolicy",
           value: function downloadPolicy(bucket, fileName) {
-            var _this16 = this;
+            var _this18 = this;
 
             this.apiService.getBucketPolicy(bucket).subscribe(function (data) {
-              _this16.apiService.validateAuthInResponse(data);
+              _this18.apiService.validateAuthInResponse(data);
 
               console.log("download policy >>> ", bucket, data);
 
               if (data["error"]) {
-                _this16.toastr.error(JSON.stringify(data), 'Error while getting policy');
+                _this18.toastr.error(JSON.stringify(data), 'Error while getting policy');
               } else {
                 if (data == "") {
-                  _this16.toastr.error("Bucket has no policy", 'Error while getting policy');
+                  _this18.toastr.error("Bucket has no policy", 'Error while getting policy');
                 } else {
                   var link = document.createElement('a');
                   link.href = "data:text/json;charset=UTF-8," + encodeURIComponent(data["policy"].toString());
@@ -1178,27 +1270,27 @@
         }, {
           key: "serverInfo",
           value: function serverInfo() {
-            var _this17 = this;
+            var _this19 = this;
 
             this.apiService.serverInfo().subscribe(function (data) {
-              _this17.apiService.validateAuthInResponse(data);
+              _this19.apiService.validateAuthInResponse(data);
 
-              _this17.serviceInfo = data;
+              _this19.serviceInfo = data;
             });
           }
         }, {
           key: "diskInfo",
           value: function diskInfo() {
-            var _this18 = this;
+            var _this20 = this;
 
             this.apiService.diskInfo().subscribe(function (data) {
-              _this18.apiService.validateAuthInResponse(data);
+              _this20.apiService.validateAuthInResponse(data);
 
               console.log("Disk Usage >>>>>>>>>>>>", data);
-              _this18.diskUsageInfo = data;
+              _this20.diskUsageInfo = data;
 
               if (data.hasOwnProperty('objectsSizesHistogram')) {
-                var objectsSizesHistogram = _this18.diskUsageInfo.objectsSizesHistogram;
+                var objectsSizesHistogram = _this20.diskUsageInfo.objectsSizesHistogram;
                 var histogramKeysRawArr = [];
                 var histogramValsRawArr = [];
 
@@ -1207,22 +1299,22 @@
                   histogramValsRawArr = Object.values(objectsSizesHistogram);
                 }
 
-                _this18.hgChartDatasets[0].data = histogramValsRawArr;
-                _this18.hgChartLabels = [];
+                _this20.hgChartDatasets[0].data = histogramValsRawArr;
+                _this20.hgChartLabels = [];
 
                 for (var i = 0; i < histogramKeysRawArr.length; i++) {
                   var histogramLabel = histogramKeysRawArr[i].split('_').join(' ');
 
-                  _this18.hgChartLabels.push(histogramLabel);
+                  _this20.hgChartLabels.push(histogramLabel);
                 }
               }
 
-              if (data.hasOwnProperty('bucketsSizes') && _this18.diskUsageInfo.bucketsSizes != {} && _this18.diskUsageInfo.bucketsSizes != null) {
-                var objectBucketSizes = _this18.diskUsageInfo.bucketsSizes;
+              if (data.hasOwnProperty('bucketsSizes') && _this20.diskUsageInfo.bucketsSizes != {} && _this20.diskUsageInfo.bucketsSizes != null) {
+                var objectBucketSizes = _this20.diskUsageInfo.bucketsSizes;
                 var bucketSizesKeysRawArr = Object.keys(objectBucketSizes);
                 var bucketSizesValsRawArr = Object.values(objectBucketSizes);
-                _this18.szChartDatasets[0].data = bucketSizesValsRawArr;
-                _this18.szChartLabels = bucketSizesKeysRawArr;
+                _this20.szChartDatasets[0].data = bucketSizesValsRawArr;
+                _this20.szChartLabels = bucketSizesKeysRawArr;
               }
             });
           }
@@ -1336,12 +1428,12 @@
         }, {
           key: "checkAuthStatus",
           value: function checkAuthStatus() {
-            var _this19 = this;
+            var _this21 = this;
 
             this.apiService.checkAuthStatus().subscribe(function (data) {
               console.log("DATA AUTH>>>", data);
 
-              _this19.apiService.validateAuthInResponse(data);
+              _this21.apiService.validateAuthInResponse(data);
             });
           }
         }]);
@@ -1399,7 +1491,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui/issues\">create issue or fork at github.com<mdb-icon fab icon=\"github-alt\" size=\"1x\" class=\"px-1\" aria-hidden=\"true\"></mdb-icon></a> | v:1.3 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
+      __webpack_exports__["default"] = "<style>\n  @import url('https://fonts.googleapis.com/css?family=Righteous&display=swap');\n\n  .content {\n    display: flex;\n    margin: 32px auto;\n    padding: 0 16px;\n    max-width: 960px;\n    flex-direction: column;\n    align-items: center;\n  }\n\n  .hidden {\n    display: none;\n  }\n\n  .visible {\n    display: flex !important;\n  }\n\n</style>\n<!-- Navbar -->\n<mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark special-color-dark\">\n\n    <!-- Navbar brand -->\n    <mdb-navbar-brand><a class=\"navbar-brand\" href=\"#\">Adminio UI </a></mdb-navbar-brand>\n\n    <!-- Collapsible content -->\n    <links>\n\n        <!-- Links -->\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/']\" class=\"nav-link waves-light\" mdbWavesEffect>Buckets</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/users']\" class=\"nav-link waves-light\"  mdbWavesEffect>Users</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/policies']\" class=\"nav-link waves-light\"  mdbWavesEffect>Policies</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/groups']\" class=\"nav-link waves-light\"  mdbWavesEffect>Groups</a>\n            </li>\n            <li class=\"nav-item\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\n                <a [routerLink]=\"['/server']\" class=\"nav-link waves-light\"  mdbWavesEffect>Server</a>\n            </li>\n        </ul>\n        <!-- Links -->\n        <!-- Search form -->\n        <form class=\"form-inline select\" mdbWavesEffect *ngIf=\"apiService.getMultiBackendStatus()\">\n          <select class=\"select-text\" (change)=apiService.overrideBackend(apiService.baseUrl) [(ngModel)]=\"apiService.baseUrl\" [ngModelOptions]=\"{standalone: true}\" title=\"Select backend\">\n            <option value=\"\" disabled selected>Select backend</option>\n            <option [value]=\"backend.url\" *ngFor=\"let backend of apiService.getBackendsUrls()\">{{backend.name}} ({{backend.url}})</option>\n          </select>\n          <span class=\"select-highlight\"></span>\n\t\t\t\t\t<span class=\"select-bar\"></span>\n        </form>\n    </links>\n    <!-- Collapsible content -->\n\n</mdb-navbar>\n<!--/.Navbar-->\n<app-loading></app-loading>\n\n<router-outlet></router-outlet>\n\n<!-- Footer -->\n<footer class=\"page-footer font-small transparent fixed-bottom\">\n\n  <!-- Copyright -->\n  <div class=\"text-right py-3 transparent\">\n    <a href=\"https://github.com/rzrbld/adminio-ui/issues\">create issue or fork at github.com<mdb-icon fab icon=\"github-alt\" size=\"1x\" class=\"px-1\" aria-hidden=\"true\"></mdb-icon></a> | v:1.6 &nbsp;&nbsp;\n  </div>\n  <!-- Copyright -->\n\n</footer>\n<!-- Footer -->\n";
       /***/
     },
 
@@ -1894,48 +1986,48 @@
         }, {
           key: "getGroups",
           value: function getGroups() {
-            var _this20 = this;
+            var _this22 = this;
 
             this.groups = {};
             this.groupsWithMembers = [];
             this.previous = "";
             this.apiService.getGroups().subscribe(function (data) {
-              _this20.apiService.validateAuthInResponse(data);
+              _this22.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data !== null) {
-                _this20.groups = data;
+                _this22.groups = data;
 
-                for (var i = 0; i < _this20.objectKeys(data).length; i++) {
+                for (var i = 0; i < _this22.objectKeys(data).length; i++) {
                   var tempGroupName = data[i];
 
-                  _this20.apiService.getGroupDescription(tempGroupName).subscribe(function (data) {
+                  _this22.apiService.getGroupDescription(tempGroupName).subscribe(function (data) {
                     if (data !== null) {
-                      _this20.groupsWithMembers.push(data);
+                      _this22.groupsWithMembers.push(data);
 
-                      _this20.mdbTable.setDataSource(_this20.groupsWithMembers);
+                      _this22.mdbTable.setDataSource(_this22.groupsWithMembers);
 
-                      _this20.previous = _this20.mdbTable.getDataSource();
+                      _this22.previous = _this22.mdbTable.getDataSource();
                     }
                   });
                 }
 
-                console.log(_this20.groupsWithMembers);
-                _this20.groups = _this20.groupsWithMembers;
+                console.log(_this22.groupsWithMembers);
+                _this22.groups = _this22.groupsWithMembers;
               }
             });
           }
         }, {
           key: "getListOfUsers",
           value: function getListOfUsers() {
-            var _this21 = this;
+            var _this23 = this;
 
             this.apiService.getUsers().subscribe(function (data) {
-              _this21.apiService.validateAuthInResponse(data);
+              _this23.apiService.validateAuthInResponse(data);
 
               if (data !== null) {
-                _this21.dropdownList = Object.entries(data).map(function (e) {
+                _this23.dropdownList = Object.entries(data).map(function (e) {
                   return {
                     "id": e[0],
                     "itemName": e[0]
@@ -1947,22 +2039,22 @@
         }, {
           key: "getGroupDescription",
           value: function getGroupDescription(group) {
-            var _this22 = this;
+            var _this24 = this;
 
             this.isEditMode(true);
             console.log(group);
             this.apiService.getGroupDescription(group).subscribe(function (data) {
               if (data !== null) {
                 console.log(data);
-                _this22.groupToUpdate = data;
-                _this22.newGroupName = data["name"];
-                _this22.newGroupPolicy = data["policy"];
-                _this22.newGroupStatus = data["status"];
+                _this24.groupToUpdate = data;
+                _this24.newGroupName = data["name"];
+                _this24.newGroupPolicy = data["policy"];
+                _this24.newGroupStatus = data["status"];
 
                 for (var i = 0; i < data["members"].length; i++) {
                   var tempMember = data["members"][i];
 
-                  _this22.selectedItems.push({
+                  _this24.selectedItems.push({
                     "id": tempMember,
                     "itemName": tempMember
                   });
@@ -1973,13 +2065,13 @@
         }, {
           key: "getListOfPolicies",
           value: function getListOfPolicies() {
-            var _this23 = this;
+            var _this25 = this;
 
             this.apiService.getPolicies().subscribe(function (data) {
-              _this23.apiService.validateAuthInResponse(data);
+              _this25.apiService.validateAuthInResponse(data);
 
-              _this23.policies = Object.keys(data);
-              _this23.rawPolicies = data;
+              _this25.policies = Object.keys(data);
+              _this25.rawPolicies = data;
             });
           }
         }, {
@@ -1999,59 +2091,59 @@
         }, {
           key: "deleteGroup",
           value: function deleteGroup() {
-            var _this24 = this;
+            var _this26 = this;
 
             console.log("GROUP TO DELETE >>>", this.groupToDelete);
             this.apiService.updateMembersGroup(this.groupToDelete, [], "true").subscribe(function (data) {
-              _this24.apiService.validateAuthInResponse(data);
+              _this26.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this24.toastr.success('Group: ' + _this24.newGroupName + ' has been removed', 'Success');
+                _this26.toastr.success('Group: ' + _this26.newGroupName + ' has been removed', 'Success');
 
-                _this24.usersToRemove = [];
+                _this26.usersToRemove = [];
 
-                _this24.refreshList();
+                _this26.refreshList();
 
-                _this24.groupToDelete = "";
+                _this26.groupToDelete = "";
               } else {
-                _this24.toastr.error(JSON.stringify(data), 'Error while removing group');
+                _this26.toastr.error(JSON.stringify(data), 'Error while removing group');
 
-                _this24.refreshList();
+                _this26.refreshList();
 
-                _this24.groupToDelete = "";
+                _this26.groupToDelete = "";
               }
             });
           }
         }, {
           key: "wipeGroupMembers",
           value: function wipeGroupMembers() {
-            var _this25 = this;
+            var _this27 = this;
 
             this.apiService.updateMembersGroup(this.newGroupName, this.usersToRemove, "true").subscribe(function (data) {
-              _this25.apiService.validateAuthInResponse(data);
+              _this27.apiService.validateAuthInResponse(data);
 
               if (data["Success"]) {
-                _this25.toastr.success('Group: ' + _this25.newGroupName + ' members has been removed', 'Success');
+                _this27.toastr.success('Group: ' + _this27.newGroupName + ' members has been removed', 'Success');
 
-                _this25.usersToRemove = [];
+                _this27.usersToRemove = [];
               } else {
-                _this25.toastr.error(JSON.stringify(data), 'Error while removing members from group');
+                _this27.toastr.error(JSON.stringify(data), 'Error while removing members from group');
               }
             });
           }
         }, {
           key: "updatePolicy",
           value: function updatePolicy() {
-            var _this26 = this;
+            var _this28 = this;
 
             if (this.newGroupPolicy !== null && this.newGroupPolicy != "") {
               this.apiService.setPolicy(this.newGroupPolicy, this.newGroupName, "true").subscribe(function (data) {
-                _this26.apiService.validateAuthInResponse(data);
+                _this28.apiService.validateAuthInResponse(data);
 
                 if (data["Success"]) {
-                  _this26.toastr.success('Group: ' + _this26.newGroupName + ' policy has been set to ' + _this26.newGroupPolicy, 'Success');
+                  _this28.toastr.success('Group: ' + _this28.newGroupName + ' policy has been set to ' + _this28.newGroupPolicy, 'Success');
                 } else {
-                  _this26.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
+                  _this28.toastr.error(JSON.stringify(data), 'Error while setting policy to group');
                 }
               });
             }
@@ -2059,16 +2151,16 @@
         }, {
           key: "updateStatus",
           value: function updateStatus() {
-            var _this27 = this;
+            var _this29 = this;
 
             if (this.newGroupStatus !== null && this.newGroupStatus != "") {
               this.apiService.setStatusGroup(this.newGroupName, this.newGroupStatus).subscribe(function (data) {
-                _this27.apiService.validateAuthInResponse(data);
+                _this29.apiService.validateAuthInResponse(data);
 
                 if (data["Success"]) {
-                  _this27.toastr.success('Group: ' + _this27.newGroupName + ' status has been set to ' + _this27.newGroupStatus, 'Success');
+                  _this29.toastr.success('Group: ' + _this29.newGroupName + ' status has been set to ' + _this29.newGroupStatus, 'Success');
                 } else {
-                  _this27.toastr.error(JSON.stringify(data), 'Error while setting status to group');
+                  _this29.toastr.error(JSON.stringify(data), 'Error while setting status to group');
                 }
               });
             }
@@ -2083,7 +2175,7 @@
         }, {
           key: "createGroup",
           value: function createGroup() {
-            var _this28 = this;
+            var _this30 = this;
 
             console.log("CREATE GROUP CALLED");
             var newMembers = [];
@@ -2104,15 +2196,15 @@
 
             if (newMembers.length > 0) {
               this.apiService.updateMembersGroup(this.newGroupName, newMembers, "false").subscribe(function (data) {
-                _this28.apiService.validateAuthInResponse(data);
+                _this30.apiService.validateAuthInResponse(data);
 
                 if (data["Success"]) {
-                  _this28.toastr.success('Group: ' + _this28.newGroupName + ' has been created', 'Success');
+                  _this30.toastr.success('Group: ' + _this30.newGroupName + ' has been created', 'Success');
                 } else {
-                  _this28.toastr.error(JSON.stringify(data), 'Error while creating group');
+                  _this30.toastr.error(JSON.stringify(data), 'Error while creating group');
                 }
 
-                _this28.refreshList();
+                _this30.refreshList();
               });
             } else {
               this.refreshList();
@@ -2242,7 +2334,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Tags</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th>Quota</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <strong>{{buckets[b].name}}</strong>\n          <span mdbTooltip=\"Policy. Click to download\" (click)=\"downloadPolicy(buckets[b].name, 'policy_'+buckets[b].name+'_'+buckets[b].policy+'.json')\" class=\"ml-2 badge badge-primary pointer\" *ngIf=\"buckets[b].policy!='none'\">{{buckets[b].policy}}</span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <span *ngIf=\"objectKeys(buckets[b].tags)?.length > 0\">\n            <ul class=\"type-none\">\n              <li *ngFor=\"let tag of objectKeys(buckets[b].tags)\" class=\"type-none\">{{tag}}: {{buckets[b].tags[tag]}}</li>\n            </ul>\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"diskUsageInfo?.bucketsSizes\" mdbTooltip=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes\" placement=\"top\">\n            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n          </span>\n        </td>\n        <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"buckets[b].quota?.quotatype\">\n            <span class=\"badge badge-success\" *ngIf=\"buckets[b].quota?.quotatype == 'hard'\">{{buckets[b].quota?.quotatype}}</span>\n            <span class=\"badge badge-secondary\" *ngIf=\"buckets[b].quota?.quotatype == 'fifo'\">{{buckets[b].quota?.quotatype}}</span>\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota > 0\" mdbTooltip=\"{{buckets[b].quota?.quota}} bytes\" placement=\"top\">\n            {{(math.round(buckets[b].quota?.quota/1024/1024)+'').length > 3 ? math.round(buckets[b].quota?.quota/1024/1024/1024)+' Gb' : isNaN(math.round(buckets[b].quota?.quota/1024/1024)) ? '&ndash;' : math.round(buckets[b].quota?.quota/1024/1024) +' Mb'}}\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota < 1\" mdbTooltip=\"No quota limits\" placement=\"top\">\n            &infin;\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Update Bucket Events\" placement=\"top\" (click)=\"updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype,buckets[b].tags); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Remove Bucket\" placement=\"top\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Bucket Lifecycyle\" placement=\"top\" (click)=\"bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()\"><mdb-icon fas icon=\"recycle\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" mdbTooltip=\"Remove Bucket Events\" placement=\"top\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\" *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\">&nbsp;</span>\n          <a *ngIf=\"buckets[b].quota?.quota\" mdbTooltip=\"Remove Bucket Quota\" placement=\"top\" (click)=\"deleteBucketQuotaPrepare(buckets[b].name); removeQuotaApproveModal.show()\"><mdb-icon fas icon=\"expand\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- lifecycyle modal -->\n\n<div mdbModal #lifecycyleModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"lifecycyleModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Bucket Lifecycyle</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div class=\"row\">\n                <div class=\"col-md-12 col-12 mx-auto\">\n                  <div class=\"alert alert-success\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 1\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>This bucket already have a lifecycyle policy, you can dowload it by clicking on \"dowload icon\" >\n                    <a mdbTooltip=\"Download Lifecycle\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{lifecycleBucketName}}-lifecycle.xml\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n                    <br/>\n                    Or override it by upload a new lifecycle policy.\n                  </div>\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 0\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio\n                    <a href=\"https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle\" target=\"_blank\">documentation</a>. Or use an AWS S3 documentation\n                    <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html\" target=\"_blank\">Object Lifecycle Management</a>\n                  </div>\n                  <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".lifecycle,.xml\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadLifecycleFile name=\"uploadLifecycleFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadLifecycleFileName == \"\" ? \"Choose .lifecycle or .xml file\" : uploadLifecycleFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                </div>\n              </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadLifecycle();lifecycyleModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToDelete}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove quotas approve modal -->\n\n<div mdbModal #removeQuotaApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Quota Limits</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button quota for bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketQuota(); removeQuotaApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"separator pointer\">Policy</div>\n                <div class=\"d-flex justify-content-around p-1 text-center\">\n                  <select class=\"browser-default custom-select\" (change)=\"updatePolicyType()\" [(ngModel)]=\"newBucketPolicy\" title=\"Select policy type\">\n                    <option [value]=\"pType\" *ngFor=\"let pType of policyTypes\">{{pType}}</option>\n                  </select>\n                </div>\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"newBucketPolicy=='custom'\">\n                  <div class=\"custom-file\">\n                    <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"filePolicyChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n                    <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n                  </div>\n                </div>\n                <div class=\"separator pointer\">Tags</div>\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n                  <div class=\"form-row\">\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"newBucketTagName\" [(ngModel)]=\"newBucketTagName\" class=\"form-control\" placeholder=\"Tag name\">\n                      </div>\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"newBucketTagValue\" [(ngModel)]=\"newBucketTagValue\" class=\"form-control\" placeholder=\"Tag value\">\n                      </div>\n                      <div class=\"col-2\">\n                          <button class=\"btn btn-sm blue-gradient button-fix\" title=\"add more tags\" (click)=\"createFormAddTag()\"><i class=\"fas fa-plus\"></i></button>\n                      </div>\n                  </div>\n        \t\t\t\t</div>\n                <section id=\"listTags\" *ngIf=\"newBucketTagsList\">\n                  <span class=\"badge badge-primary ml-2\"  mdbTooltip=\"click to delete\" *ngFor=\"let tag of objectKeys(newBucketTagsList)\" (click)=\"createFormRemoveTag(tag)\">{{tag}}: {{newBucketTagsList[tag]}}</span>\n                </section>\n                <div class=\"separator pointer\" (click)=\"toggleShowQuota()\">Quota<mdb-icon fas icon=\"angle-down\" class=\"pl-1\" *ngIf=\"!uiShowQuota\"></mdb-icon><mdb-icon fas icon=\"angle-up\" class=\"pl-1\" *ngIf=\"uiShowQuota\"></mdb-icon></div>\n                <span *ngIf=\"uiShowQuota\">\n\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketQuotaType\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Quota in bytes\" [(ngModel)]=\"newBucketQuota\" name=\"newBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                      <div class=\"input-group-append\">\n                        <div class=\"input-group-text\">Bytes</div>\n                      </div>\n                    </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"separator pointer\">Policy</div>\n                <div class=\"d-flex justify-content-around p-1 text-center\">\n                  <select class=\"browser-default custom-select\" (change)=\"updatePolicyType()\" [(ngModel)]=\"newBucketPolicy\" title=\"Select policy type\">\n                    <option [value]=\"pType\" *ngFor=\"let pType of policyTypes\">{{pType}}</option>\n                  </select>\n                </div>\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"newBucketPolicy=='custom'\">\n                  <div class=\"custom-file\">\n                    <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"filePolicyChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n                    <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n                  </div>\n                </div>\n                <div class=\"separator pointer\">Tags</div>\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n                  <div class=\"form-row\">\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"updateBucketTagName\" [(ngModel)]=\"newBucketTagName\" class=\"form-control\" placeholder=\"Tag name\">\n                      </div>\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"updateBucketTagValue\" [(ngModel)]=\"newBucketTagValue\" class=\"form-control\" placeholder=\"Tag value\">\n                      </div>\n                      <div class=\"col-2\">\n                          <button class=\"btn btn-sm blue-gradient button-fix\" title=\"add more tags\" (click)=\"createFormAddTag()\"><i class=\"fas fa-plus\"></i></button>\n                      </div>\n                  </div>\n        \t\t\t\t</div>\n                <section id=\"listTags\" *ngIf=\"newBucketTagsList\">\n                  <span class=\"badge badge-primary ml-2\"  mdbTooltip=\"click to delete\" *ngFor=\"let tag of objectKeys(newBucketTagsList)\" (click)=\"createFormRemoveTag(tag)\">{{tag}}: {{newBucketTagsList[tag]}}</span>\n                </section>\n                <br/>\n                <div class=\"separator\">Quota section</div>\n                <span>\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" (change)=\"updateQuotaType()\" [(ngModel)]=\"updateBucketQuotaObj.quotatype\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" (change)=\"updateQuota()\" placeholder=\"Quota in bytes\" [(ngModel)]=\"updateBucketQuotaObj.quota\" name=\"updateBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                    <div class=\"input-group-append\">\n                      <div class=\"input-group-text\">Bytes</div>\n                    </div>\n                  </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(updateBucketQuotaObj.quotatype,updateBucketQuotaObj.quota); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
+      __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n    <div class=\"row\">\n        <div class=\"col-9 col-md-9\">\n            <h1>Buckets</h1>\n        </div>\n        <div class=\"col-md-3 col-3 align-right\">\n            <button type=\"button\" mdbBtn gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addBucket\" mdbWavesEffect (click)=\"resetForm();addBucketModal.show()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add bucket</button>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-12 col-12 mx-auto\">\n          <div class=\"md-form\">\n            <input type=\"text\" [(ngModel)]=\"searchText\" class=\"form-control\" id=\"search\" mdbInput>\n            <label for=\"search\">Search</label>\n          </div>\n        </div>\n    </div>\n\t<table mdbTable calss=\"table\" #tableBuckets=\"mdbTable\" >\n\t  <thead class=\"thead-light\">\n\t    <tr>\n\t      <th>Name</th>\n\t      <th>Tags</th>\n\t      <th>Creation Date</th>\n\t      <th *ngIf=\"(diskUsageInfo?.bucketsSizes | json) != ({} | json)\">Size</th>\n\t      <th>Quota</th>\n\t      <th *ngIf=\"serviceInfo?.sqsARN\">Event</th>\n\t      <th>Options</th>\n\t    </tr>\n\t  </thead>\n\t  <tbody *ngIf=\"buckets\">\n\t    <tr mdbTableCol *ngFor=\"let b of objectKeys(buckets); let i = index\">\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <strong>{{buckets[b].name}}</strong>\n          <span *ngIf=\"buckets[b].encryption?.Rules\" mdbTooltip=\"Bucket encrypted\">&nbsp;&nbsp;<mdb-icon fas icon=\"lock\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></span>\n          <span mdbTooltip=\"Policy. Click to download\" (click)=\"downloadPolicy(buckets[b].name, 'policy_'+buckets[b].name+'_'+buckets[b].policy+'.json')\" class=\"ml-2 badge badge-primary pointer\" *ngIf=\"buckets[b].policy!='none'\">{{buckets[b].policy}}</span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n          <span *ngIf=\"objectKeys(buckets[b].tags)?.length > 0\">\n            <ul class=\"type-none\">\n              <li *ngFor=\"let tag of objectKeys(buckets[b].tags)\" class=\"type-none\">{{tag}}: {{buckets[b].tags[tag]}}</li>\n            </ul>\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">{{buckets[b].info.creationDate | date : \"dd/MM/yy HH:mm:ss\" }}</td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"diskUsageInfo?.bucketsSizes\" mdbTooltip=\"{{diskUsageInfo?.bucketsSizes[buckets[b].name]}} bytes\" placement=\"top\">\n            {{(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)+'').length > 3 ? math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024/1024)+' Gb' : isNaN(math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024)) ? '&ndash;' : math.round(diskUsageInfo?.bucketsSizes[buckets[b].name]/1024/1024) +' Mb'}}\n          </span>\n        </td>\n        <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && (diskUsageInfo?.bucketsSizes | json) != ({} | json)\">\n          <span *ngIf=\"buckets[b].quota?.quotatype\">\n            <span class=\"badge badge-success\" *ngIf=\"buckets[b].quota?.quotatype == 'hard'\">{{buckets[b].quota?.quotatype}}</span>\n            <span class=\"badge badge-secondary\" *ngIf=\"buckets[b].quota?.quotatype == 'fifo'\">{{buckets[b].quota?.quotatype}}</span>\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota > 0\" mdbTooltip=\"{{buckets[b].quota?.quota}} bytes\" placement=\"top\">\n            {{(math.round(buckets[b].quota?.quota/1024/1024)+'').length > 3 ? math.round(buckets[b].quota?.quota/1024/1024/1024)+' Gb' : isNaN(math.round(buckets[b].quota?.quota/1024/1024)) ? '&ndash;' : math.round(buckets[b].quota?.quota/1024/1024) +' Mb'}}\n          </span>\n          <span *ngIf=\"buckets[b].quota?.quota < 1\" mdbTooltip=\"No quota limits\" placement=\"top\">\n            &infin;\n          </span>\n        </td>\n\t      <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && serviceInfo?.sqsARN\">\n          <span *ngIf=\"buckets[b].events.LambdaConfigs?.length\">\n            Lambda:\n            <span *ngFor=\"let c of buckets[b].events?.LambdaConfigs\">\n              {{c.Lambda}}<br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.TopicConfigs?.length\">\n          Topic:\n          <span *ngFor=\"let c of buckets[b].events?.TopicConfigs\">\n             {{c.Topic}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n          <span *ngIf=\"buckets[b].events.QueueConfigs?.length\">\n          Queue:\n            <span *ngFor=\"let c of buckets[b].events?.QueueConfigs\">\n              {{c.Queue}} <br/>\n              <ul class=\"type-none\">\n                <li *ngFor=\"let e of c?.Events\">\n                  {{e}}\n                </li>\n              </ul>\n            </span>\n          </span>\n        </td>\n\t  \t  <td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t  \t  \t<a mdbTooltip=\"Update Bucket\" placement=\"top\" (click)=\"updateBucketPrepare(buckets[b].name,buckets[b].quota?.quota,buckets[b].quota?.quotatype,buckets[b].tags); editBucketModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Remove Bucket\" placement=\"top\" (click)=\"deleteBucketPrepare(buckets[b].name); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a mdbTooltip=\"Bucket Lifecycyle\" placement=\"top\" (click)=\"bucketLifecycle(buckets[b].name); downloadLifecycle(buckets[b].name); resetLifecycleForm(); lifecycyleModal.show()\"><mdb-icon fas icon=\"recycle\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t  \t  \t<a *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\" mdbTooltip=\"Remove Bucket Events\" placement=\"top\" (click)=\"removeBucketNotificationPrepare(buckets[b].name); removeNotificationApproveModal.show()\"><mdb-icon fas icon=\"bell-slash\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\" *ngIf=\"buckets[b].events.LambdaConfigs?.length || buckets[b].events.TopicConfigs?.length || buckets[b].events.QueueConfigs?.length\">&nbsp;</span>\n          <a *ngIf=\"buckets[b].quota?.quota\" mdbTooltip=\"Remove Bucket Quota\" placement=\"top\" (click)=\"deleteBucketQuotaPrepare(buckets[b].name); removeQuotaApproveModal.show()\"><mdb-icon fas icon=\"expand\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n          <a *ngIf=\"buckets[b].encryption?.Rules\" mdbTooltip=\"Remove Bucket Encryption\" placement=\"top\" (click)=\"deleteBucketEncryptionPrepare(buckets[b].name); removeEncryptionApproveModal.show()\"><mdb-icon fas icon=\"unlock-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t  \t  </td>\n\t    </tr>\n\t  </tbody>\n      <tfoot class=\"grey lighten-5 w-100\">\n        <tr>\n          <td colspan=\"100%\">\n            <mdb-table-pagination [tableEl]=\"tableBuckets\" [searchDataSource]=\"buckets\"></mdb-table-pagination>\n          </td>\n        </tr>\n      </tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- lifecycyle modal -->\n\n<div mdbModal #lifecycyleModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"lifecycyleModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Bucket Lifecycyle</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div class=\"row\">\n                <div class=\"col-md-12 col-12 mx-auto\">\n                  <div class=\"alert alert-success\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 1\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>This bucket already have a lifecycyle policy, you can export it as JSON by clicking on \"dowload icon\" >\n                    <a mdbTooltip=\"Download Lifecycle\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{lifecycleBucketName}}-lifecycle.json\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n                    <br/>\n                    Or override it by upload a new lifecycle policy.\n                  </div>\n                  <div class=\"alert alert-info\" role=\"alert\" *ngIf=\"downloadLifecycleAvailable == 0\" >\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio\n                    <a href=\"https://docs.min.io/docs/java-client-api-reference.html#setBucketLifeCycle\" target=\"_blank\">documentation</a>. Or use an AWS S3 documentation\n                    <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html\" target=\"_blank\">Object Lifecycle Management</a>\n                  </div>\n                  <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".lifecycle,.xml\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadLifecycleFile name=\"uploadLifecycleFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadLifecycleFileName == \"\" ? \"Choose .lifecycle or .xml file\" : uploadLifecycleFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                </div>\n              </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadLifecycle();lifecycyleModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button bucket <strong>{{bucketToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deleteBucket(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove notify approve modal -->\n\n<div mdbModal #removeNotificationApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Notifications</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button bucket <strong>{{bucketToRemoveNotifications}}</strong> notifications will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeNotificationApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEvents(); removeNotificationApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove quotas approve modal -->\n\n<div mdbModal #removeQuotaApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Bucket Quota Limits</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button quota for bucket <strong>{{bucketToRemoveQuota}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeQuotaApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketQuota(); removeQuotaApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- remove encryption approve modal -->\n\n<div mdbModal #removeEncryptionApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"removeEncryptionApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Encryption</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"remove\"</strong> button encryption for bucket <strong>{{bucketToRemoveEncryption}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"removeEncryptionApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"removeBucketEncryption(); removeEncryptionApproveModal.hide()\">Remove</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n\n<!-- create modal -->\n\n<div mdbModal #addBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Create Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"newBucketName\" name=\"newBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" autofocus>\n        \t\t\t\t</div>\n                <div class=\"alert alert-info\" role=\"alert\">\n                  <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  You can pass multiple names with \",\" delimiter\n                </div>\n                <div class=\"separator pointer\">Policy</div>\n                <div class=\"d-flex justify-content-around p-1 text-center\">\n                  <select class=\"browser-default custom-select\" (change)=\"updatePolicyType()\" [(ngModel)]=\"newBucketPolicy\" title=\"Select policy type\">\n                    <option [value]=\"pType\" *ngFor=\"let pType of policyTypes\">{{pType}}</option>\n                  </select>\n                </div>\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"newBucketPolicy=='custom'\">\n                  <div class=\"custom-file\">\n                    <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"filePolicyChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n                    <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n                  </div>\n                </div>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.services?.vault?.status != 'disabled'\">\n                  <div class=\"separator pointer\">Encryption</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEncryption\" title=\"Select encryption type\">\n                    <option value=\"\" disabled selected>Select encryption</option>\n                    <option [value]=\"encType\" *ngFor=\"let encType of encryptionTypes\">{{encType}}</option>\n                  </select><br/><br/>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\" *ngIf=\"newBucketEncryption == 'sse-kms'\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Master Key ID\" [(ngModel)]=\"newBucketMasterKeyID\" name=\"newBucketMasterKeyID\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                </div>\n                <div class=\"separator pointer\">Tags</div>\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n                  <div class=\"form-row\">\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"newBucketTagName\" [(ngModel)]=\"newBucketTagName\" class=\"form-control\" placeholder=\"Tag name\">\n                      </div>\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"newBucketTagValue\" [(ngModel)]=\"newBucketTagValue\" class=\"form-control\" placeholder=\"Tag value\">\n                      </div>\n                      <div class=\"col-2\">\n                          <button class=\"btn btn-sm blue-gradient button-fix\" title=\"add more tags\" (click)=\"createFormAddTag()\"><i class=\"fas fa-plus\"></i></button>\n                      </div>\n                  </div>\n        \t\t\t\t</div>\n                <section id=\"listTags\" *ngIf=\"newBucketTagsList\">\n                  <span class=\"badge badge-primary ml-2\"  mdbTooltip=\"click to delete\" *ngFor=\"let tag of objectKeys(newBucketTagsList)\" (click)=\"createFormRemoveTag(tag)\">{{tag}}: {{newBucketTagsList[tag]}}</span>\n                </section>\n                <div class=\"separator pointer\" (click)=\"toggleShowQuota()\">Quota<mdb-icon fas icon=\"angle-down\" class=\"pl-1\" *ngIf=\"!uiShowQuota\"></mdb-icon><mdb-icon fas icon=\"angle-up\" class=\"pl-1\" *ngIf=\"uiShowQuota\"></mdb-icon></div>\n                <span *ngIf=\"uiShowQuota\">\n\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketQuotaType\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Quota in bytes\" [(ngModel)]=\"newBucketQuota\" name=\"newBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                      <div class=\"input-group-append\">\n                        <div class=\"input-group-text\">Bytes</div>\n                      </div>\n                    </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"newBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"newBucketEventFilterPrefix\" name=\"newBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"newBucketEventFilterSuffix\" name=\"newBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createBucket(); addBucketModal.hide()\">Create</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- edit modal -->\n\n<div mdbModal #editBucketModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editBucketModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Update Bucket</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n        \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Bucket Name\" [(ngModel)]=\"editBucketName\" name=\"editBucketName\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\" disabled>\n        \t\t\t\t</div>\n                <div class=\"separator pointer\">Policy</div>\n                <div class=\"d-flex justify-content-around p-1 text-center\">\n                  <select class=\"browser-default custom-select\" (change)=\"updatePolicyType()\" [(ngModel)]=\"newBucketPolicy\" title=\"Select policy type\">\n                    <option [value]=\"pType\" *ngFor=\"let pType of policyTypes\">{{pType}}</option>\n                  </select>\n                </div>\n                <div class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"newBucketPolicy=='custom'\">\n                  <div class=\"custom-file\">\n                    <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"filePolicyChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n                    <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n                  </div>\n                </div>\n                <br/>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.services?.vault?.status != 'disabled'\">\n                  <div class=\"separator pointer\">Encryption</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEncryptionObj\" title=\"Select encryption type\" (change)=\"updateEncryptionType($event)\">\n                    <option value=\"\" disabled selected>Select encryption</option>\n                    <option [value]=\"encType\" *ngFor=\"let encType of encryptionTypes\">{{encType}}</option>\n                  </select><br/><br/>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\" *ngIf=\"updateBucketEncryptionObj == 'sse-kms'\" (change)=\"updateEncryptionType($event)\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Master Key ID\" [(ngModel)]=\"newBucketMasterKeyID\" name=\"newBucketMasterKeyID\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                </div>\n                <div class=\"separator pointer\">Tags</div>\n                <div class=\"d-flex justify-content-around mb-3 text-center\">\n                  <div class=\"form-row\">\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"updateBucketTagName\" [(ngModel)]=\"newBucketTagName\" class=\"form-control\" placeholder=\"Tag name\">\n                      </div>\n                      <div class=\"col\">\n                          <input type=\"text\" id=\"updateBucketTagValue\" [(ngModel)]=\"newBucketTagValue\" class=\"form-control\" placeholder=\"Tag value\">\n                      </div>\n                      <div class=\"col-2\">\n                          <button class=\"btn btn-sm blue-gradient button-fix\" title=\"add more tags\" (click)=\"createFormAddTag()\"><i class=\"fas fa-plus\"></i></button>\n                      </div>\n                  </div>\n        \t\t\t\t</div>\n                <section id=\"listTags\" *ngIf=\"newBucketTagsList\">\n                  <span class=\"badge badge-primary ml-2\"  mdbTooltip=\"click to delete\" *ngFor=\"let tag of objectKeys(newBucketTagsList)\" (click)=\"createFormRemoveTag(tag)\">{{tag}}: {{newBucketTagsList[tag]}}</span>\n                </section>\n                <br/>\n                <div class=\"separator\">Quota section</div>\n                <span>\n                  <div class=\"d-flex justify-content-around p-1 text-center\">\n                    <select class=\"browser-default custom-select\" (change)=\"updateQuotaType()\" [(ngModel)]=\"updateBucketQuotaObj.quotatype\" title=\"Select quota type\">\n                      <option value=\"\" disabled selected>Select quota type</option>\n                      <option [value]=\"qType\" *ngFor=\"let qType of quotaTypes\">{{qType}}</option>\n                    </select>\n    \t\t\t\t\t\t\t</div>\n\n                  <div class=\"alert alert-info\" role=\"alert\">\n                    <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>\n                    In <b>\"fifo\"</b> mode - old data automatically will be removed when you reach quota limit. <br/>\n                    In <b>\"hard\"</b> mode - you can't add new data to bucket if quota limit reached.\n                  </div>\n\n                  <div class=\"input-group d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" (change)=\"updateQuota()\" placeholder=\"Quota in bytes\" [(ngModel)]=\"updateBucketQuotaObj.quota\" name=\"updateBucketQuota\"  aria-label=\"bucketQuota\" aria-describedby=\"basic-addon1\" autofocus>\n                    <div class=\"input-group-append\">\n                      <div class=\"input-group-text\">Bytes</div>\n                    </div>\n                  </div>\n                </span>\n                <div class=\"mb-3\" *ngIf=\"serviceInfo?.sqsARN\">\n                  <div class=\"separator\">Events section</div>\n                  <select class=\"browser-default custom-select\" [(ngModel)]=\"updateBucketEventARN\" title=\"Enable notifications\">\n                    <option value=\"\" disabled selected>Select sqsARN</option>\n                    <option [value]=\"eventARN\" *ngFor=\"let eventARN of serviceInfo?.sqsARN\">{{eventARN}}</option>\n                  </select><br/><br/>\n                  <div id=\"eventTypeSelector\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n  \t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownEventTypesList\" [(ngModel)]=\"selectedEventTypes\"\n  \t\t\t\t\t\t\t\t    [settings]=\"dropdownEventTypesSettings\"\n  \t\t\t\t\t\t\t\t    (onSelect)=\"onEventTypesItemSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelect)=\"onEventTypesItemDeSelect($event)\"\n  \t\t\t\t\t\t\t\t    (onSelectAll)=\"onEventTypesSelectAll($event)\"\n  \t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onEventTypesDeSelectAll($event)\"></angular2-multiselect>\n  \t\t\t\t\t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Prefix\" [(ngModel)]=\"updateBucketEventFilterPrefix\" name=\"updateBucketEventFilterPrefix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <div class=\"d-flex justify-content-around mb-3 text-center\">\n          \t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Filter Suffix\" [(ngModel)]=\"updateBucketEventFilterSuffix\" name=\"updateBucketEventFilterSuffix\"  aria-label=\"bucketName\" aria-describedby=\"basic-addon1\">\n          \t\t\t\t</div>\n                  <br/>\n                </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"updateBucket(updateBucketQuotaObj.quotatype,updateBucketQuotaObj.quota); editBucketModal.hide(); resetUpdateForm();\">Update</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
       /***/
     },
 
@@ -2299,14 +2391,14 @@
 
       var LoaderComponent = /*#__PURE__*/function () {
         function LoaderComponent(loaderService) {
-          var _this29 = this;
+          var _this31 = this;
 
           _classCallCheck(this, LoaderComponent);
 
           this.loaderService = loaderService;
           this.loaderService.isLoading.subscribe(function (v) {
-            _this29.loading = v;
-            _this29.error = _this29.loaderService.isError;
+            _this31.loading = v;
+            _this31.error = _this31.loaderService.isError;
           });
         }
 
@@ -2348,7 +2440,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n\t<div class=\"row\">\n\t\t<div class=\"col-6 col-md-6\">\n\t\t    <h1>Policies</h1>\n\t\t</div>\n\t\t<div class=\"col-md-6 col-6 align-right\">\n\t\t\t<div class=\"btn-group\" role=\"group\">\n\t\t\t\t<button type=\"button\" mdbBtn  gradient=\"purple\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#uploadPolicy\" (click)=\"this.resetUploadForm(); uploadModal.show()\" mdbWavesEffect>\n\t\t\t\t\t<mdb-icon fas icon=\"upload\" class=\"mr-1\"></mdb-icon>Upload policy\n\t\t\t\t</button>\n\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\t\t\t\t<button type=\"button\" mdbBtn  gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addPolicy\" (click)=\"isEditMode(false); resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()\" mdbWavesEffect>\n\t\t\t\t\t<mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Build policy\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-md-12 col-12 mx-auto\">\n\t\t\t<div class=\"md-form\">\n\t\t\t  <!-- <input type=\"text\" class=\"form-control\" id=\"search\" mdbInput> -->\n\t\t\t  <input type=\"text\" [(ngModel)]=\"searchText\" (ngModelChange)=\"searchItems()\" class=\"form-control\" id=\"search\" mdbInput>\n\t\t\t  <label for=\"search\">Search</label>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<table mdbTable calss=\"table\"  #tablePolicies=\"mdbTable\" >\n\t\t<thead class=\"thead-light\">\n\t\t\t<tr>\n\t\t\t  <th>Name</th>\n\t\t\t  <th>Action</th>\n\t\t\t  <th>Principal</th>\n\t\t\t  <th>Effect</th>\n\t\t\t  <th>Resource</th>\n\t\t\t  <th>Conditions</th>\n\t\t\t  <th>Options</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody *ngIf=\"(policies | json) != ({} | json)\">\n\t\t\t<tr mdbTableCol *ngFor=\"let pol of objectKeys(policies); let i = index\">\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{objectKeys(policies[pol])}}</strong></td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">\n\t\t\t\t\t\t\t\t<ul  class=\"type-none\">\n\t\t\t\t\t\t\t\t\t<li  class=\"type-none\" *ngFor=\"let action of st.Action\">{{action}}</li>\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<div *ngIf=\"policies[pol].Statement?.Principal\">\n\t\t\t\t\t\t{{policies[pol].Statement.Principal}}\n\t\t\t\t\t</div>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">{{st.Effect}}</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">\n\t\t\t\t\t\t\t<ul class=\"type-none\">\n\t\t\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let resource of st.Resource\">{{resource}}</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">\n\t\t\t\t\t\t\t<ul class=\"type-none\" *ngIf=\"st?.Condition\">\n\t\t\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let condition of objectKeys(st.Condition)\">\n\t\t\t\t\t\t\t\t\t\t{{condition}}\n\t\t\t\t\t\t\t\t\t<ul >\n\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let con of objectKeys(st.Condition[condition])\">{{con}}\n\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let conKeyVal of st.Condition[condition][con]\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t{{conKeyVal}}\n\t\t\t\t\t\t\t\t\t\t\t  </li>\n\t\t\t\t\t\t\t\t\t\t  </ul>\n\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<a (click)=\"rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()\"  mdbTooltip=\"View Raw JSON\" placement=\"top\"><mdb-icon fas icon=\"eye\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t\t\t\t\t<a mdbTooltip=\"Remove Policy\" placement=\"top\" (click)=\"deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t\t  \t\t<a mdbTooltip=\"Edit or Copy Policy\" placement=\"top\" class=\"action-link\" (click)=\"isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t\t\t\t\t<a mdbTooltip=\"Download Policy\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{objectKeys(policies[pol])}}.json\" (click)=\"downloadPolicy(objectValues(policies[pol])[0])\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t\t<tfoot class=\"grey lighten-5 w-100\">\n\t\t\t<tr>\n\t\t\t\t<td colspan=\"7\">\n\t\t\t\t  <mdb-table-pagination [tableEl]=\"tablePolicies\" [searchDataSource]=\"policies\"></mdb-table-pagination>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button policy <strong>{{policyToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deletePolicy(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- Upload -->\n\n<div mdbModal #uploadModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"uploadModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"uploadModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Upload Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-12 ml-auto\">\n\t\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Policy Name\" [(ngModel)]=\"uploadPolicyName\" name=\"uploadPolicyName\"  aria-label=\"policyName\" aria-describedby=\"basic-addon1\">\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t  </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"uploadModal.hide()\" mdbWavesEffect>Cancel</button>\n\t\t           \t<button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadPolicy();uploadModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- Raw view Modal -->\n\n<div mdbModal #rawViewModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"rawViewModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Raw Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<ngx-json-viewer [json]=\"rawView\"></ngx-json-viewer>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\" mdbWavesEffect>Close</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- Policy build up Modal-->\n\n<div mdbModal #addPolicyModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addPolicyModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog modal-lg\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addPolicyModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">{{modalCreateEditTitle}}</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<!-- <form class=\"text-center\" name=\"newPolicy\"  > -->\n            \t\t<div class=\"row\">\n\t\t\t\t\t    <div class=\"col-md-2 ml-auto\">&nbsp;</div>\n\t\t\t\t\t    <div class=\"col-md-8 ml-auto\">\n\n\t\t\t\t    \t<div class=\"alert alert-info\" role=\"alert\" *ngIf=\"modalEditMode\">\n                <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  In Edit mode you can make a copy of policy - Just rename it!\n              </div>\n\n\n\t\t\t\t\t    <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Policy Name\" [(ngModel)]=\"newPolicy.name\" name=\"newPolicyName\"  aria-label=\"policyName\" aria-describedby=\"basic-addon1\">\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 text-center\">\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<!-- Allow -->\n\t\t\t\t\t\t\t\t\t<div class=\"custom-control custom-radio custom-control-inline\">\n\t\t\t\t\t\t\t\t\t  <input type=\"radio\" checked class=\"custom-control-input\" id=\"statementAllow\"  value=\"Allow\" [(ngModel)]=\"newPolicy.effect\"  name=\"policyStatementEffect\" mdbInput>\n\t\t\t\t\t\t\t\t\t  <label class=\"custom-control-label\" for=\"statementAllow\">Allow</label>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t<!-- Deny -->\n\t\t\t\t\t\t\t\t\t<div class=\"custom-control custom-radio custom-control-inline\">\n\t\t\t\t\t\t\t\t\t  <input type=\"radio\" class=\"custom-control-input\" id=\"statementDeny\" value=\"Deny\" [(ngModel)]=\"newPolicy.effect\" name=\"policyStatementEffect\"  mdbInput>\n\t\t\t\t\t\t\t\t\t  <label class=\"custom-control-label\" for=\"statementDeny\">Deny</label>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownActionList\" [(ngModel)]=\"selectedActions\"\n\t\t\t\t\t\t\t    [settings]=\"dropdownActionSettings\"\n\t\t\t\t\t\t\t    (onSelect)=\"onActionItemSelect($event)\"\n\t\t\t\t\t\t\t    (onDeSelect)=\"onActionItemDeSelect($event)\"\n\t\t\t\t\t\t\t    (onSelectAll)=\"onActionSelectAll($event)\"\n\t\t\t\t\t\t\t    (onDeSelectAll)=\"onActionDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"input-group mb-3\">\n\t\t\t\t\t\t\t  <div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t    <span class=\"input-group-text\" id=\"inputGroup-sizing-default\">Principal</span>\n\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t  <input type=\"text\" class=\"form-control\" aria-label=\"Principal\" [(ngModel)]=\"newStatement.Principal\" name=\"newPrincipal\" aria-describedby=\"inputGroup-sizing-default\">\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"separator\">Buckets section</div>\n\t\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-1 text-center\">\n\t\t\t\t\t\t\t\t\t<div class=\"input-group mb-3\">\n\t\t\t\t\t\t\t\t\t  <div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t\t\t    <span class=\"input-group-text\" id=\"s3-prefix\">arn:aws:s3:::</span>\n\t\t\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t\t\t  <input type=\"text\" class=\"form-control\" placeholder=\"<bucket_name>/<key_name>\" [(ngModel)]=\"newPolicy.bucket\" aria-label=\"Recipient's username\"\n\t\t\t\t\t\t\t\t\t    aria-describedby=\"s3-prefix\">\n\t\t\t\t\t\t\t\t\t  <div class=\"input-group-append\">\n\t\t\t\t\t\t\t\t\t    <button mdbBtn gradient=\"blue\" rounded=\"true\"  outline=\"true\" size=\"md\" class=\"m-0 px-3 py-2\" type=\"button\" id=\"s3-prefix\"\n\t\t\t\t\t\t\t\t\t      mdbWavesEffect (click)=\"addBucketStatement()\">Add bucket</button>\n\t\t\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"bucketStatements\">\n\t\t\t\t\t\t\t\t\t<table  mdbTable mdbTableScroll scrollY=\"true\" maxHeight=\"300\"  class=\"table\"  small=\"true\">\n\t\t\t\t\t\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t\t\t\t\t\t<th>Bucket</th>\n\t\t\t\t\t\t\t\t\t\t\t<th>Options</th>\n\t\t\t\t\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t\t\t\t\t<tr *ngFor=\"let bst of newStatement.Resource; let i = index\" [attr.data-index]=\"i\">\n\t\t\t\t\t\t\t\t\t\t\t\t<td>{{bst}}</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td><a title=\"Remove bucket statement\" (click)=\"removeBucketStatement(i)\"><mdb-icon fas icon=\"times-circle\"  size=\"1x\" class=\"green-text pr-3\" aria-hidden=\"true\"></mdb-icon></a></td>\n\t\t\t\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t\t\t\t</table>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</fieldset>\n\n\t\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t\t<div class=\"separator\">Conditions section</div>\n\t\t\t\t\t\t\t\t<div id=\"conditionStatements\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownConditionList\" [(ngModel)]=\"selectedCondition\"\n\t\t\t\t\t\t\t\t    [settings]=\"dropdownConditionSettings\"\n\t\t\t\t\t\t\t\t    (onSelect)=\"onConditionItemSelect($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelect)=\"onConditionItemDeSelect($event)\"\n\t\t\t\t\t\t\t\t    (onSelectAll)=\"onConditionSelectAll($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onConditionDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"conditionKeyStatements\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownConditionKeyList\" [(ngModel)]=\"selectedConditionKey\"\n\t\t\t\t\t\t\t\t    [settings]=\"dropdownConditionKeySettings\"\n\t\t\t\t\t\t\t\t    (onSelect)=\"onConditionKeyItemSelect($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelect)=\"onConditionItemDeSelect($event)\"\n\t\t\t\t\t\t\t\t    (onSelectAll)=\"onConditionKeySelectAll($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onConditionKeyDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t<div class=\"input-group mb-3\">\n\t\t\t\t\t\t\t\t\t  <input type=\"text\" class=\"form-control\" placeholder=\"Condition Value\" aria-label=\"Condition Value\" [(ngModel)]=\"newConditionValue\" name=\"newConditionValue\"\n\t\t\t\t\t\t\t\t\t    aria-describedby=\"button-addCondition\">\n\t\t\t\t\t\t\t\t\t  <div class=\"input-group-append\">\n\t\t\t\t\t\t\t\t\t    <button mdbBtn gradient=\"blue\" outline=\"true\" size=\"md\" class=\"m-0 px-3 py-2 relative waves-light\" type=\"button\" id=\"button-addCondition\"  (click)=\"addCondition()\"\n\t\t\t\t\t\t\t\t\t\t\t mdbWavesEffect >Add Condition</button>\n\t\t\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"conditionStatementsList\">\n\t\t\t\t\t\t\t\t\t<table  mdbTable mdbTableScroll scrollY=\"true\" maxHeight=\"300\"  class=\"table\"  small=\"true\">\n\t\t\t\t\t\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t\t\t\t\t\t<th>Condition and options</th>\n\t\t\t\t\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t\t\t\t\t<tbody *ngIf=\"newStatement?.Condition\">\n\t\t\t\t\t\t\t\t\t\t\t<tr *ngFor=\"let condition of objectKeys(newStatement.Condition)\">\n\t\t\t\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t\t\t\t{{condition}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let con of objectKeys(newStatement.Condition[condition])\">{{con}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let conKeyVal of newStatement.Condition[condition][con]; let i = index;\" [attr.data-index]=\"i\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{{conKeyVal}}&nbsp;&nbsp;<a title=\"Remove condition\" (click)=\"removeCondition(i,con,condition)\"><mdb-icon fas icon=\"times-circle\"  size=\"1x\" class=\"green-text pr-3\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t\t\t\t</table>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</fieldset>\n\n\t\t\t\t\t\t\t<hr/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-md-2 ml-auto\">&nbsp;</div>\n\t\t\t\t\t</div>\n\n\n\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t<button type=\"button\" mdbBtn gradient=\"purple\" rounded=\"true\" class=\"relative waves-light btn btn-sm\" mdbWavesEffect (click)=\"addStatement()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add statement</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div id=\"statements\">\n\t\t\t\t\t\t<hr/>\n\t\t\t\t\t\t<table  mdbTable mdbTableScroll scrollY=\"true\" maxHeight=\"300\"  class=\"table\"  small=\"true\">\n\t\t\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t\t\t<th>Effect</th>\n\t\t\t\t\t\t\t\t<th>Action</th>\n\t\t\t\t\t\t\t\t<th>Resource</th>\n\t\t\t\t\t\t\t\t<th>Conditions</th>\n\t\t\t\t\t\t\t\t<th>Options</th>\n\t\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t\t<tr *ngFor=\"let st of newPolicyRaw.Statement; let i = index\" [attr.data-index]=\"i\">\n\t\t\t\t\t\t\t\t\t<td>{{st.Effect}}</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<ul  class=\"type-none\">\n\t\t\t\t\t\t\t\t\t\t\t<li  class=\"type-none\" *ngFor=\"let action of st.Action\">{{action}}</li>\n\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<ul  class=\"type-none\">\n\t\t\t\t\t\t\t\t\t\t\t<li  class=\"type-none\" *ngFor=\"let resource of st.Resource\">{{resource}}</li>\n\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<ul class=\"type-none\" *ngIf=\"st?.Condition\">\n\t\t\t\t\t\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let condition of objectKeys(st.Condition)\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t{{condition}}\n\t\t\t\t\t\t\t\t\t\t\t\t<ul >\n\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let con of objectKeys(st.Condition[condition])\">{{con}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let conKeyVal of st.Condition[condition][con]\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{{conKeyVal}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  </li>\n\t\t\t\t\t\t\t\t\t\t\t\t\t  </ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<a title=\"Remove statement\" (click)=\"removeStatement(i)\"><mdb-icon fas icon=\"times-circle\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t\t\t\t\t\t\t&nbsp;&nbsp;\n\t\t\t\t\t\t\t\t\t\t<a title=\"Edit statement\" (click)=\"editStatement(i)\"><mdb-icon fas icon=\"pencil-alt\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t</table>\n\t\t\t\t\t</div>\n\n                <!-- </form> -->\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createPolicy();addPolicyModal.hide()\">{{modalCreateEditButtonText}}</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
+      __webpack_exports__["default"] = "<div class=\"container\" style=\"padding-top: 30px;\">\n\t<div class=\"row\">\n\t\t<div class=\"col-6 col-md-6\">\n\t\t    <h1>Policies</h1>\n\t\t</div>\n\t\t<div class=\"col-md-6 col-6 align-right\">\n\t\t\t<div class=\"btn-group\" role=\"group\">\n\t\t\t\t<button type=\"button\" mdbBtn  gradient=\"purple\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#uploadPolicy\" (click)=\"this.resetUploadForm(); uploadModal.show()\" mdbWavesEffect>\n\t\t\t\t\t<mdb-icon fas icon=\"upload\" class=\"mr-1\"></mdb-icon>Upload policy\n\t\t\t\t</button>\n\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\t\t\t\t<button type=\"button\" mdbBtn  gradient=\"aqua\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect rounded=\"true\" data-toggle=\"modal\" data-target=\"#addPolicy\" (click)=\"isEditMode(false); resetPloicyForm(true); prepareNewPolicyRaw(); addPolicyModal.show()\" mdbWavesEffect>\n\t\t\t\t\t<mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Build policy\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-md-12 col-12 mx-auto\">\n\t\t\t<div class=\"md-form\">\n\t\t\t  <!-- <input type=\"text\" class=\"form-control\" id=\"search\" mdbInput> -->\n\t\t\t  <input type=\"text\" [(ngModel)]=\"searchText\" (ngModelChange)=\"searchItems()\" class=\"form-control\" id=\"search\" mdbInput>\n\t\t\t  <label for=\"search\">Search</label>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<table mdbTable calss=\"table\"  #tablePolicies=\"mdbTable\" >\n\t\t<thead class=\"thead-light\">\n\t\t\t<tr>\n\t\t\t  <th>Name</th>\n\t\t\t  <th>Action</th>\n\t\t\t  <th>Principal</th>\n\t\t\t  <th>Effect</th>\n\t\t\t  <th>Resource</th>\n\t\t\t  <th>Conditions</th>\n\t\t\t  <th>Options</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody *ngIf=\"(policies | json) != ({} | json)\">\n\t\t\t<tr mdbTableCol *ngFor=\"let pol of objectKeys(policies); let i = index\">\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\"><strong>{{objectKeys(policies[pol])}}</strong></td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">\n\t\t\t\t\t\t\t\t<ul  class=\"type-none\">\n\t\t\t\t\t\t\t\t\t<li  class=\"type-none\" *ngFor=\"let action of st.Action\">{{action}}</li>\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<div *ngIf=\"policies[pol].Statement?.Principal\">\n\t\t\t\t\t\t{{policies[pol].Statement.Principal}}\n\t\t\t\t\t</div>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">{{st.Effect}}</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">\n\t\t\t\t\t\t\t<ul class=\"type-none\">\n\t\t\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let resource of st.Resource\">{{resource}}</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<ul class=\"type-none\" >\n\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let st of objectValues(policies[pol])[0].Statement\">\n\t\t\t\t\t\t\t<ul class=\"type-none\" *ngIf=\"st?.Condition\">\n\t\t\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let condition of objectKeys(st.Condition)\">\n\t\t\t\t\t\t\t\t\t\t{{condition}}\n\t\t\t\t\t\t\t\t\t<ul >\n\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let con of objectKeys(st.Condition[condition])\">{{con}}\n\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let conKeyVal of st.Condition[condition][con]\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t{{conKeyVal}}\n\t\t\t\t\t\t\t\t\t\t\t  </li>\n\t\t\t\t\t\t\t\t\t\t  </ul>\n\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t\t<td *ngIf=\"i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex\">\n\t\t\t\t\t<a (click)=\"rawPrepare(objectValues(policies[pol])[0]); rawViewModal.show()\"  mdbTooltip=\"View Raw JSON\" placement=\"top\"><mdb-icon fas icon=\"eye\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t\t\t\t\t<a mdbTooltip=\"Remove Policy\" placement=\"top\" (click)=\"deletePolicyPrepare(objectKeys(policies[pol])); deleteApproveModal.show()\"><mdb-icon fas icon=\"trash-alt\" size=\"1x\" class=\"red-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t\t  \t\t<a mdbTooltip=\"Edit or Copy Policy\" placement=\"top\" class=\"action-link\" (click)=\"isEditMode(true);updatePolicyPrepare(objectKeys(policies[pol]));addPolicyModal.show()\"><mdb-icon fas icon=\"pencil-alt\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a><span class=\"pr-1\">&nbsp;</span>\n\t\t\t\t\t<a mdbTooltip=\"Download Policy\" placement=\"top\" [href]=\"downloadJsonHref\" download=\"{{objectKeys(policies[pol])}}.json\" (click)=\"downloadPolicy(objectValues(policies[pol])[0])\"><mdb-icon fas icon=\"download\" size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t\t<tfoot class=\"grey lighten-5 w-100\">\n\t\t\t<tr>\n\t\t\t\t<td colspan=\"7\">\n\t\t\t\t  <mdb-table-pagination [tableEl]=\"tablePolicies\" [searchDataSource]=\"policies\"></mdb-table-pagination>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tfoot>\n\t</table>\n</div>\n<br/>\n<br/>\n\n<!-- delete approve modal -->\n\n<div mdbModal #deleteApproveModal=\"mdbModal\" class=\"modal fade right\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myBasicModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Remove Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n                Are you shure? <br/> After you click on <strong>\"Delete\"</strong> button policy <strong>{{policyToDelete}}</strong> will be removed.\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"success\" class=\"waves-light\" aria-label=\"Close\" (click)=\"deleteApproveModal.hide()\" mdbWavesEffect>Cancel</button>\n                <button type=\"button\" mdbBtn color=\"danger\" class=\"relative waves-light\" mdbWavesEffect (click)=\"deletePolicy(); deleteApproveModal.hide()\">Delete</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- Upload -->\n\n<div mdbModal #uploadModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"uploadModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"uploadModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Upload Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-12 ml-auto\">\n\t\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Policy Name\" [(ngModel)]=\"uploadPolicyName\" name=\"uploadPolicyName\"  aria-label=\"policyName\" aria-describedby=\"basic-addon1\">\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"custom-file\">\n\t\t\t\t\t\t\t\t\t\t  <input type=\"file\" accept=\".policy,.json\" class=\"custom-file-input\" (change)=\"fileChanged($event)\" #uploadPolicyFile name=\"uploadPolicyFile\">\n\t\t\t\t\t\t\t\t\t\t  <label class=\"custom-file-label\" for=\"customFileLang\">{{uploadPolicyFileName == \"\" ? \"Choose .policy or .json file\" : uploadPolicyFileName}}</label>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t  </div>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"uploadModal.hide()\" mdbWavesEffect>Cancel</button>\n\t\t           \t<button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"uploadPolicy();uploadModal.hide()\">Upload</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- Raw view Modal -->\n\n<div mdbModal #rawViewModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"rawViewModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <h4 class=\"modal-title w-100\" id=\"myModalLabel\">Raw Policy</h4>\n            </div>\n            <div class=\"modal-body\">\n            \t<ngx-json-viewer [json]=\"rawView\"></ngx-json-viewer>\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn color=\"secondary\" class=\"waves-light\" aria-label=\"Close\" (click)=\"rawViewModal.hide()\" mdbWavesEffect>Close</button>\n            </div>\n        </div>\n    </div >\n</div >\n\n<!-- Policy build up Modal-->\n\n<div mdbModal #addPolicyModal=\"mdbModal\" class=\"modal fade right overflow-auto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addPolicyModalLabel\"\n   aria-hidden=\"true\" [config]='{backdrop: true, ignoreBackdropClick: true}'>\n    <div class=\"modal-dialog modal-lg\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addPolicyModal.hide()\">\n                    <span aria-hidden=\"true\">×</span>\n                </button>\n                <span><h4 class=\"modal-title w-100\" id=\"myModalLabel\">{{modalCreateEditTitle}}</h4>Switch to <button type=\"button\" mdbBtn color=\"link\" class=\"link-button\" (click)=\"switchAdvanced()\">{{advancedInterfaceLabel}}</button> interface </span>\n            </div>\n            <div class=\"modal-body\">\n            \t<!-- <form class=\"text-center\" name=\"newPolicy\"  > -->\n            \t\t<div class=\"row\">\n\t\t\t\t\t    <div class=\"col-md-2 ml-auto\">&nbsp;</div>\n\t\t\t\t\t    <div class=\"col-md-8 ml-auto\">\n\n\t\t\t\t    \t<div class=\"alert alert-info\" role=\"alert\" *ngIf=\"modalEditMode\">\n                <mdb-icon fas icon=\"info-circle\" class=\"mr-1\"></mdb-icon>  In Edit mode you can make a copy of policy - Just rename it!\n              </div>\n\n\n\t\t\t\t\t    <div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"Policy Name\" [(ngModel)]=\"newPolicy.name\" name=\"newPolicyName\"  aria-label=\"policyName\" aria-describedby=\"basic-addon1\">\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 text-center\">\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<!-- Allow -->\n\t\t\t\t\t\t\t\t\t<div class=\"custom-control custom-radio custom-control-inline\">\n\t\t\t\t\t\t\t\t\t  <input type=\"radio\" checked class=\"custom-control-input\" id=\"statementAllow\"  value=\"Allow\" [(ngModel)]=\"newPolicy.effect\"  name=\"policyStatementEffect\" mdbInput>\n\t\t\t\t\t\t\t\t\t  <label class=\"custom-control-label\" for=\"statementAllow\">Allow</label>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t<!-- Deny -->\n\t\t\t\t\t\t\t\t\t<div class=\"custom-control custom-radio custom-control-inline\">\n\t\t\t\t\t\t\t\t\t  <input type=\"radio\" class=\"custom-control-input\" id=\"statementDeny\" value=\"Deny\" [(ngModel)]=\"newPolicy.effect\" name=\"policyStatementEffect\"  mdbInput>\n\t\t\t\t\t\t\t\t\t  <label class=\"custom-control-label\" for=\"statementDeny\">Deny</label>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div id=\"actionsStatement\" class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"!selectedAdmins.length>0\">\n\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownActionList\" [(ngModel)]=\"selectedActions\"\n\t\t\t\t\t\t\t    [settings]=\"dropdownActionSettings\"\n\t\t\t\t\t\t\t    (onSelect)=\"onActionItemSelect($event)\"\n\t\t\t\t\t\t\t    (onDeSelect)=\"onActionItemDeSelect($event)\"\n\t\t\t\t\t\t\t    (onSelectAll)=\"onActionSelectAll($event)\"\n\t\t\t\t\t\t\t    (onDeSelectAll)=\"onActionDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div id=\"adminsStatement\" class=\"d-flex justify-content-around p-1 mb-3 text-center\" *ngIf=\"!selectedActions.length>0\">\n\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownAdminList\" [(ngModel)]=\"selectedAdmins\"\n\t\t\t\t\t\t\t    [settings]=\"dropdownAdminSettings\"\n\t\t\t\t\t\t\t    (onSelect)=\"onAdminItemSelect($event)\"\n\t\t\t\t\t\t\t    (onDeSelect)=\"onAdminItemDeSelect($event)\"\n\t\t\t\t\t\t\t    (onSelectAll)=\"onAdminSelectAll($event)\"\n\t\t\t\t\t\t\t    (onDeSelectAll)=\"onAdminDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"input-group mb-3\" *ngIf=\"advancedInterface\">\n\t\t\t\t\t\t\t  <div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t    <span class=\"input-group-text\" id=\"inputGroup-sizing-default\">Principal</span>\n\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t  <input type=\"text\" class=\"form-control\" aria-label=\"Principal\" [(ngModel)]=\"newStatement.Principal\" name=\"newPrincipal\" aria-describedby=\"inputGroup-sizing-default\">\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"separator\">Buckets section</div>\n\t\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-1 text-center\">\n\t\t\t\t\t\t\t\t\t<div class=\"input-group mb-3\">\n\t\t\t\t\t\t\t\t\t  <div class=\"input-group-prepend\">\n\t\t\t\t\t\t\t\t\t    <span class=\"input-group-text\" id=\"s3-prefix\">arn:aws:s3:::</span>\n\t\t\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t\t\t  <input type=\"text\" class=\"form-control\" placeholder=\"<bucket_name>/<key_name>\" [(ngModel)]=\"newPolicy.bucket\" aria-label=\"Recipient's username\"\n\t\t\t\t\t\t\t\t\t    aria-describedby=\"s3-prefix\">\n\t\t\t\t\t\t\t\t\t  <div class=\"input-group-append\">\n\t\t\t\t\t\t\t\t\t    <button mdbBtn gradient=\"blue\" rounded=\"true\"  outline=\"true\" size=\"md\" class=\"m-0 px-3 py-2\" type=\"button\" id=\"s3-prefix\"\n\t\t\t\t\t\t\t\t\t      mdbWavesEffect (click)=\"addBucketStatement()\">Add bucket</button>\n\t\t\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"bucketStatements\">\n\t\t\t\t\t\t\t\t\t<table  mdbTable mdbTableScroll scrollY=\"true\" maxHeight=\"300\"  class=\"table\"  small=\"true\">\n\t\t\t\t\t\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t\t\t\t\t\t<th>Bucket</th>\n\t\t\t\t\t\t\t\t\t\t\t<th>Options</th>\n\t\t\t\t\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t\t\t\t\t<tr *ngFor=\"let bst of newStatement.Resource; let i = index\" [attr.data-index]=\"i\">\n\t\t\t\t\t\t\t\t\t\t\t\t<td>{{bst}}</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td><a title=\"Remove bucket statement\" (click)=\"removeBucketStatement(i)\"><mdb-icon fas icon=\"times-circle\"  size=\"1x\" class=\"green-text pr-3\" aria-hidden=\"true\"></mdb-icon></a></td>\n\t\t\t\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t\t\t\t</table>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</fieldset>\n\n\t\t\t\t\t\t\t<fieldset *ngIf=\"advancedInterface\">\n\t\t\t\t\t\t\t\t<div class=\"separator\">Conditions section</div>\n\t\t\t\t\t\t\t\t<div id=\"conditionStatements\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownConditionList\" [(ngModel)]=\"selectedCondition\"\n\t\t\t\t\t\t\t\t    [settings]=\"dropdownConditionSettings\"\n\t\t\t\t\t\t\t\t    (onSelect)=\"onConditionItemSelect($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelect)=\"onConditionItemDeSelect($event)\"\n\t\t\t\t\t\t\t\t    (onSelectAll)=\"onConditionSelectAll($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onConditionDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"conditionKeyStatements\" class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t<angular2-multiselect [data]=\"dropdownConditionKeyList\" [(ngModel)]=\"selectedConditionKey\"\n\t\t\t\t\t\t\t\t    [settings]=\"dropdownConditionKeySettings\"\n\t\t\t\t\t\t\t\t    (onSelect)=\"onConditionKeyItemSelect($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelect)=\"onConditionItemDeSelect($event)\"\n\t\t\t\t\t\t\t\t    (onSelectAll)=\"onConditionKeySelectAll($event)\"\n\t\t\t\t\t\t\t\t    (onDeSelectAll)=\"onConditionKeyDeSelectAll($event)\"></angular2-multiselect>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t\t\t\t<div class=\"input-group mb-3\">\n\t\t\t\t\t\t\t\t\t  <input type=\"text\" class=\"form-control\" placeholder=\"Condition Value\" aria-label=\"Condition Value\" [(ngModel)]=\"newConditionValue\" name=\"newConditionValue\"\n\t\t\t\t\t\t\t\t\t    aria-describedby=\"button-addCondition\">\n\t\t\t\t\t\t\t\t\t  <div class=\"input-group-append\">\n\t\t\t\t\t\t\t\t\t    <button mdbBtn gradient=\"blue\" outline=\"true\" size=\"md\" class=\"m-0 px-3 py-2 relative waves-light\" type=\"button\" id=\"button-addCondition\"  (click)=\"addCondition()\"\n\t\t\t\t\t\t\t\t\t\t\t mdbWavesEffect >Add Condition</button>\n\t\t\t\t\t\t\t\t\t  </div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"conditionStatementsList\">\n\t\t\t\t\t\t\t\t\t<table  mdbTable mdbTableScroll scrollY=\"true\" maxHeight=\"300\"  class=\"table\"  small=\"true\">\n\t\t\t\t\t\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t\t\t\t\t\t<th>Condition and options</th>\n\t\t\t\t\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t\t\t\t\t<tbody *ngIf=\"newStatement?.Condition\">\n\t\t\t\t\t\t\t\t\t\t\t<tr *ngFor=\"let condition of objectKeys(newStatement.Condition)\">\n\t\t\t\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t\t\t\t{{condition}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let con of objectKeys(newStatement.Condition[condition])\">{{con}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let conKeyVal of newStatement.Condition[condition][con]; let i = index;\" [attr.data-index]=\"i\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{{conKeyVal}}&nbsp;&nbsp;<a title=\"Remove condition\" (click)=\"removeCondition(i,con,condition)\"><mdb-icon fas icon=\"times-circle\"  size=\"1x\" class=\"green-text pr-3\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t\t\t\t</table>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</fieldset>\n\n\t\t\t\t\t\t\t<hr/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-md-2 ml-auto\">&nbsp;</div>\n\t\t\t\t\t</div>\n\n\n\t\t\t\t\t<div class=\"d-flex justify-content-around p-1 mb-3 text-center\">\n\t\t\t\t\t\t<button type=\"button\" mdbBtn gradient=\"purple\" rounded=\"true\" class=\"relative waves-light btn btn-sm\" mdbWavesEffect (click)=\"addStatement()\"><mdb-icon fas icon=\"plus\" class=\"mr-1\"></mdb-icon>Add statement</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div id=\"statements\">\n\t\t\t\t\t\t<hr/>\n\t\t\t\t\t\t<table  mdbTable mdbTableScroll scrollY=\"true\" maxHeight=\"300\"  class=\"table\"  small=\"true\">\n\t\t\t\t\t\t\t<thead class=\"thead-light\">\n\t\t\t\t\t\t\t\t<th>Effect</th>\n\t\t\t\t\t\t\t\t<th>Action</th>\n\t\t\t\t\t\t\t\t<th>Resource</th>\n\t\t\t\t\t\t\t\t<th>Conditions</th>\n\t\t\t\t\t\t\t\t<th>Options</th>\n\t\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t\t<tr *ngFor=\"let st of newPolicyRaw.Statement; let i = index\" [attr.data-index]=\"i\">\n\t\t\t\t\t\t\t\t\t<td>{{st.Effect}}</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<ul  class=\"type-none\">\n\t\t\t\t\t\t\t\t\t\t\t<li  class=\"type-none\" *ngFor=\"let action of st.Action\">{{action}}</li>\n\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<ul  class=\"type-none\">\n\t\t\t\t\t\t\t\t\t\t\t<li  class=\"type-none\" *ngFor=\"let resource of st.Resource\">{{resource}}</li>\n\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<ul class=\"type-none\" *ngIf=\"st?.Condition\">\n\t\t\t\t\t\t\t\t\t\t\t<li class=\"type-none\" *ngFor=\"let condition of objectKeys(st.Condition)\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t{{condition}}\n\t\t\t\t\t\t\t\t\t\t\t\t<ul >\n\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let con of objectKeys(st.Condition[condition])\">{{con}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li *ngFor=\"let conKeyVal of st.Condition[condition][con]\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{{conKeyVal}}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  </li>\n\t\t\t\t\t\t\t\t\t\t\t\t\t  </ul>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t<a title=\"Remove statement\" (click)=\"removeStatement(i)\"><mdb-icon fas icon=\"times-circle\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t\t\t\t\t\t\t&nbsp;&nbsp;\n\t\t\t\t\t\t\t\t\t\t<a title=\"Edit statement\" (click)=\"editStatement(i)\"><mdb-icon fas icon=\"pencil-alt\"  size=\"1x\" class=\"green-text pr-1\" aria-hidden=\"true\"></mdb-icon></a>\n\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t</table>\n\t\t\t\t\t</div>\n\n                <!-- </form> -->\n            </div>\n            <div class=\"modal-footer justify-content-center\">\n                <button type=\"button\" mdbBtn gradient=\"peach\" rounded=\"true\" class=\"relative waves-light\" mdbWavesEffect (click)=\"createPolicy();addPolicyModal.hide()\">{{modalCreateEditButtonText}}</button>\n            </div>\n        </div>\n    </div >\n</div >\n";
       /***/
     },
 
@@ -2512,39 +2604,39 @@
         }, {
           key: "getListOfUsers",
           value: function getListOfUsers() {
-            var _this30 = this;
+            var _this32 = this;
 
             this.apiService.getUsers().subscribe(function (data) {
-              _this30.apiService.validateAuthInResponse(data);
+              _this32.apiService.validateAuthInResponse(data);
 
               console.log(data);
-              _this30.usersRaw = data;
+              _this32.usersRaw = data;
               var arrayOfUsers = Object.entries(data).map(function (e) {
                 return _defineProperty({}, e[0], e[1]);
               });
-              _this30.users = arrayOfUsers;
+              _this32.users = arrayOfUsers;
 
-              _this30.mdbTable.setDataSource(arrayOfUsers);
+              _this32.mdbTable.setDataSource(arrayOfUsers);
 
               console.log(arrayOfUsers);
-              _this30.previous = _this30.mdbTable.getDataSource();
+              _this32.previous = _this32.mdbTable.getDataSource();
             });
           }
         }, {
           key: "getListOfPolicies",
           value: function getListOfPolicies() {
-            var _this31 = this;
+            var _this33 = this;
 
             this.apiService.getPolicies().subscribe(function (data) {
-              _this31.apiService.validateAuthInResponse(data);
+              _this33.apiService.validateAuthInResponse(data);
 
-              _this31.policies = Object.keys(data);
+              _this33.policies = Object.keys(data);
             });
           }
         }, {
           key: "createUser",
           value: function createUser() {
-            var _this32 = this;
+            var _this34 = this;
 
             var userAccess = this.newUserAccess.value;
             var userSecret = this.newUserSecret.value;
@@ -2553,30 +2645,30 @@
 
             if (userPolicy != '') {
               this.apiService.addUserExtended(userAccess, userSecret, userPolicy).subscribe(function (data) {
-                _this32.apiService.validateAuthInResponse(data);
+                _this34.apiService.validateAuthInResponse(data);
 
                 console.log(data);
 
-                _this32.getListOfUsers();
+                _this34.getListOfUsers();
 
                 if (data["Success"]) {
-                  _this32.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
+                  _this34.toastr.success('User: ' + userAccess + ' with policy ' + userPolicy + ' has been created', 'Success');
                 } else {
-                  _this32.toastr.error(JSON.stringify(data), 'Error while creating user');
+                  _this34.toastr.error(JSON.stringify(data), 'Error while creating user');
                 }
               });
             } else {
               this.apiService.addUser(userAccess, userSecret).subscribe(function (data) {
-                _this32.apiService.validateAuthInResponse(data);
+                _this34.apiService.validateAuthInResponse(data);
 
                 console.log(data);
 
-                _this32.getListOfUsers();
+                _this34.getListOfUsers();
 
                 if (data["Success"]) {
-                  _this32.toastr.success('User: ' + userAccess + ' has been created', 'Success');
+                  _this34.toastr.success('User: ' + userAccess + ' has been created', 'Success');
                 } else {
-                  _this32.toastr.error(JSON.stringify(data), 'Error while creating user');
+                  _this34.toastr.error(JSON.stringify(data), 'Error while creating user');
                 }
               });
             }
@@ -2584,7 +2676,7 @@
         }, {
           key: "setStatusUser",
           value: function setStatusUser(accessKey, status) {
-            var _this33 = this;
+            var _this35 = this;
 
             if (status == 'enabled') {
               status = 'disabled';
@@ -2593,17 +2685,17 @@
             }
 
             this.apiService.setStatusUser(accessKey, status).subscribe(function (data) {
-              _this33.apiService.validateAuthInResponse(data);
+              _this35.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this33.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
+                _this35.toastr.success('User: ' + accessKey + ' status has changed to ' + status, 'Success');
               } else {
-                _this33.toastr.error(JSON.stringify(data), 'Error while changing state for user');
+                _this35.toastr.error(JSON.stringify(data), 'Error while changing state for user');
               }
 
-              _this33.getListOfUsers();
+              _this35.getListOfUsers();
             });
           }
         }, {
@@ -2643,42 +2735,42 @@
         }, {
           key: "updateUserSave",
           value: function updateUserSave() {
-            var _this34 = this;
+            var _this36 = this;
 
             var updatedSecret = this.updateUser.value.secretKeyUpdate;
             var updatedPolicy = this.updateUser.value.policyUpdate;
             var updatedStatus = this.updateUser.value.statusUpdate;
             this.apiService.updateUser(this.userToUpdate, updatedSecret, updatedPolicy, updatedStatus).subscribe(function (data) {
-              _this34.apiService.validateAuthInResponse(data);
+              _this36.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
-              _this34.getListOfUsers();
+              _this36.getListOfUsers();
 
               if (data["Success"]) {
-                _this34.toastr.success('User: ' + _this34.userToUpdate + ' has been updated', 'Success');
+                _this36.toastr.success('User: ' + _this36.userToUpdate + ' has been updated', 'Success');
               } else {
-                _this34.toastr.error(JSON.stringify(data), 'Error while updating user');
+                _this36.toastr.error(JSON.stringify(data), 'Error while updating user');
               }
             });
           }
         }, {
           key: "deleteUser",
           value: function deleteUser() {
-            var _this35 = this;
+            var _this37 = this;
 
             this.apiService.deleteUser(this.userToDelete).subscribe(function (data) {
-              _this35.apiService.validateAuthInResponse(data);
+              _this37.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this35.toastr.success('User: ' + _this35.userToDelete + ' has been deleted', 'Success');
+                _this37.toastr.success('User: ' + _this37.userToDelete + ' has been deleted', 'Success');
               }
 
-              _this35.updateUserFrom();
+              _this37.updateUserFrom();
 
-              _this35.getListOfUsers();
+              _this37.getListOfUsers();
             });
           }
         }, {
@@ -2840,14 +2932,19 @@
           this.rawView = '';
           this.jsn = JSON;
           this.dropdownActionList = [];
+          this.dropdownAdminList = [];
           this.dropdownConditionList = [];
           this.dropdownConditionKeyList = [];
           this.selectedActions = [];
+          this.selectedAdmins = [];
           this.selectedCondition = [];
           this.selectedConditionKey = [];
           this.dropdownActionSettings = {};
+          this.dropdownAdminSettings = {};
           this.dropdownConditionSettings = {};
           this.dropdownConditionKeySettings = {};
+          this.advancedInterface = false;
+          this.advancedInterfaceLabel = "advanced";
           this.newPolicy = {
             name: "",
             effect: "allow",
@@ -3043,6 +3140,98 @@
             this.dropdownActionSettings = {
               singleSelection: false,
               text: "Select Actions",
+              selectAllText: 'Select All',
+              unSelectAllText: 'UnSelect All',
+              enableSearchFilter: true
+            };
+            this.dropdownAdminList = [{
+              "id": 1,
+              "itemName": "admin:ConfigUpdate"
+            }, {
+              "id": 2,
+              "itemName": "admin:CreateUser"
+            }, {
+              "id": 3,
+              "itemName": "admin:DeleteUser"
+            }, {
+              "id": 4,
+              "itemName": "admin:ListUsers"
+            }, {
+              "id": 5,
+              "itemName": "admin:EnableUser"
+            }, {
+              "id": 6,
+              "itemName": "admin:DisableUser"
+            }, {
+              "id": 7,
+              "itemName": "admin:GetUser"
+            }, {
+              "id": 8,
+              "itemName": "admin:ServerInfo"
+            }, {
+              "id": 9,
+              "itemName": "admin:ServerUpdate"
+            }, {
+              "id": 10,
+              "itemName": "admin:StorageInfo"
+            }, {
+              "id": 11,
+              "itemName": "admin:DataUsageInfo"
+            }, {
+              "id": 12,
+              "itemName": "admin:TopLocks"
+            }, {
+              "id": 13,
+              "itemName": "admin:OBDInfo"
+            }, {
+              "id": 14,
+              "itemName": "admin:Profiling"
+            }, {
+              "id": 15,
+              "itemName": "admin:ServerTrace"
+            }, {
+              "id": 16,
+              "itemName": "admin:ConsoleLog"
+            }, {
+              "id": 17,
+              "itemName": "admin:KMSKeyStatus"
+            }, {
+              "id": 18,
+              "itemName": "admin:AddUserToGroup"
+            }, {
+              "id": 19,
+              "itemName": "admin:RemoveUserFromGroup"
+            }, {
+              "id": 20,
+              "itemName": "admin:GetGroup"
+            }, {
+              "id": 21,
+              "itemName": "admin:ListGroups"
+            }, {
+              "id": 22,
+              "itemName": "admin:EnableGroup"
+            }, {
+              "id": 23,
+              "itemName": "admin:DisableGroup"
+            }, {
+              "id": 24,
+              "itemName": "admin:CreatePolicy"
+            }, {
+              "id": 25,
+              "itemName": "admin:DeletePolicy"
+            }, {
+              "id": 26,
+              "itemName": "admin:GetPolicy"
+            }, {
+              "id": 27,
+              "itemName": "admin:AttachUserOrGroupPolicy"
+            }, {
+              "id": 28,
+              "itemName": "admin:ListUserPolicies"
+            }];
+            this.dropdownAdminSettings = {
+              singleSelection: false,
+              text: "Select Admin actions for statement",
               selectAllText: 'Select All',
               unSelectAllText: 'UnSelect All',
               enableSearchFilter: true
@@ -3410,6 +3599,17 @@
             };
           }
         }, {
+          key: "switchAdvanced",
+          value: function switchAdvanced() {
+            if (this.advancedInterface) {
+              this.advancedInterface = false;
+              this.advancedInterfaceLabel = "Advanced";
+            } else {
+              this.advancedInterface = true;
+              this.advancedInterfaceLabel = "Basic";
+            }
+          }
+        }, {
           key: "onActionItemSelect",
           value: function onActionItemSelect(item) {
             console.log(item);
@@ -3429,6 +3629,28 @@
         }, {
           key: "onActionDeSelectAll",
           value: function onActionDeSelectAll(items) {
+            console.log(items);
+          }
+        }, {
+          key: "onAdminItemSelect",
+          value: function onAdminItemSelect(item) {
+            console.log(item);
+            console.log(this.selectedAdmins);
+          }
+        }, {
+          key: "onAdminItemDeSelect",
+          value: function onAdminItemDeSelect(item) {
+            console.log(item);
+            console.log(this.selectedAdmins);
+          }
+        }, {
+          key: "onAdminSelectAll",
+          value: function onAdminSelectAll(items) {
+            console.log(items);
+          }
+        }, {
+          key: "onAdminDeSelectAll",
+          value: function onAdminDeSelectAll(items) {
             console.log(items);
           } //condition select actions
 
@@ -3506,6 +3728,7 @@
           value: function resetPloicyForm(removeName) {
             console.log(removeName);
             this.selectedActions = [];
+            this.selectedAdmins = [];
 
             if (!removeName) {
               this.newPolicy.effect = "Allow";
@@ -3526,40 +3749,40 @@
         }, {
           key: "getPolicies",
           value: function getPolicies() {
-            var _this36 = this;
+            var _this38 = this;
 
             this.apiService.getPolicies().subscribe(function (data) {
-              _this36.apiService.validateAuthInResponse(data);
+              _this38.apiService.validateAuthInResponse(data);
 
               console.log(data);
-              _this36.policiesRaw = data;
+              _this38.policiesRaw = data;
               var arrayOfPolicies = Object.entries(data).map(function (e) {
                 return _defineProperty({}, e[0], e[1]);
               });
-              _this36.policies = arrayOfPolicies;
+              _this38.policies = arrayOfPolicies;
 
-              _this36.mdbTable.setDataSource(arrayOfPolicies);
+              _this38.mdbTable.setDataSource(arrayOfPolicies);
 
               console.log(arrayOfPolicies);
-              _this36.previous = _this36.mdbTable.getDataSource();
+              _this38.previous = _this38.mdbTable.getDataSource();
             });
           }
         }, {
           key: "deletePolicy",
           value: function deletePolicy() {
-            var _this37 = this;
+            var _this39 = this;
 
             this.apiService.deletePolicy(this.policyToDelete).subscribe(function (data) {
-              _this37.apiService.validateAuthInResponse(data);
+              _this39.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
-              _this37.getPolicies();
+              _this39.getPolicies();
 
               if (data["Success"]) {
-                _this37.toastr.success('Policy ' + _this37.policyToDelete + ' has been deleted', 'Success');
+                _this39.toastr.success('Policy ' + _this39.policyToDelete + ' has been deleted', 'Success');
               } else {
-                _this37.toastr.error(JSON.stringify(data), 'Error while deleting policy');
+                _this39.toastr.error(JSON.stringify(data), 'Error while deleting policy');
               }
             });
           }
@@ -3628,16 +3851,27 @@
         }, {
           key: "addStatement",
           value: function addStatement() {
-            if (this.selectedActions.length == this.dropdownActionList.length) {
-              this.newStatement.Action.push("s3:*");
+            console.log("called add statement");
+
+            if (this.selectedActions.length > 0) {
+              if (this.selectedActions.length == this.dropdownActionList.length) {
+                this.newStatement.Action.push("s3:*");
+              } else {
+                for (var i = 0; i < this.selectedActions.length; i++) {
+                  this.newStatement.Action.push(this.selectedActions[i].itemName);
+                }
+              }
             } else {
-              for (var i = 0; i < this.selectedActions.length; i++) {
-                this.newStatement.Action.push(this.selectedActions[i].itemName);
+              if (this.selectedAdmins.length == this.dropdownAdminList.length) {
+                this.newStatement.Action.push("admin:*");
+              } else {
+                for (var i = 0; i < this.selectedAdmins.length; i++) {
+                  this.newStatement.Action.push(this.selectedAdmins[i].itemName);
+                }
               }
             }
 
-            this.newStatement.Effect = this.newPolicy.effect; // this.newStatement.Resource = "arn:aws:s3:::"+this.newPolicy.bucket
-
+            this.newStatement.Effect = this.newPolicy.effect;
             console.log(this.newStatement);
 
             if (this.newStatement.Condition && Object.entries(this.newStatement.Condition).length === 0 && this.newStatement.Condition.constructor === Object) {
@@ -3657,23 +3891,48 @@
         }, {
           key: "editStatement",
           value: function editStatement(i) {
+            console.log("called Edit Statement");
             this.newStatement = this.newPolicyRaw.Statement[i];
             this.newPolicy.effect = this.newPolicyRaw.Statement[i].Effect;
 
-            if (this.newStatement.Action[0] == "s3:*") {
-              for (var g = 0; g < this.dropdownActionList.length; g++) {
-                this.selectedActions.push({
-                  "id": this.dropdownActionList[g].id,
-                  "itemName": this.dropdownActionList[g].itemName
-                });
-              }
-            } else {
-              for (var g = 0; g < this.newStatement.Action.length; g++) {
-                this.selectedActions.push({
-                  "id": g,
-                  "itemName": this.newStatement.Action[g]
-                });
-              }
+            switch (this.newStatement.Action[0].substring(0, 3)) {
+              case "s3:":
+                if (this.newStatement.Action[0] == "s3:*") {
+                  for (var g = 0; g < this.dropdownActionList.length; g++) {
+                    this.selectedActions.push({
+                      "id": this.dropdownActionList[g].id,
+                      "itemName": this.dropdownActionList[g].itemName
+                    });
+                  }
+                } else {
+                  for (var g = 0; g < this.newStatement.Action.length; g++) {
+                    this.selectedActions.push({
+                      "id": g,
+                      "itemName": this.newStatement.Action[g]
+                    });
+                  }
+                }
+
+                break;
+
+              case "adm":
+                if (this.newStatement.Action[0] == "admin:*") {
+                  for (var g = 0; g < this.dropdownAdminList.length; g++) {
+                    this.selectedAdmins.push({
+                      "id": this.dropdownAdminList[g].id,
+                      "itemName": this.dropdownAdminList[g].itemName
+                    });
+                  }
+                } else {
+                  for (var g = 0; g < this.newStatement.Action.length; g++) {
+                    this.selectedAdmins.push({
+                      "id": g,
+                      "itemName": this.newStatement.Action[g]
+                    });
+                  }
+                }
+
+                break;
             }
 
             this.newStatement.Action = [];
@@ -3705,7 +3964,7 @@
         }, {
           key: "uploadPolicy",
           value: function uploadPolicy() {
-            var _this38 = this;
+            var _this40 = this;
 
             var fileReader = new FileReader();
 
@@ -3713,18 +3972,18 @@
               console.log(fileReader.result);
               var policyFileString = fileReader.result.toString().replace(/\n/g, ' ').replace(/\r/g, ' ');
 
-              _this38.apiService.addPolicy(_this38.uploadPolicyName, policyFileString).subscribe(function (data) {
-                _this38.apiService.validateAuthInResponse(data);
+              _this40.apiService.addPolicy(_this40.uploadPolicyName, policyFileString).subscribe(function (data) {
+                _this40.apiService.validateAuthInResponse(data);
 
                 console.log(data);
 
                 if (data["Success"]) {
-                  _this38.toastr.success('Policy ' + _this38.newPolicy.name + ' has been created', 'Success');
+                  _this40.toastr.success('Policy ' + _this40.newPolicy.name + ' has been created', 'Success');
                 } else {
-                  _this38.toastr.error(JSON.stringify(data), 'Error while creating policy');
+                  _this40.toastr.error(JSON.stringify(data), 'Error while creating policy');
                 }
 
-                _this38.getPolicies();
+                _this40.getPolicies();
               });
             };
 
@@ -3741,22 +4000,22 @@
         }, {
           key: "createPolicy",
           value: function createPolicy() {
-            var _this39 = this;
+            var _this41 = this;
 
             console.log(this.newPolicy, this.newPolicyRaw);
             var policyString = JSON.stringify(this.newPolicyRaw);
             this.apiService.addPolicy(this.newPolicy.name, policyString).subscribe(function (data) {
-              _this39.apiService.validateAuthInResponse(data);
+              _this41.apiService.validateAuthInResponse(data);
 
               console.log(data);
 
               if (data["Success"]) {
-                _this39.toastr.success('Policy ' + _this39.newPolicy.name + ' has been created', 'Success');
+                _this41.toastr.success('Policy ' + _this41.newPolicy.name + ' has been created', 'Success');
               } else {
-                _this39.toastr.error(JSON.stringify(data), 'Error while creating policy');
+                _this41.toastr.error(JSON.stringify(data), 'Error while creating policy');
               }
 
-              _this39.getPolicies();
+              _this41.getPolicies();
             });
           }
         }, {
@@ -4408,6 +4667,29 @@
             var form = new FormData();
             form.append('bucketName', bucketName);
             return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-policy', form);
+          }
+        }, {
+          key: "getBucketEncryption",
+          value: function getBucketEncryption(bucketName) {
+            var form = new FormData();
+            form.append('bucketName', bucketName);
+            return this.httpClient.post(this.baseUrl + '/api/v2/bucket/get-encryption', form);
+          }
+        }, {
+          key: "setBucketEncryption",
+          value: function setBucketEncryption(bucketName, encType, encMasterKeyID) {
+            var form = new FormData();
+            form.append('bucketName', bucketName);
+            form.append('bucketEncryptionType', encType);
+            form.append('kmsMasterKey', encMasterKeyID);
+            return this.httpClient.post(this.baseUrl + '/api/v2/bucket/set-encryption', form);
+          }
+        }, {
+          key: "removeBucketEncryption",
+          value: function removeBucketEncryption(bucketName) {
+            var form = new FormData();
+            form.append('bucketName', bucketName);
+            return this.httpClient.post(this.baseUrl + '/api/v2/bucket/remove-encryption', form);
           }
         }]);
 
