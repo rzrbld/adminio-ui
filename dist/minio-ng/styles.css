@@ -16914,6 +16914,9 @@ input.counter-success ~ span.text-success {
 .md-form textarea.md-textarea {
   overflow-y: auto !important;
 }
+.input-group.md-form.md-outline label.active {
+  z-index: 3;
+}
 .md-outline input.form-control.validate-success.ng-valid.ng-dirty,
 .md-outline input.form-control.validate-success.ng-valid.ng-touched,
 .md-outline.form-submitted input.form-control.validate-success.ng-valid {
@@ -16945,7 +16948,7 @@ input.counter-success ~ span.text-success {
 }
 .md-outline .md-textarea.validate-success.ng-valid.ng-dirty,
 .md-outline .md-textarea.validate-success.ng-valid.ng-touched + label {
-  color: inherit !important;
+  color: #00c851 !important;
   font-weight: normal !important;
 }
 .md-outline .md-textarea.validate-error.ng-invalid.ng-touched,
@@ -16957,7 +16960,7 @@ input.counter-success ~ span.text-success {
 .md-outline .md-textarea.validate-error.ng-invalid.ng-touched + label,
 .md-outline .md-textarea.validate-error.ng-invalid.ng-dirty + label,
 .md-outline .form-submitted .md-textarea.validate-error.ng-invalid + label {
-  color: inherit !important;
+  color: #f44336 !important;
   font-weight: normal !important;
 }
 input.form-control.validate-success.ng-valid.ng-dirty,
