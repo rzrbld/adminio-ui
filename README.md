@@ -35,7 +35,24 @@ it will bring up:
 
 after that you can go to `` http://localhost `` and try out
 
+#### Production stack
+
+For a production ready _demo_, please see [docker-stack.yml](docker-stack.yml) to boot up the following:
+
+ - adminio-ui
+ - adminio-api
+ 
+Provided configuration will run the UI and the API on the same hostname. While the API component is exposed on a `/api` route to avoid an otherwise necessary CORS setup.
+
+The stack requires the following components to be setup externally:
+
+ - Docker Swarm (though minor with minor changes, this works with Compose)
+ - a running and to the stack accessible MinIO
+ - Traefik v1.7 (configured via labels)
+ - Traefik ingress via an attachable (Docker) network named `public`
+
 ### Run in docker
+
 Before running make sure that you minio server and adminio-api is started.
 
 `` docker run rzrbld/adminio-ui:latest ``

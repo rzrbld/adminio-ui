@@ -1,0 +1,41 @@
+version: '3.7'
+
+networks:
+  public:
+    external: true
+    name: public
+
+services:
+  adminio-api:
+    deploy:
+      labels:
+        traefik.docker.network: public
+        traefik.enable: "true"
+        traefik.frontend.passHostHeader: "true"
+        traefik.frontend.rule: "Host:adminio-host.example.org; PathPrefix:/api"
+        traefik.port: '8080'
+    environment:
+      ADMINIO_BACKENDS: '[{"name":"foo","url":"http://localhost:8080"}]'
+      ADMINIO_HOST_PORT: 0.0.0.0:8080
+      MINIO_ACCESS: PLZ_CHANGE_access_key
+      MINIO_HOST_PORT: PLZ_CHANGE_minio_server:443
+      MINIO_SECRET: secret
+      MINIO_SSL: "true"
+    image: rzrbld/adminio-api:release-1.6
+    networks:
+      - public
+  adminio-ui:
+    deploy:
+      labels:
+        traefik.docker.network: 'public'
+        traefik.enable: "true"
+        traefik.frontend.passHostHeader: 'true'
+        traefik.frontend.rule: Host:adminio-host.example.org
+        traefik.port: '80'
+    environment:
+      ADMINIO_MULTI_BACKEND: "false"
+      ADMINIO_PROD: "true"
+      API_BASE_URL: https://adminio-host.example.org
+    image: rzrbld/adminio-ui:latest
+    networks:
+      - public
