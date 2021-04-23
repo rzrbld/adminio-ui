@@ -67,6 +67,8 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   downloadJsonHref;
   downloadLifecycleAvailable = 0;
 
+  lifecycleCurrentData;
+
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   previous: string;
@@ -391,6 +393,7 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
 
   private bucketLifecycle(bucket){
     this.lifecycleBucketName = bucket;
+    // this.lifecycleCurrentData = "";
   }
 
   private createFormAddTag() {
@@ -565,20 +568,24 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
     this.uploadLifecycleName = "";
     this.uploadLifecycleFileName = "";
     this.downloadLifecycleAvailable = 0;
+    this.lifecycleCurrentData = "";
   }
 
   private downloadLifecycle(bucket) {
     this.apiService.getLifecycle(bucket).subscribe((data)=>{
       this.apiService.validateAuthInResponse(data)
-      // console.log(bucket, data);
+      console.log(bucket, data);
       if(data["error"]){
-        this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
+        if(data["error"]!="The lifecycle configuration does not exist"){
+          this.toastr.error(JSON.stringify(data), 'Error while getting lifecycle');
+        }
       }else{
         if(data==""){
           // this.toastr.error("Bucket has no lifecycle", 'Error while getting lifecycle');
         }else{
           this.downloadLifecycleAvailable = 1;
           console.log("Lifecycle>>>>",JSON.stringify(data));
+          this.lifecycleCurrentData = data;
 
           var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(data)));
           this.downloadJsonHref = uri;

@@ -15,7 +15,7 @@
           </div>
         </div>
     </div>
-	<table mdbTable calss="table" #tableBuckets="mdbTable" >
+	<table mdbTable class="table" #tableBuckets="mdbTable" >
 	  <thead class="thead-light">
 	    <tr>
 	      <th>Name</th>
@@ -126,7 +126,7 @@
                 <button type="button" class="close pull-right" aria-label="Close" (click)="lifecycyleModal.hide()">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title w-100" id="myModalLabel">Bucket Lifecycyle</h4>
+                <h4 class="modal-title w-100" id="myModalLabel">{{lifecycleBucketName}} Bucket Lifecycyle</h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -136,6 +136,39 @@
                     <a mdbTooltip="Download Lifecycle" placement="top" [href]="downloadJsonHref" download="{{lifecycleBucketName}}-lifecycle.json"><mdb-icon fas icon="download" size="1x" class="green-text pr-1" aria-hidden="true"></mdb-icon></a>
                     <br/>
                     Or override it by upload a new lifecycle policy.
+                    <br/>
+                    <br/>
+                    <b>Current lifecycle:</b>
+                    <div class="lifecycle-preview">
+                      <table mdbTable class="table table-sm lifecycle-preview" #tableBuckets="mdbTable" *ngIf="lifecycleCurrentData?.Rules">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Prefix</th>
+                            <th>Enabled</th>
+                            <th>Expiry</th>
+                            <th>Date/Days</th>
+                            <th>Transition</th>
+                            <th>Date/Days</th>
+                            <th>Storage-Class</th>
+                            <th>Tags</th>
+                          </tr>
+                        </thead>
+                        <tbody >
+                          <tr mdbTableCol *ngFor="let b of objectKeys(lifecycleCurrentData?.Rules); let i = index">
+                            <td>{{lifecycleCurrentData?.Rules[b]?.ID}}</td>
+                            <td class="align-middle">{{lifecycleCurrentData?.Rules[b]?.Prefix}}{{lifecycleCurrentData?.Rules[b]?.RuleFilter?.And?.Prefix}}{{lifecycleCurrentData?.Rules[b]?.RuleFilter?.Prefix}}</td>
+                            <td><span *ngIf="lifecycleCurrentData?.Rules[b]?.Status == 'Enabled'"><i class="fas fa-check"></i></span><span *ngIf="lifecycleCurrentData?.Rules[b]?.Status != 'Enabled'">-=<i class="fas fa-times"></i></span></td>
+                            <td><span *ngIf="lifecycleCurrentData?.Rules[b]?.Expiration?.Date != '0001-01-01T00:00:00Z' || lifecycleCurrentData?.Rules[b]?.Expiration?.Days"><i class="fas fa-check"></i></span><span *ngIf="lifecycleCurrentData?.Rules[b]?.Expiration?.Date == '0001-01-01T00:00:00Z' && !lifecycleCurrentData?.Rules[b]?.Expiration?.Days"><i class="fas fa-times"></i></span></td>
+                            <td><span *ngIf="lifecycleCurrentData?.Rules[b]?.Expiration?.Date != '0001-01-01T00:00:00Z'">{{lifecycleCurrentData?.Rules[b]?.Expiration?.Date}}</span><span *ngIf="lifecycleCurrentData?.Rules[b]?.Expiration?.Days">{{lifecycleCurrentData?.Rules[b]?.Expiration?.Days}}</span></td>
+                            <td><span *ngIf="lifecycleCurrentData?.Rules[b]?.Transition?.Date != '0001-01-01T00:00:00Z' || lifecycleCurrentData?.Rules[b]?.Transition?.Days"><i class="fas fa-check"></i></span><span *ngIf="lifecycleCurrentData?.Rules[b]?.Transition?.Date == '0001-01-01T00:00:00Z' || !lifecycleCurrentData?.Rules[b]?.Transition?.Days"><i class="fas fa-times"></i></span></td>
+                            <td><span *ngIf="lifecycleCurrentData?.Rules[b]?.Transition?.Date != '0001-01-01T00:00:00Z'">{{lifecycleCurrentData?.Rules[b]?.Transition?.Date != '0001-01-01T00:00:00Z'}}</span><span *ngIf="lifecycleCurrentData?.Rules[b]?.Transition?.Days">{{lifecycleCurrentData?.Rules[b]?.Transition?.Days}}</span></td>
+                            <td>{{lifecycleCurrentData?.Rules[b]?.Transition?.StorageClass}}</td>
+                            <td>{{lifecycleCurrentData?.Rules[b]?.RuleFilter?.And?.Tags}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div class="alert alert-info" role="alert" *ngIf="downloadLifecycleAvailable == 0" >
                     <mdb-icon fas icon="info-circle" class="mr-1"></mdb-icon>Lifecycle policy is structrured xml file. You can use examples from Minio
@@ -144,8 +177,8 @@
                   </div>
                   <div class="d-flex justify-content-around p-1 mb-3 text-center">
 										<div class="custom-file">
-										  <input type="file" accept=".lifecycle,.xml" class="custom-file-input" (change)="fileChanged($event)" #uploadLifecycleFile name="uploadLifecycleFile">
-										  <label class="custom-file-label" for="customFileLang">{{uploadLifecycleFileName == "" ? "Choose .lifecycle or .xml file" : uploadLifecycleFileName}}</label>
+										  <input type="file" accept=".lifecycle,.xml,.json" class="custom-file-input" (change)="fileChanged($event)" #uploadLifecycleFile name="uploadLifecycleFile">
+										  <label class="custom-file-label" for="customFileLang">{{uploadLifecycleFileName == "" ? "Choose .lifecycle, .xml or .json file" : uploadLifecycleFileName}}</label>
 										</div>
 									</div>
                 </div>
