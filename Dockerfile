@@ -9,7 +9,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN \
     git clone https://github.com/rzrbld/adminio-ui && \
     cd adminio-ui && \
-    npm install -g @angular/cli@9.1.7 && npm install
+    npm cache clean --force && npm install -g @angular/cli@12.1.1 && npm install
 
 RUN rm -rf adminio-ui/dist/*
 RUN cd /app/adminio-ui && npm run build
