@@ -9,12 +9,13 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN mkdir /app/adminio-ui
 ADD . /app/adminio-ui/
 RUN rm -rf adminio-ui/dist/*
-RUN cd adminio-ui && \
-    npm install -g @angular/cli@9.1.7 && npm install
+RUN rm -rf adminio-ui/node_modules/*
+RUN cd adminio-ui && ls -al && \
+    npm cache clean --force && npm install -g @angular/cli@12.1.1 && npm install && npm audit fix
 
 RUN cd /app/adminio-ui && npm run build
 
-FROM nginx:1.19-alpine
+FROM nginx:1.21-alpine
 
 ENV API_BASE_URL http://localhost:8080
 ENV ADMINIO_PROD false

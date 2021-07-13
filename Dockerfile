@@ -15,7 +15,7 @@ RUN rm -rf adminio-ui/dist/*
 RUN cd /app/adminio-ui && npm run build
 
 
-FROM nginx:1.19-alpine
+FROM nginx:1.21-alpine
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
