@@ -63,3 +63,5 @@ typings/
 .DS_Store
 
 docker-compose-dev.yml
+
+.angular/cache

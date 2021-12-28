@@ -1,4 +1,4 @@
-FROM node:14 as build
+FROM node:16 as build
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
@@ -9,7 +9,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN \
     git clone https://github.com/rzrbld/adminio-ui && \
     cd adminio-ui && \
-    npm cache clean --force && npm install -g @angular/cli@12.1.1 && npm install
+    npm cache clean --force && npm install -g npm && npm install -g @angular/cli && npm install
 
 RUN rm -rf adminio-ui/dist/*
 RUN cd /app/adminio-ui && npm run build

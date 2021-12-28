@@ -1,7 +1,7 @@
 version: '3'
 services:
   minio:
-    image: minio/minio:RELEASE.2021-08-05T22-01-19Z
+    image: minio/minio:RELEASE.2021-12-27T07-23-18Z
     ports:
       - "9000:9000"
     environment:

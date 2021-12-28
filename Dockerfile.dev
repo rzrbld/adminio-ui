@@ -1,4 +1,4 @@
-FROM node:14 as build
+FROM node:16 as build
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
@@ -11,7 +11,7 @@ ADD . /app/adminio-ui/
 RUN rm -rf adminio-ui/dist/*
 RUN rm -rf adminio-ui/node_modules/*
 RUN cd adminio-ui && ls -al && \
-    npm cache clean --force && npm install -g @angular/cli@12.1.1 && npm install && npm audit fix
+    npm cache clean --force && npm install -g npm && npm install -g @angular/cli && npm install
 
 RUN cd /app/adminio-ui && npm run build
 
