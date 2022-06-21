@@ -103,7 +103,8 @@ export class BucketsComponent implements OnInit,  AfterViewInit  {
   		selectAllText:'Select All',
   		unSelectAllText:'UnSelect All',
   		enableSearchFilter: true,
-      classes: "dropdownFix"
+      autoPosition: false,
+      position:'bottom'
 	  };
   }
 

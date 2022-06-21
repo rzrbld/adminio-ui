@@ -156,7 +156,9 @@ export class PoliciesComponent implements OnInit {
   		text:"Select Actions",
   		selectAllText:'Select All',
   		unSelectAllText:'UnSelect All',
-  		enableSearchFilter: true
+  		enableSearchFilter: true,
+      autoPosition: false,
+      position:'bottom'
 	  };
 
     this.dropdownAdminList = [
@@ -195,7 +197,9 @@ export class PoliciesComponent implements OnInit {
       text:"Select Admin actions for statement",
       selectAllText:'Select All',
       unSelectAllText:'UnSelect All',
-      enableSearchFilter: true
+      enableSearchFilter: true,
+      autoPosition: false,
+      position:'bottom'
     };
 
   	this.dropdownConditionList = [
@@ -261,7 +265,9 @@ export class PoliciesComponent implements OnInit {
   		text:"Select Condition",
   		selectAllText:'Select All',
   		unSelectAllText:'UnSelect All',
-  		enableSearchFilter: true
+  		enableSearchFilter: true,
+      autoPosition: false,
+      position:'bottom'
 	  };
 
   	this.dropdownConditionKeyList = [
@@ -332,7 +338,9 @@ export class PoliciesComponent implements OnInit {
   		text:"Select Condition Key",
   		selectAllText:'Select All',
   		unSelectAllText:'UnSelect All',
-  		enableSearchFilter: true
+  		enableSearchFilter: true,
+      autoPosition: false,
+      position:'bottom'
 	  };
   }
 

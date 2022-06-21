@@ -77,7 +77,9 @@ export class GroupsComponent implements OnInit,  AfterViewInit  {
 			text:"Select Members",
 			selectAllText:'Select All',
 			unSelectAllText:'UnSelect All',
-			enableSearchFilter: true
+			enableSearchFilter: true,
+			autoPosition: false,
+     		position:'bottom'
 		};
 	}
 

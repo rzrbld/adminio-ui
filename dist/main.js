@@ -563,7 +563,8 @@ let BucketsComponent = class BucketsComponent {
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
             enableSearchFilter: true,
-            classes: "dropdownFix"
+            autoPosition: false,
+            position:'bottom'
         };
     }
     //condition select actions

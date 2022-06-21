@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { MdbTablePaginationComponent, MdbTableDirective } from 'angular-bootstrap-md';
 import { ToastrService } from 'ngx-toastr';
 
@@ -11,8 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, AfterViewInit {
-  validatingForm: FormGroup;
-  updateUser: FormGroup;
+  validatingForm: UntypedFormGroup;
+  updateUser: UntypedFormGroup;
   users = {};
   usersRaw = {};
   userToDelete;
@@ -106,19 +106,19 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   private updateUserFrom(){
-    this.updateUser = new FormGroup({
-      accessKeyUpdate: new FormControl({value: '', disabled: true}, Validators.required),
-      secretKeyUpdate: new FormControl(''),
-      policyUpdate: new FormControl('', Validators.required),
-      statusUpdate: new FormControl('', Validators.required)
+    this.updateUser = new UntypedFormGroup({
+      accessKeyUpdate: new UntypedFormControl({value: '', disabled: true}, Validators.required),
+      secretKeyUpdate: new UntypedFormControl(''),
+      policyUpdate: new UntypedFormControl('', Validators.required),
+      statusUpdate: new UntypedFormControl('', Validators.required)
     });
   }
 
   private resetForm(){
-  	this.validatingForm = new FormGroup({
-      newUserAccess: new FormControl(this.generatePassword(16), Validators.minLength(5)),
-      newUserSecret: new FormControl(this.generatePassword(24), Validators.minLength(10)),
-      newUserPolicy: new FormControl('',Validators.minLength(0))
+  	this.validatingForm = new UntypedFormGroup({
+      newUserAccess: new UntypedFormControl(this.generatePassword(16), Validators.minLength(5)),
+      newUserSecret: new UntypedFormControl(this.generatePassword(24), Validators.minLength(10)),
+      newUserPolicy: new UntypedFormControl('',Validators.minLength(0))
     });
   }
 
