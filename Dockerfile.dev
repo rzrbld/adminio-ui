@@ -1,4 +1,4 @@
-FROM node:16 as build
+FROM node:18 as build
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
@@ -15,7 +15,7 @@ RUN cd adminio-ui && ls -al && \
 
 RUN cd /app/adminio-ui && npm run build
 
-FROM nginx:1.22-alpine
+FROM nginx:1.23-alpine
 
 ENV API_BASE_URL http://localhost:8080
 ENV ADMINIO_PROD false

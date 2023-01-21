@@ -1,4 +1,4 @@
-FROM node:16 as build
+FROM node:18 as build
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
@@ -15,7 +15,7 @@ RUN rm -rf adminio-ui/dist/*
 RUN cd /app/adminio-ui && npm run build
 
 
-FROM nginx:1.22-alpine
+FROM nginx:1.23-alpine
 
 LABEL maintainer="rzrbld <razblade@gmail.com>"
 
